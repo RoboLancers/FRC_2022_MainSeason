@@ -1,0 +1,45 @@
+Turret from Subsystem {
+
+    @static
+        type            name                    description
+
+        <double>        seekAdjustment          The turn rate per periodic to rotate when limelight is not visible
+        <double>        minimumSafeAngle        The minimum turn angle on the yaw axis the turret can reach
+        <double>        maximumSafeAngle        The maximum turn angle on the yaw axis the turret can reach
+        <double>        turnAdjustCoefficient   The coefficient applied to the error in angle to adjust
+
+    public constructor(limelight, turretYawMotor, turretPitchMotor)
+
+        @params
+            type            name                description
+
+            <Limelight>     limelight           Limelight mounted on the turretMotor
+            <Motor>         turretYawMotor      Motor used to control the yaw of the turret
+            <Motor>         turretPitchMotor    Motor used to control the pitch of the turret
+
+        @members
+            type            name                description
+
+            <double>        lastRobotYaw        Yaw of the robot last frame
+            <bool>          seekDirection       Boolean representation of the sign coefficient applied to the seek adjustment
+
+        @implementation
+            // bind params to class instance
+
+    periodic()
+
+        // Handle seeking and matching target heading in background
+
+        if(limelight.hasTarget()){
+            yawWithRespectToTurret = turretYawMotor.getYaw() + limelight.getYawError()
+            if(yawWithRespectToTurret < minimumSafeAngle || yawWithRespectToTurret > maximumSafeAngle){
+                turnAdjustCoefficient = yawWithRespectToTurret < minimumSafeAngle
+                turretYawMotor.rotateBy(seekAdjustment * (turnAdjustCoefficient ? 1 : -1))
+            } else {
+                turretYawMotor.rotateBy(limelight.getYawError() * turnAdjustCoefficient)
+            }
+        } else {
+            turretYawMotor.rotateBy(seekAdjustment * (turnAdjustCoefficient ? 1 : -1))
+        }
+
+}
