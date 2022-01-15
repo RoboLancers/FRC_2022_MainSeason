@@ -1,0 +1,10 @@
+Motor spin forward: Climber up
+Motor spin backwards: Climber down
+Measuered bar height: All way up
+encoders to set limits
+no going above max
+no going below min
+if: power spikes
+ return: hung
+ else
+ return: not hung
