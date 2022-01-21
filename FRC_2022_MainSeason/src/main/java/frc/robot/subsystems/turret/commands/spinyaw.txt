@@ -1,0 +1,48 @@
+import
+import
+import edu.wpi.first.wpilibj.XboxController;
+
+XboxController controller = new XboxController;
+controller.getX(kLEFT);
+
+yaw = 540 degrees
+
+the yaw motor allows the turret to spin on the yaw axis. 
+The turret is only allowed to go 540 degreees in one direction. --> limit
+Turret only allowed 1 and a half full rotations.
+Using encoders. BLANK encoders is one rotations
+So after BLANK + 1/2(BLANK) restrict turret from turning in said direction and force it to go the other way
+
+left_arrow rotates the turret counterclockwise 
+right_arrow rotates the turret clockwise 
+
+
+imports
+imports 
+ import edu.wpi.first.wpilibj.XboxController;
+
+Motor Yaw;
+
+XboxController controller = new XboxController;
+
+double gettingX = controller.getX(kLEFT); NEVA STOP DONT STOP
+
+if ( gettingX > 0){
+    Yaw.setPower(0.5);
+} else if ( gettingX < 0){
+    Yaw.setPower(-0.5);
+} else{
+    Yaw.setPower(0);
+}
+
+if( ticks == -270 (in ticks) ){
+    Yaw.setPower(0);
+} 
+
+if( ticks == 270 degrees (in ticks))
+
+
+
+
+
+
