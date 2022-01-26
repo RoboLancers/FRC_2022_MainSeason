@@ -8,22 +8,18 @@ public class LimeLight implements Subsystem {
     private NetworkTable table;
 
     public LimeLight(){
-        table = NetworkTableInstance.getDefault().getTable("limelight");
+        this.table = NetworkTableInstance.getDefault().getTable("limelight");
     }
 
     public boolean hasTarget(){
-        return table.getEntry("tv").getBoolean(false);
+        return this.table.getEntry("tv").getBoolean(false);
     }
 
-    public double getYawOffset(){
-        return table.getEntry("tx").getDouble(0.0);
+    public double yawOffset(){
+        return this.table.getEntry("tx").getDouble(0.0);
     }
 
-    public double getPitchOffset(){
-        return table.getEntry("ty").getDouble(0.0);
-    }
-
-    public void toggleLight(boolean on){
-        table.getEntry("ledMode").setNumber(on ? 3 : 1);
+    public double pitchOffset(){
+        return this.table.getEntry("ty").getDouble(0.0);
     }
 }

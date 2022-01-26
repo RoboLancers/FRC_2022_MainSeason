@@ -3,9 +3,9 @@ package frc.robot.subsystems.turret;
 // The trajectory information needed to hit the target with certain constraints
 
 public class Trajectory {
-    private double theta;
-    private double speed;
-    private double time;
+    public double theta;
+    public double speed;
+    public double time;
 
     public Trajectory(
         double theta,       // The angle of the determined trajectory [in radians]
@@ -46,7 +46,7 @@ public class Trajectory {
             ...
             tan^2(theta) (g dx^2) + tan(theta) (2 * vSquared * dx) + (-2 * vSquared * dy) = 0
         */
-        double qA = g * dx * dx;
+        double qA = g * (dx * dx);
         double qB = 2 * v2 * dx;
         double qC = -2 * v2 * dy;
         double theta = Math.atan2(-qB + Math.sqrt((qB * qB) - 4 * qA * qC), 2 * qA);
@@ -74,10 +74,10 @@ public class Trajectory {
             ...
             tan(theta) = (u * dy1 - dy0) / (u * dx1 - dx0)
         */
-        double u = (dx0 ** 2) / (dx1 ** 2);
+        double u = (dx0 * dx0) / (dx1 * dx1);
         double theta = Math.atan((u * dy1 - dy0) / (u * dx1 - dx0));
         double speed = dx1 / Math.cos(theta) / Math.sqrt(2 * (dy1 - dx1 * Math.tan(theta)) / g);
-        double time = dx / speed / Math.cos(theta);
+        double time = dx1 / speed / Math.cos(theta);
 
         return new Trajectory(theta, speed, time);
     }

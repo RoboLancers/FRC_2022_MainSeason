@@ -1,5 +1,35 @@
+package frc.robot.subsystems.turret.commands.spinpitch;
+
 imports
 imports
 imports
 
-yaw = pitch 360
+pitch = pitch 55
+
+imports
+imports 
+import edu.wpi.first.wpilibj.XboxController;
+
+Motor Pitch;
+
+XboxController controller = new XboxController;
+
+double gettingY = controller.getY(kRIGHT); NEVA STOP DONT STOP
+
+if ( gettingY > 0){
+    Pitch.setPower(0.5);
+} else if ( gettingX < 0){
+ Pitch.setPower(-0.5);
+} else{
+ Pitch.setPower(0);
+}
+
+
+
+if( ticks == -55 degrees (in ticks) ){
+ Pitch.setPower(0);
+} 
+
+if( ticks == 55 degrees (in ticks))
+
+//55 placeholder naw method
