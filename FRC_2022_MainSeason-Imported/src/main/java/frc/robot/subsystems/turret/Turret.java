@@ -2,6 +2,7 @@ package frc.robot.subsystems.turret;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.misc.LimeLight;
 
 public class Turret extends SubsystemBase {
@@ -20,7 +21,13 @@ public class Turret extends SubsystemBase {
     // The coefficient applied to the change in angle
     private static double derivativeTurnCoefficient = 0.00;
 
+    // Limelight mounted on the turret base
     private LimeLight limelight;
+
+    // Motor used to control the yaw of the turret
+    // Motor used to control the pitch of the turret
+    // First motor used to control the speed of the flywheel
+    // Second motor used to control the speed of the flywheel
     private CANSparkMax yawMotor, pitchMotor, flywheelMotorR, flywheelMotorB;
 
     // Yaw of the robot last frame
@@ -29,31 +36,43 @@ public class Turret extends SubsystemBase {
     private boolean seekDirection = true;
 
     public Turret(
-        LimeLight limelight,        // Limelight mounted on the turretMotor
-        CANSparkMax yawMotor,             // Motor used to control the yaw of the turret
-        CANSparkMax pitchMotor,           // Motor used to control the pitch of the turret
-        CANSparkMax flywheelMotorA,       // First motor used to control the speed of the flywheel
-        CANSparkMax flywheelMotorB        // Second motor used to control the speed of the flywheel
+        LimeLight limelight
     ){
         this.limelight = limelight;
-        this.yawMotor = yawMotor;
-        this.pitchMotor = pitchMotor;
-        this.flywheelMotorA = flywheelMotorA;
-        this.flywheelMotorB = flywheelMotorB;
+        this.yawMotor = new CANSparkMax(Constants.Turret.Ports.yawMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        this.pitchMotor = new CANSparkMax(Constants.Turret.Ports.pitchMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        this.flywheelMotorA = new CANSparkMax(Constants.Turret.Ports.flywheelMotorA, CANSparkMaxLowLevel.MotorType.kBrushless);
+        this.flywheelMotorB = new CANSparkMax(Constants.Turret.Ports.flywheelMotorB, CANSparkMaxLowLevel.MotorType.kBrushless);
         this.lastYaw = this.getYaw();
     }
 
-    public double getYaw(){}
+    public double getYaw(){
+        // TODO: MJ
+    }
 
-    public void setYawPower(double power){};
+    public void setYawPower(double power){
+        // TODO: MJ
+    };
 
-    public double getPitch(){}
+    public double getPitch(){
+        // TODO: NS
+    }
 
-    public void setPitchPower(double power){};
+    public void setPitchPower(double power){
+        // TODO: NS
+    };
 
-    public double getFlywheelAverageSpeed(){}
+    public double getFlywheelAverageSpeed(){
+        // TODO: NS
+    }
 
-    public void setFlywheelPower(double power){};
+    public void setFlywheelPower(double power){
+        // TODO: MP
+    };
+
+    public boolean isReadyToShoot(){
+        // TODO: MP
+    };
 
     // Handle seeking and matching target heading in background
     @Override
