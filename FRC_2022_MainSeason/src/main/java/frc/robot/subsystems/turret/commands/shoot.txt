@@ -1,3 +1,5 @@
+package frc.robot.subsystems.turret.commands.shoot;
+
 imports
 imports
 imports
@@ -41,4 +43,12 @@ public static void rightBumperMethod(){
 
     hoodWheel.setPower(1);
     sleep: 2000 milliseconds
+}
+
+public static void turnToYaw(){
+    //automatic turning for yaw
+}
+
+public static void turnToPitch(){
+    //automatic turning for pitch
 }

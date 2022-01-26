@@ -1,3 +1,7 @@
+//yaw to angle 
+
+package frc.robot.subsystems.turret.commands.spinyaw; 
+
 import
 import
 import edu.wpi.first.wpilibj.XboxController;
@@ -16,10 +20,10 @@ So after BLANK + 1/2(BLANK) restrict turret from turning in said direction and f
 left_arrow rotates the turret counterclockwise 
 right_arrow rotates the turret clockwise 
 
-
+/
 imports
 imports 
- import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController;
 
 Motor Yaw;
 
@@ -35,11 +39,15 @@ if ( gettingX > 0){
     Yaw.setPower(0);
 }
 
-if( ticks == -270 (in ticks) ){
+
+
+if( ticks == -270 degrees (in ticks) ){
     Yaw.setPower(0);
 } 
 
 if( ticks == 270 degrees (in ticks))
+
+//270 placeholder naw method
 
 
 
