@@ -49,11 +49,11 @@ public class Turret extends SubsystemBase {
 
     public double getPitch(){}
 
-    public double setPitchPower(double power){};
+    public void setPitchPower(double power){};
 
     public double getFlywheelAverageSpeed(){}
 
-    public double setFlywheelPower(double power){};
+    public void setFlywheelPower(double power){};
 
     // Handle seeking and matching target heading in background
     @Override
