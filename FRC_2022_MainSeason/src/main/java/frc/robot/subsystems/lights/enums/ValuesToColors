@@ -1,0 +1,24 @@
+package frc.robot.sybsystems.lights.enums;
+
+
+public class ValuesToColors {
+    public enum Colors {
+        YELLOW  (218, 235, 33), 
+        BLUE    (33, 121, 235), 
+        GREEN   (23, 194, 26), 
+        RED     (194, 23, 23);
+
+        public final double red;
+        public final double green;
+        public final double blue;
+
+        Colors(double red, double green, double blue) {
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+        }
+    }
+    public void _(){
+        Colors.YELLOW.red
+    }
+}
