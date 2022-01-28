@@ -2,13 +2,12 @@
 
 # Team Roles
 
-(determine these at the start of the main season)
+(todo)
 
  - **Drivetrain**
  - **Teleop**
- - **Subsystem1**
- - **Subsystem2**
- - **Subsystem3**
+ - **Turret**
+ - **Hooker**
  - **Vision & Autonomous**
 
 <br/>
@@ -16,8 +15,6 @@
 # Conventions
 
 All classes should have a comment above their definition explaining what the class does. (Explain what the class does)
-
-All constants should be static members of their parent class.
 
 All code that is not [self documented]("https://en.wikipedia.org/wiki/Self-documenting_code#:~:text=Self%2Ddocumenting%20code%20is%20ostensibly,symbol's%20meaning%2C%20such%20as%20article.&text=The%20code%20must%20also%20have,easily%20understand%20the%20algorithm%20used.") should be commented.
 
@@ -33,7 +30,7 @@ All code is within *"./src/java/"*
 
 ## Important Files
 
-All global constants (Physical ports on the robot) are in *"./Constants.java"*
+All global constants (Physical ports on the robot and tuned coefficients) are in *"./Constants.java"*
 
 All subsystem references are defined in *"./RobotContainer.java"*
 
