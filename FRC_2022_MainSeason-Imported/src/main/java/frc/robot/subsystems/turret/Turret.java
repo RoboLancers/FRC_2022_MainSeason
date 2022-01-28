@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.misc.LimeLight;
+import frc.robot.util.SparkMaxWrapper;
 
 public class Turret extends SubsystemBase {
     // The turn rate per periodic to rotate when limelight is not visible
@@ -28,7 +29,7 @@ public class Turret extends SubsystemBase {
     // Motor used to control the pitch of the turret
     // First motor used to control the speed of the flywheel
     // Second motor used to control the speed of the flywheel
-    private CANSparkMax yawMotor, pitchMotor, flywheelMotorR, flywheelMotorB;
+    private SparkMaxWrapper yawMotor, pitchMotor, flywheelMotorA, flywheelMotorB;
 
     // Yaw of the robot last frame
     private double lastYaw;
@@ -39,15 +40,18 @@ public class Turret extends SubsystemBase {
         LimeLight limelight
     ){
         this.limelight = limelight;
-        this.yawMotor = new CANSparkMax(Constants.Turret.Ports.yawMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
-        this.pitchMotor = new CANSparkMax(Constants.Turret.Ports.pitchMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
-        this.flywheelMotorA = new CANSparkMax(Constants.Turret.Ports.flywheelMotorA, CANSparkMaxLowLevel.MotorType.kBrushless);
-        this.flywheelMotorB = new CANSparkMax(Constants.Turret.Ports.flywheelMotorB, CANSparkMaxLowLevel.MotorType.kBrushless);
+        this.yawMotor = new SparkMaxWrapper(Constants.Turret.Ports.yawMotor);
+        this.pitchMotor = new SparkMaxWrapper(Constants.Turret.Ports.pitchMotor);
+        this.flywheelMotorA = new SparkMaxWrapper(Constants.Turret.Ports.flywheelMotorA);
+        this.flywheelMotorB = new SparkMaxWrapper(Constants.Turret.Ports.flywheelMotorB);
         this.lastYaw = this.getYaw();
     }
 
     public double getYaw(){
         // TODO: MJ
+        
+        // silence errors until this is implemented
+        return 0.0;
     }
 
     public void setYawPower(double power){
@@ -56,6 +60,9 @@ public class Turret extends SubsystemBase {
 
     public double getPitch(){
         // TODO: NS
+
+        // silence errors until this is implemented
+        return 0.0;
     }
 
     public void setPitchPower(double power){
@@ -64,6 +71,9 @@ public class Turret extends SubsystemBase {
 
     public double getFlywheelAverageSpeed(){
         // TODO: NS
+
+        // silence errors until this is implemented
+        return 0.0;
     }
 
     public void setFlywheelPower(double power){
@@ -72,6 +82,7 @@ public class Turret extends SubsystemBase {
 
     public boolean isReadyToShoot(){
         // TODO: MP
+        return false; // silence errors until this is implemented
     };
 
     // Handle seeking and matching target heading in background
