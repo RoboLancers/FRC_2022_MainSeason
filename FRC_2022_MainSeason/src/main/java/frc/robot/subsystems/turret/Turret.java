@@ -82,7 +82,9 @@ public class Turret extends SubsystemBase {
 
     public boolean isReadyToShoot(){
         // TODO: MP
-        return false; // silence errors until this is implemented
+        
+        // silence errors until this is implemented
+        return false;
     };
 
     // Handle seeking and matching target heading in background
