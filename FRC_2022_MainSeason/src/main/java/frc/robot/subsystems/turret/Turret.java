@@ -1,6 +1,5 @@
 package frc.robot.subsystems.turret;
 
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.misc.LimeLight;
@@ -9,6 +8,14 @@ import frc.robot.util.SparkMaxWrapper;
 public class Turret extends SubsystemBase {
     // The turn rate per periodic to rotate when limelight is not visible
     private static double seekAdjustment = 0.01;
+
+    // The maximum absolute error in yaw that the turret is willing to shoot with
+    // The turret yaw has to match the heading of the target before it can shoot
+    private static double yawErrorThreshold = 1.0;
+
+    // The maximum absolute change in yaw with respect to one periodic update that the turret is willing to shoot with
+    // The turret yaw has to have stopped before it can shoot
+    private static double yawDerivativeThreshold = 1.0;
 
     // The minimum turn angle on the yaw axis the turret can reach
     private static double minSafeAngle = -180.0;
@@ -31,8 +38,9 @@ public class Turret extends SubsystemBase {
     // Second motor used to control the speed of the flywheel
     private SparkMaxWrapper yawMotor, pitchMotor, flywheelMotorA, flywheelMotorB;
 
-    // Yaw of the robot last frame
+    // Recorded yaw on last periodic update
     private double lastYaw;
+    
     // Boolean representation of the sign coefficient applied to the seek adjustment
     private boolean seekDirection = true;
 
@@ -77,14 +85,21 @@ public class Turret extends SubsystemBase {
     }
 
     public void setFlywheelPower(double power){
-        // TODO: MP
+        // Very naive implementation, may need some more logic since it uses 2 independent motors
+        this.flywheelMotorA.setPower(power);
+        this.flywheelMotorB.setPower(power);
     };
 
-    public boolean isReadyToShoot(){
-        // TODO: MP
-        
-        // silence errors until this is implemented
-        return false;
+    // Determine whether the yaw heading and derivative are valid for shooting
+    public boolean headingIsAligned(){
+        return (
+            // Target must be in limelight view
+            this.limelight.hasTarget() &&
+            // Yaw heading error must be within acceptable threshold
+            Math.abs(this.limelight.yawOffset()) < Turret.yawErrorThreshold &&
+            // Yaw derivative with respect to one periodic update must be within acceptable threshold
+            Math.abs(this.getYaw() - this.lastYaw) < Turret.yawDerivativeThreshold
+        );
     };
 
     // Handle seeking and matching target heading in background
@@ -97,12 +112,12 @@ public class Turret extends SubsystemBase {
                 int turnAdjustSign = yawWithRespectToTurret < Turret.minSafeAngle ? 1 : -1;
                 this.setYawPower(turnAdjustSign * seekAdjustment);
             } else {
-                double deltaYaw = yaw - lastYaw;
+                double deltaYaw = yaw - this.lastYaw;
                 this.setYawPower(yaw * Turret.proportionalTurnCoefficient - deltaYaw * Turret.derivativeTurnCoefficient);
             }
         } else {
             this.setYawPower(seekDirection ? seekAdjustment : -seekAdjustment);
         }
-        lastYaw = yaw;
+        this.lastYaw = yaw;
     }
 }
