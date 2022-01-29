@@ -18,7 +18,4 @@ public class ValuesToColors {
             this.blue = blue;
         }
     }
-    public void _(){
-        Colors.YELLOW.red
-    }
 }

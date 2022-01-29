@@ -7,7 +7,6 @@ public class AddressableLEDs extends SubsystemBase {
 
     @Override
     public AddressableLEDs(int numPixels) { //create a constructor, not an initialization
-        ValuesToColors.Colors Values = new ValuesToColors.Colors();
         AddressableLED m_led = new AddressableLED(0);
         
         AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(numPixels);
@@ -16,7 +15,7 @@ public class AddressableLEDs extends SubsystemBase {
     }
 
     //use this function for all other led functions
-    public setIndexerColor(Values color1, Values color2) {
+    public setIndexerColor(Colors color1, Colors color2) {
         for (int i = 1; i < m_ledBuffer.getLength()/2; i++){
             m_ledBuffer.setRGB(i, color1.red, color1.green, color1.blue);
         } 
@@ -30,7 +29,7 @@ public class AddressableLEDs extends SubsystemBase {
     }
 
     //method overloading for if there's only one color needed
-    public setIndexerColor(Values color1) {
+    public setIndexerColor(Colors color1) {
  
         for (int i = 1; i < m_ledBuffer.getLength(); i++){
             m_ledBuffer.setRGB(i, color1.red, color1.green, color1.blue);
@@ -40,7 +39,7 @@ public class AddressableLEDs extends SubsystemBase {
     }
  
 
-    //have a condition such that if cargo is loaded into turret, run this method
+    //have a command group such that if cargo is loaded into turret, run this method
     public setReadyToShoot() {
         m_led.setRGB(); //set green
         
@@ -52,7 +51,7 @@ public class AddressableLEDs extends SubsystemBase {
 
     }
 
-    //have a condition such that if hub is out of range, run this method
+    //have a command group such that if hub is out of range, run this method
     public setOutOfRange() {
         m_led.setRGB(); //set red
 
