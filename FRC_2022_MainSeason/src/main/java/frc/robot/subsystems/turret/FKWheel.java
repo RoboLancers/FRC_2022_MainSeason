@@ -1,4 +1,4 @@
-package frc.robot.subsystems.turret.commands;
+package frc.robot.subsystems.turret;
 
 com.qualcomm.robotcore.hardware
 edu.wpi.first.wpilibj.Encoder
