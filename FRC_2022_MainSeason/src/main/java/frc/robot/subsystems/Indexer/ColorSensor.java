@@ -5,9 +5,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.awt.Color;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Timer;
 
-public class ColorSensor {
+public class ColorSensor extends SubsystemsBase {
     
     // Maintains the sensor closest to the intake
     public final ColorSensorV3 firstColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
