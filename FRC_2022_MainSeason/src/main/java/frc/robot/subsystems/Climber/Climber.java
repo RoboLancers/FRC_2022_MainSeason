@@ -1,5 +1,4 @@
 package frc.robot.subsystems.Climber;
-<<<<<<< HEAD
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
