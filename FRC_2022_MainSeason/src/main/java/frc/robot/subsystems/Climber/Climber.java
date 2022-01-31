@@ -1,10 +1,10 @@
 package frc.robot.subsystems.Climber;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+// import edu.wpi.first.wpilibj.Joystick;
+// import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Climber{
     public CANSparkMax Climber;

@@ -1,6 +1,11 @@
 package frc.robot.subsystem.Climber;
-
-public class UseClimber {
-    Joystick left = new Joystick(0);
-
+import edu.wpi.first.wpilibj.XboxController;
+public class useClimber {
+    public XboxController m_joystick = new XboxController(0);
+    public void buttonBinding() {
+    configureClimberBinding();
+    }
+    public void configureClimberBinding(){
+        .whileHeld
+    }
 }
