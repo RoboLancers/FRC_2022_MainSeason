@@ -31,7 +31,7 @@ public class Trajectory {
             ...
             vf = dx / cos(alpha) / sqrt(2 * (-dy - dx tan(alpha)) / g)
         */
-        double vf = dx / Math.cos(alpha);
+        double vf = dx / Math.cos(alpha) / Math.sqrt(2 * (-dy - dx * Math.tan(alpha)) / g);
 
         // derive initial velocity squared using kinematics
         /*
