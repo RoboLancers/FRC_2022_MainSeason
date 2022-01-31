@@ -1,4 +1,5 @@
 package frc.robot.subsystems.Climber;
+<<<<<<< HEAD
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -6,14 +7,15 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class Climber {
+public class Climber{
     public CANSparkMax Climber;
-    public void Climber(){
-        Climber = new CANSparkMax(0, MotorType.kBrushless);
+
+    public Climber(){
+        Climber = new CANSparkMax(0, CANSparkMax.MotorType.kBrushless);
+
     }
-    public void set(double power) {
-         Climber.set(power);
+    public void set(double power){
+        Climber.set(power);
+        
     }
-    
-}
 }
