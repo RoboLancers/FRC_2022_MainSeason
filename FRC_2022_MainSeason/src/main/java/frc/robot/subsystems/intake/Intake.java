@@ -1,6 +1,7 @@
 package frc.robot.subysystems.intake;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake extends SubsystemsBase {
     
@@ -8,7 +9,7 @@ public class Intake extends SubsystemsBase {
     public final CANSparkMax rollerMotor = new CANSparkMax(0, MotorType.kBrushless);
 
     // Maintains the motor for the intake
-    public final CANSparkMax rectractionMotor = new CANSparkMax(0, MotorType.kBrushless);
+    public final Solenoid rectractionMotor = new Solenoid(0, MotorType.kBrushless);
 
     // Checks to seee if the intake has been retracted
     public boolean isRetracted = false;
@@ -27,10 +28,10 @@ public class Intake extends SubsystemsBase {
     public void retractMototor() {
         if (buttonHasBeenPressed) {
             if (isRetracted) {
-                rectractionPower.set(50);
+                rectractionPower.set(true);
             }
             if (isRetracted) {
-                rectractionPower.set(0);
+                rectractionPower.set(false);
             }
         }
     }
