@@ -1,31 +1,31 @@
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.util.Controller;
 import frc.robot.subsystems.drivetrain.Drivetrain;
-
-SlewRateLimiter throttleFilter = new SlewRateLimiter(0.5);
-SlewRateLimiter turnFilter = new SlewRateLimiter(0.5);
-
-
 
 public class UseDrivetrain extends CommandBase {
     public final Drivetrain drivetrain;
-    public final XboxController xboxcontroller = new XboxController(1);
+    public final Controller controller = new Controller(1);
 
-    public UseDrivetrain(Drivetrain drivetrain, XboxController xboxController) {
+    SlewRateLimiter throttleFilter = new SlewRateLimiter(0.5);
+    SlewRateLimiter turnFilter = new SlewRateLimiter(0.5);
+
+    public UseDrivetrain(Drivetrain drivetrain, Controller controller) {
         this.drivetrain = drivetrain;
-        this.xboxController = xboxController;
+        this.Controller = Controller;
         
     }
     @Override 
     public void execute () {
-        
         maxPower = 0.75;
         
-        throttle = throttleFilter.caclulate(xboxController.getY(kLeft));
+        throttle = Controller.getAxisValue(Controller.Axis.LEFT_Y);
 
-        turn = turnFilter.calculate.(xboxController.getX(kRight));
+        turn = Controller.getAxisValue(Controller.Axis.LEFT_X);
+        
+        throttle = (throttle < 0 ? Math.max(-maxPower, throttle) : Math.min(maxPower, throttle));
 
         Drivetrain.arcadeDrive(throttle, turn);
-
+        
+        
         }
         
     @Override
