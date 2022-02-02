@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //Nailah 
 package frc.robot.subsystems.turret.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -40,5 +41,11 @@ public boolean runsWhenDisabled() {
     return false;
 } 
     
+=======
+package frc.robot.subsystems.turret.commands;
+
+public class UseKickWheel {
+    // TODO: NS
+>>>>>>> a210acf3ac7b2b4373907f22e36a7544d082f006
 }
 

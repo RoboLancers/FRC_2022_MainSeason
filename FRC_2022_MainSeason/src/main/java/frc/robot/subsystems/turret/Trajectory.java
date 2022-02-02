@@ -1,9 +1,11 @@
+package frc.robot.subsystems.turret;
+
 // The trajectory information needed to hit the target with certain constraints
 
 public class Trajectory {
-    private double theta;
-    private double speed;
-    private double time;
+    public double theta;
+    public double speed;
+    public double time;
 
     public Trajectory(
         double theta,       // The angle of the determined trajectory [in radians]
@@ -19,7 +21,7 @@ public class Trajectory {
     static Trajectory usingAlphaImpact(
         double g,           // Universal acceleration due to gravity [in meters per second]
         double dx,          // Distance away from target on XZ plane [in meters]
-        double y,           // Distance away from target on Y axis [in meters]
+        double dy,           // Distance away from target on Y axis [in meters]
         double alpha        // Angle of impact on target in degrees [in radians]
     ){
         // calculate velocity the final target would need to hit the start point if launched at angle alpha
@@ -35,7 +37,7 @@ public class Trajectory {
         /*
             v^2 * sin(theta)^2 = vf^2 * sin(alpha)^2 - 2 g dy
         */
-        double v2 = (vf ** 2) * (Math.sin(alpha) ** 2) - 2 * g * dy;
+        double v2 = (vf * vf) * (Math.sin(alpha) * Math.sin(alpha)) - 2 * g * dy;
 
         // determine quadratic polynomial to calculate theta
         /*
@@ -44,10 +46,10 @@ public class Trajectory {
             ...
             tan^2(theta) (g dx^2) + tan(theta) (2 * vSquared * dx) + (-2 * vSquared * dy) = 0
         */
-        double qA = g * (dx ** 2);
-        double qB = 2 * vSquared * dx;
-        double qC = -2 * vSquared * dy;
-        double theta = Math.atan2(-qB + sqrt((qB ** 2) - 4 * qA * qC), 2 * qA);
+        double qA = g * (dx * dx);
+        double qB = 2 * v2 * dx;
+        double qC = -2 * v2 * dy;
+        double theta = Math.atan2(-qB + Math.sqrt((qB * qB) - 4 * qA * qC), 2 * qA);
 
         // plug in formulas for remaining unknown quantities
         double speed = dx / Math.cos(theta) / Math.sqrt(2 * (dy - dx * Math.tan(theta)) / g);
@@ -72,10 +74,10 @@ public class Trajectory {
             ...
             tan(theta) = (u * dy1 - dy0) / (u * dx1 - dx0)
         */
-        double u = (dx0 ** 2) / (dx1 ** 2);
+        double u = (dx0 * dx0) / (dx1 * dx1);
         double theta = Math.atan((u * dy1 - dy0) / (u * dx1 - dx0));
         double speed = dx1 / Math.cos(theta) / Math.sqrt(2 * (dy1 - dx1 * Math.tan(theta)) / g);
-        double time = dx / speed / Math.cos(theta);
+        double time = dx1 / speed / Math.cos(theta);
 
         return new Trajectory(theta, speed, time);
     }

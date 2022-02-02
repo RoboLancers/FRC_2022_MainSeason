@@ -1,4 +1,4 @@
-//Matt
+
 public class IsReadyToShoot {
     
 }
