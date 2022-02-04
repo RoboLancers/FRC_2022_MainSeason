@@ -19,6 +19,8 @@ public class Intake extends SubsystemBase{
 
     public CANSparkMax getIndexerMotor() {return indexerMotor;}
 
+    public Solenoid getRetractionMotor() {return retractionMotor}
+
 
 
 }
