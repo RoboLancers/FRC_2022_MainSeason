@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Indexer;
+package frc.robot.subsystems.indexer;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

@@ -7,13 +7,18 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 public class Intake extends SubsystemsBase {
     
     // Maintains the motor for the intake
-    public final CANSparkMax rollerMotor = new CANSparkMax(0, MotorType.kBrushless);
+    public final CANSparkMax rollerMotor;
 
     // Maintains the motor for the intake
-    public final Solenoid rectractionMotor = new Solenoid(REVPH, 1);
+    public final Solenoid rectractionMotor;
 
     // Checks to seee if the intake has been retracted
     public boolean isRetracted = false;
+
+    public Intake() {
+        this.rollerMotor = new CANSparkMax(0, MotorType.kBrushless);
+        this.rectractionMotor = new Solenoid(REVPH, 1);
+    }
 
     // Sets the power of the rollers
     public void indexerRollerPower() {
