@@ -1,6 +1,7 @@
-package frc.robot.subsystems.Indexer;
+package frc.robot.subsystems.indexer;
 
 import java.awt.Color;
+
 
 public class BallColor {
     

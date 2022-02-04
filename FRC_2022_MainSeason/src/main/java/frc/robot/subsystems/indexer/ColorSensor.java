@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Indexer;
+package frc.robot.subsystems.indexer;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -93,10 +93,12 @@ public class ColorSensor extends SubsystemsBase {
     public void outputToDashBoard() {
         if (numberOfBalls == 1) {
             SmartDashboard.putString("First Ball Color", firstBallColor.toString());
+            SmartDashboard.putNumber("Number of Balls", numberOfBalls);
         }
         else if (numberOfBalls == 2) {
             SmartDashboard.putString("First Sensor Color", firstBallColor.toString());
             SmartDashboard.putString("Second Ball Color", secondBallColor.toString());
+            SmartDashboard.putNumber("Number of Balls", numberOfBalls);
         }
     }
 
