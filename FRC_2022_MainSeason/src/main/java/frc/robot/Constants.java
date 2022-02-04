@@ -29,6 +29,7 @@ public final class Constants {
 
     public static final class Intake {
         public static final double ROLLER_MOTOR_POWER = ;
+        public static final double ROLLER_MOTOR_OFF;
         public static final double ROLLER_PORT = ;
         public static final double INDEXER_PORT = ;
         public static final double RETRACTOR_CHANNEL = ;
