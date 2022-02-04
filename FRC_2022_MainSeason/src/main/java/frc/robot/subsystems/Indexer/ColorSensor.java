@@ -4,8 +4,8 @@ import com.revrobotics.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.awt.Color;
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Timer;
 
 public class ColorSensor extends SubsystemsBase {
@@ -93,10 +93,12 @@ public class ColorSensor extends SubsystemsBase {
     public void outputToDashBoard() {
         if (numberOfBalls == 1) {
             SmartDashboard.putString("First Ball Color", firstBallColor.toString());
+            SmartDashboard.putNumber("Number of Balls", numberOfBalls);
         }
         else if (numberOfBalls == 2) {
             SmartDashboard.putString("First Sensor Color", firstBallColor.toString());
             SmartDashboard.putString("Second Ball Color", secondBallColor.toString());
+            SmartDashboard.putNumber("Number of Balls", numberOfBalls);
         }
     }
 
