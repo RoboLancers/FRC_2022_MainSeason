@@ -18,14 +18,4 @@ public class IntakeRollers {
             rollerMotor.set(Constants.Intake.ROLLER_MOTOR_OFF)
         }
     }
-
-     @Override
-    public void setRollerMotorPower() {
-        if(!Variables.Intake.retracted) {
-            rollerMotor.set(Constants.Intake.ROLLER_MOTOR_POWER);
-        }
-        else {
-            rollerMotor.set(Constants.Intake.ROLLER_MOTOR_OFF)
-        }
-    }
 }

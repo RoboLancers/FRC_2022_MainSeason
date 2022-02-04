@@ -7,7 +7,6 @@ public class UseIntake extends CommandBase{
     public UseIntake(double rollerMotorPower, double transferMotorPower) {
         this.intakeMotorPower = intakeMotorPower;
         this.transferMotorPower = transferMotorPower;
-
     }
 
     @Override 
