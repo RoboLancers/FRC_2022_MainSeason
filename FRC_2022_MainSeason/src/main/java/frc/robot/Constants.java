@@ -23,4 +23,10 @@ public final class Constants {
             }
         }
     }
+
+    public static final class Indexer {
+        public static final double ROLLER_PORT = ;
+        public static final double INDEXER_PORT = ;
+        public static final double RETRACTOR_CHANNEL = ;
+    }
 }

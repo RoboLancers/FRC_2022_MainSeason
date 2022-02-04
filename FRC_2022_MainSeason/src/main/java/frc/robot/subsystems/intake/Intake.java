@@ -1,45 +1,24 @@
-package frc.robot.subysystems.intake;
+package frc.robot.subsytems.intake;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
-public class Intake extends SubsystemsBase {
-    
-    // Maintains the motor for the intake
-    public final CANSparkMax rollerMotor;
-
-    // Maintains the motor for the intake
-    public final Solenoid rectractionMotor;
-
-    // Checks to seee if the intake has been retracted
-    public boolean isRetracted = false;
+public class Intake extends SubsystemBase{
+    public CANSparkMax rollerMotor, indexerMotor;
+    public Solenoid rectractionMotor;
 
     public Intake() {
-        this.rollerMotor = new CANSparkMax(0, MotorType.kBrushless);
-        this.rectractionMotor = new Solenoid(REVPH, 1);
+        this.rollerMotor = new CANSparkMax(Constants.Intake.ROLLER_PORT, MotorType.kBrushless); //intake motor for roller
+        this.indexerMotor = new CANSparkMax(Constants.Intake.TRANSFER_PORT, MotorType.kBrushless); //transfer motor for indexer
+        this.rectractionMotor = new Solenoid(Constants.Intake.RETRACTOR_CHANNEL, Constants.Intake.RETRACTOR_CHANNEL);
     }
 
-    // Sets the power of the rollers
-    public void indexerRollerPower() {
-        if (isRetracted) {
-            rollerMotor.set(0);
-        }
-        else {
-            rollerMotor.set(50);
-        }
-    }
+    public CANSparkMax getRollerMotor() {return rollerMotor;}
 
-    // Retracts the motor depending on if a button was pressed
-    public void retractMototor() {
-        if (buttonHasBeenPressed) {
-            if (isRetracted) {
-                rectractionMotor.set(true);
-            }
-            if (isRetracted) {
-                rectractionMotor.set(false);
-            }
-        }
-    }
+    public CANSparkMax getIndexerMotor() {return indexerMotor;}
+
+
 
 }
