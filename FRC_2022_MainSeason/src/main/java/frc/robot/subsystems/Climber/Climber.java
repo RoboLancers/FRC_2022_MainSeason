@@ -1,21 +1,18 @@
 package frc.robot.subsystems.climber;
 
-//import edu.wpi.first.wpilibj.GenericHID;
-//import edu.wpi.first.wpilibj.PowerDistributionPanel;
-
+import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;
-// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Climber{
-    public CANSparkMax Climber;
+    public CANSparkMax climberMotor;
 
     public Climber(){
-        Climber = new CANSparkMax(0, CANSparkMax.MotorType.kBrushless);
+        climberMotor = new CANSparkMax(Constants.Climber.CLIMBER_PORT, CANSparkMax.MotorType.kBrushless);
 
     }
 
     public void set(double power){
-        Climber.set(power);
+        climberMotor.set(power);
         
     }
 }

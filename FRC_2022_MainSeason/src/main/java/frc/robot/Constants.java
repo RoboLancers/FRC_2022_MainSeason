@@ -1,6 +1,10 @@
 package frc.robot;
 
 public final class Constants {
+    public static final class Climber {
+        public static final int CLIMBER_PORT = 0;
+    }
+
     public static final class Turret {
         public static final class Ports {
             // bully electrical to get these
