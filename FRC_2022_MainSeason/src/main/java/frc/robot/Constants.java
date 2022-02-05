@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 public final class Constants {
     public static final class Climber {
         public static final int CLIMBER_PORT = 0;
@@ -36,5 +38,24 @@ public final class Constants {
         public static final int INDEXER_PORT = 0;
         public static final int RETRACTOR_CHANNEL_ONE = 0;
         public static final int RETRACTOR_CHANNEL_TWO = 0;
+    }
+
+    public static final class Trajectory {
+        public static final double ksVolts = 0.131;
+        public static final double ksVoltSecondsPerMeter =  4.03;
+        public static final double kaVoltSecondsSquaredPerMeter = 0.521;
+
+        public static final double kTrackWidthMeters = 0.702;
+        public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidthMeters);
+
+        public static final double kMaxSpeedMetersPerSecond = 2.5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 19;
+
+        public static final double kRamseteB = 2;
+        public static final double kRamseteZeta = 0.7;
+
+        public static final double kP = 0;
+
+        public static final double kDistPerRot = (3.072/100);
     }
 }
