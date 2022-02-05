@@ -13,17 +13,35 @@ public final class Constants {
         }
 
         public static final class TunedCoefficients {
+            public static final class YawPID {
+                public static final double p = 0.00;
+                public static final double i = 0.00;
+                public static final double d = 0.00;
+                public static final double errorThreshold = 0.50;
+                public static final double minSafeAngle = -180.0;
+                public static final double maxSafeAngle = 180.0;
+                public static final double seekAdjustment = 0.10;
+            }
+
             public static final class PitchPID {
                 public static final double p = 0.00;
                 public static final double i = 0.00;
                 public static final double d = 0.00;
+                public static final double errorThreshold = 0.50;
             }
 
             public static final class FlywheelPID {
                 public static final double p = 0.00;
                 public static final double i = 0.00;
                 public static final double d = 0.00;
+                public static final double errorThreshold = 100.0;
             }
+        }
+
+        public static final class FieldInfo {
+            public static final double g = 9.8;
+            public static final double turretShotDeltaY = 5.0;
+            public static final double alpha = 45 * Math.PI / 180;
         }
     }
 }

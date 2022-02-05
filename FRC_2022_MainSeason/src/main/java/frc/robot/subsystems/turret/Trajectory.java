@@ -17,11 +17,15 @@ public class Trajectory {
         this.time = time;
     }
 
+    public static double estimateDistance(double deltaY, double thetaX, double thetaY){
+        return deltaY / (Math.cos(thetaX * Math.PI / 180) * Math.tan(thetaY * Math.PI / 180));
+    }
+
     // Calculate the trajectory to hit the target at a given angle alpha
-    static Trajectory usingAlphaImpact(
+    public static Trajectory usingAlphaImpact(
         double g,           // Universal acceleration due to gravity [in meters per second]
         double dx,          // Distance away from target on XZ plane [in meters]
-        double dy,           // Distance away from target on Y axis [in meters]
+        double dy,          // Distance away from target on Y axis [in meters]
         double alpha        // Angle of impact on target in degrees [in radians]
     ){
         // calculate velocity the final target would need to hit the start point if launched at angle alpha
@@ -58,7 +62,7 @@ public class Trajectory {
         return new Trajectory(theta, speed, time);
     }
 
-    static Trajectory usingPassThrough(
+    public static Trajectory usingPassThrough(
         double g,           // Universal acceleration due to gravity [in meters per second]
         double dx0,         // Distance away from control point on XZ plane [in meters]
         double dy0,         // Distance away from control point on Y axis [in meters]
