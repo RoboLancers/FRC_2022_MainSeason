@@ -26,4 +26,10 @@ public final class Constants {
             }
         }
     }
+
+    public static final class Intake {
+        public static final int ROLLER_PORT = 0;
+        public static final int INDEXER_PORT = 1;
+        public static final int RETRACTOR_CHANNEL = 2;
+    }
 }
