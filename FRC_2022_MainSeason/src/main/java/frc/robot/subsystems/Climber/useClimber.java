@@ -1,6 +1,5 @@
-package frc.robot.subsystem.Climber;
+package frc.robot.subsystems.climber;
 
 public class UseClimber {
-    Joystick left = new Joystick(0);
 
 }
