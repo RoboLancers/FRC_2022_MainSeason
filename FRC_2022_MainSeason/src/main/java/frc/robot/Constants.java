@@ -3,10 +3,13 @@ package frc.robot;
 public final class Constants {
     public static final class Turret {
         public static final class Ports {
-            public static final int yawMotor = 1;
-            public static final int pitchMotor = 2;
-            public static final int flywheelMotorA = 3;
-            public static final int flywheelMotorB = 4;
+            // bully electrical to get these
+            public static final int yawMotor = 0;
+            public static final int pitchMotor = 0;
+            public static final int flywheelMotorA = 0;
+            public static final int flywheelMotorB = 0;
+            public static final int yawLimitSwitch = 0;
+            public static final int pitchLimitSwitch = 0;
         }
 
         public static final class TunedCoefficients {
