@@ -13,6 +13,7 @@ public class Climber{
         Climber = new CANSparkMax(0, CANSparkMax.MotorType.kBrushless);
 
     }
+
     public void set(double power){
         Climber.set(power);
         
