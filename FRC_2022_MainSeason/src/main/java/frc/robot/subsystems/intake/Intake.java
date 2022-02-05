@@ -15,7 +15,7 @@ public class Intake extends SubsystemBase{
     public Intake() {
         this.rollerMotor = new CANSparkMax(Constants.Intake.ROLLER_PORT, MotorType.kBrushless); //intake motor for roller
         this.indexerMotor = new CANSparkMax(Constants.Intake.INDEXER_PORT, MotorType.kBrushless); //transfer motor for indexer
-        this.rectractionMotor = new DoubleSolenoid(RobotMap.Intake.RETRACTED, RobotMap.EXTENDED);
+        this.rectractionMotor = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.Intake.RETRACTOR_CHANNEL_ONE, Constants.Intake.RETRACTOR_CHANNEL_TWO);
     }
 
     public CANSparkMax getRollerMotor() {return rollerMotor;}
