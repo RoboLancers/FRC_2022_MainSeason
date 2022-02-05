@@ -1,4 +1,4 @@
-package frc.robot.subsystems.climber;
+package frc.robot.subsystems.Climber;
 
 //import edu.wpi.first.wpilibj.GenericHID;
 //import edu.wpi.first.wpilibj.PowerDistributionPanel;

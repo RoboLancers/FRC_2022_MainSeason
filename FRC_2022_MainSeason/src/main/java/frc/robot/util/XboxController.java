@@ -1,4 +1,4 @@
-package frc.robot.util;
+/*package frc.robot.util;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -208,4 +208,4 @@ public class XboxController extends BaseController {
         joystick.setRumble(GenericHID.RumbleType.kLeftRumble, rumble ? 1 : 0);
         joystick.setRumble(GenericHID.RumbleType.kRightRumble, rumble ? 1 : 0);
     }
-}
+}*/
