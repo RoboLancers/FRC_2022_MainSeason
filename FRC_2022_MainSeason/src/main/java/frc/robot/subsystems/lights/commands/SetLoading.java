@@ -5,11 +5,15 @@ import frc.robot.subsystems.lights.AddressableLEDs;
 import frc.robot.subsystems.lights.enums.Colors;
 
 
-public class SetReadyToShoot extends CommandBase {
+public class SetLoading extends CommandBase {
+
+    AddressableLEDs m_AddressableLEDs;
+    public SetLoading(int numPixels) {
+        m_AddressableLEDs = new AddressableLEDs(numPixels);
+    }
 
     @Override
-    public void initialize() {
-        AddressableLEDs m_AddressableLEDs = new AddressableLEDs(); 
+    public void initialize() { 
     }
 
     @Override

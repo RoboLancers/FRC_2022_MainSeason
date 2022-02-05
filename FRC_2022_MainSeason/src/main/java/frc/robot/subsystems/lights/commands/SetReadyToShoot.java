@@ -4,16 +4,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.lights.AddressableLEDs;
 import frc.robot.subsystems.lights.enums.Colors;
 
+
 public class SetReadyToShoot extends CommandBase {
 
+    AddressableLEDs m_AddressableLEDs;
+    public SetReadyToShoot(int numPixels) {
+        m_AddressableLEDs = new AddressableLEDs(numPixels);
+    }
+
     @Override
-    public void initialize() {
-        AddressableLEDs m_AddressableLEDs = new AddressableLEDs(); 
+    public void initialize() { 
     }
 
     @Override
     public void execute() {
         m_AddressableLEDs.setIndexerColor(Colors.GREEN);
     }
-
 }

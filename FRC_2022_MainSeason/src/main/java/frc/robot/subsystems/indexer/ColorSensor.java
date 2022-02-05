@@ -1,14 +1,16 @@
-package frc.robot.subsystems.indexer;
+package frc.robot.subsystems.Indexer;
 import com.revrobotics.ColorSensorV3;
-import com.revrobotics.I2C;
+
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.awt.Color;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.Indexer.BallColor;
 
-public class ColorSensor extends SubsystemsBase {
+public class ColorSensor extends SubsystemBase {
     
     // Maintains the sensor closest to the intake
     public final ColorSensorV3 firstColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
@@ -16,6 +18,7 @@ public class ColorSensor extends SubsystemsBase {
     // Maintains the sensor closest to the turret
     public final ColorSensorV3 secondColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
+    public BallColor ballColor = new BallColor();
     // Maintains the color of the first ball
     public Color firstSensorBallColor;
 
@@ -40,9 +43,12 @@ public class ColorSensor extends SubsystemsBase {
     // Maintains the time when the second sensor was triggered
     public double timeOfTriggering;
 
+    //
+    public boolean ballHasBeenShot;
+
     // Finds the color of the first ball
     public void currentFirstBallColor() {
-        firstSensorBallColor = getColor(firstColorSensor.getBlue, firstColorSensor.getRed);
+        firstSensorBallColor = ballColor.getColor(firstColorSensor.getBlue(), firstColorSensor.getRed());
         if (firstSensorBallColor == Color.white) {
             firstDetected = true;
         }
@@ -66,7 +72,7 @@ public class ColorSensor extends SubsystemsBase {
 
     // Finds the color of the second ball
     public void currentSecondBallColor() {
-        secondSensorBallColor = getColor(secondColorSensor.getBlue, secondColorSensor.getRed);
+        secondSensorBallColor = ballColor.getColor(secondColorSensor.getBlue(), secondColorSensor.getRed());
         if (secondSensorBallColor == Color.white) {
             secondDetected = true;
         }

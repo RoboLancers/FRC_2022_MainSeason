@@ -3,6 +3,7 @@ package frc.robot.subsystems.lights;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.lights.enums.Colors;
 
 public class AddressableLEDs extends SubsystemBase {
 
