@@ -19,6 +19,8 @@ public class ColorSensor extends SubsystemBase {
     public final ColorSensorV3 secondColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
     public BallColor ballColor = new BallColor();
+
+    
     // Maintains the color of the first ball
     public Color firstSensorBallColor;
 
