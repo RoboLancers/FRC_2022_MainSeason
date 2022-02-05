@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.util.SparkMaxWrapper;
 
+// Set flywheel speed using pid
 public class SetFlywheelSpeed extends PIDCommand {
     private static double velocityErrorThreshold = 50.0;
 
