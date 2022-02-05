@@ -12,7 +12,7 @@ public class UseIntake extends CommandBase{
         this.transferMotorPower = transferMotorPower;
     }
 
-    @Override 
+    @Override
     public void execute() {
 
     }   
