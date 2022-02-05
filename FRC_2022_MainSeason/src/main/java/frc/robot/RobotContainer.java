@@ -29,16 +29,22 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.drivetrain.GearShifter;
+//import frc.robot.subsystems.drivetrain.commands.ToggleGearShift;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+//import frc.robot.util.XboxController;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -53,11 +59,16 @@ public class RobotContainer {
   private Trajectory trajectory = new Trajectory();
   //private String trajectoryJSON = "paths/MyPath.wpilib.json";
   private RobotContainer m_robotContainer;
-  private XboxController xboxController = new XboxController(0);
+  private XboxController driverController = new XboxController(0);
   private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private Field2d m_field = new Field2d();
   private Pneumatics pneumatics = new Pneumatics();
+  public GearShifter gearshifter = new GearShifter();
+  private Joystick joystick = new Joystick(0);
+  private JoystickButton joystickButton = new JoystickButton(joystick, 1);
+  
+
   
   
   
@@ -74,7 +85,7 @@ public class RobotContainer {
       // hand, and turning controlled by the right.
       new RunCommand(
           () ->
-              dt.arcadeDrive(xboxController.getLeftY(), xboxController.getRightX()),
+              dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()),
           dt));
 }
    
@@ -86,7 +97,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    //new JoystickButton(joystick,XboxController.Button.A ).whenPressed(new InstantCommand(gearshifter::ToggleGearShifter, gearshifter));
+      joystickButton.whenPressed(new InstantCommand(gearshifter::ToggleGearShifter, gearshifter));
   }
 
   /**
@@ -165,6 +177,9 @@ public class RobotContainer {
     SmartDashboard.putData("Left PID Controller", leftPID);
     SmartDashboard.putNumber("Left Position", Constants.Trajectory.kDistPerRot * dt.getLeftEncoder().getPosition() / 42);
     SmartDashboard.putNumber("Right Position", Constants.Trajectory.kDistPerRot * dt.getRightEncoder().getPosition() / 42);
+    SmartDashboard.putNumber("Left Encoder Ticks", dt.getLeftEncoder().getPosition() * 4096);
+    SmartDashboard.putNumber("Right Encoder Ticks", dt.getRightEncoder().getPosition() * 4096);
+    
 
     
   }

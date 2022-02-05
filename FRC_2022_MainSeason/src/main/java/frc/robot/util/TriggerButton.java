@@ -1,6 +1,4 @@
-/*package frc.robot.utilities;
-
-import javax.swing.text.Utilities;
+package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -22,4 +20,4 @@ public class TriggerButton extends Trigger {
     public boolean get() {
         return negative ? (Utilities.applyDeadband(joystick.getRawAxis(port), DEADZONE) < 0) : (Utilities.applyDeadband(joystick.getRawAxis(port), DEADZONE) > 0);
     }
-}*/
+}

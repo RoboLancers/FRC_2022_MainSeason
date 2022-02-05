@@ -208,4 +208,5 @@ public class XboxController extends BaseController {
         joystick.setRumble(GenericHID.RumbleType.kLeftRumble, rumble ? 1 : 0);
         joystick.setRumble(GenericHID.RumbleType.kRightRumble, rumble ? 1 : 0);
     }
+    
 }*/
