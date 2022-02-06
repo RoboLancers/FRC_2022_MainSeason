@@ -40,6 +40,13 @@ public final class Constants {
         public static final int RETRACTOR_CHANNEL_TWO = 0;
     }
 
+    public static final class Lights {
+        public static final class ColorSensor {
+        public static final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+        public static final Color kRedTarget = ColorMatch.makeColor(0.413, 0.378, 0.162);
+        }
+    }
+
     public static final class Trajectory {
         public static final double ksVolts = 0.131;
         public static final double ksVoltSecondsPerMeter =  4.03;

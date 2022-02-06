@@ -6,8 +6,8 @@ import frc.robot.subsystems.lights.enums.Colors;
 
 
 public class SetLoading extends CommandBase {
-
-    AddressableLEDs m_AddressableLEDs;
+    private AddressableLEDs m_AddressableLEDs;
+    
     public SetLoading(int numPixels) {
         m_AddressableLEDs = new AddressableLEDs(numPixels);
     }
