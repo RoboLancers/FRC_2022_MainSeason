@@ -7,7 +7,7 @@ public class Climber{
     public CANSparkMax climberMotor;
 
     public Climber(){
-        climberMotor = new CANSparkMax(Constants.Climber.CLIMBER_PORT, CANSparkMax.MotorType.kBrushless);
+        climberMotor = new CANSparkMax(Constants.Climber.kClimberPort, CANSparkMax.MotorType.kBrushless);
 
     }
 

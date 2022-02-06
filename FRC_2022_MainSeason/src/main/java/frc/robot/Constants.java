@@ -4,40 +4,42 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 public final class Constants {
     public static final class Climber {
-        public static final int CLIMBER_PORT = 0;
+        public static final int kClimberPort = 0;
     }
 
     public static final class Turret {
         public static final class Ports {
             // bully electrical to get these
-            public static final int yawMotor = 0;
-            public static final int pitchMotor = 0;
-            public static final int flywheelMotorA = 0;
-            public static final int flywheelMotorB = 0;
-            public static final int yawLimitSwitch = 0;
-            public static final int pitchLimitSwitch = 0;
+            public static final int kYawPort = 0;
+            public static final int kPitchPort = 0;
+            public static final int kFlywheelPort1 = 0;
+            public static final int kFlywheelPort2 = 0;
+            public static final int kYawLimitPort = 0;
+            public static final int kPitchLimitPort = 0;
         }
 
         public static final class TunedCoefficients {
             public static final class PitchPID {
-                public static final double p = 0.00;
-                public static final double i = 0.00;
-                public static final double d = 0.00;
+                public static final double kP = 0.00;
+                public static final double kI = 0.00;
+                public static final double kD = 0.00;
             }
 
             public static final class FlywheelPID {
-                public static final double p = 0.00;
-                public static final double i = 0.00;
-                public static final double d = 0.00;
+                public static final double kP = 0.00;
+                public static final double kI = 0.00;
+                public static final double kD = 0.00;
             }
         }
     }
 
     public static final class Intake {
-        public static final int ROLLER_PORT = 0;
-        public static final int INDEXER_PORT = 0;
-        public static final int RETRACTOR_CHANNEL_ONE = 0;
-        public static final int RETRACTOR_CHANNEL_TWO = 0;
+        public static final int kIndexerPort = 0;
+        public static final int kPistonDeploy = 0;
+        public static final int kPistonRetract = 0;
+        public static final int kRedThreshold = 4000;
+        public static final int kBlueThreshold = 4000;
+
     }
 
     public static final class Trajectory {
@@ -55,7 +57,35 @@ public final class Constants {
         public static final double kRamseteZeta = 0.7;
 
         public static final double kP = 0;
+    }
 
-        public static final double kDistPerRot = (3.072/100);
+    public static class Drivetrain {
+        public static final int kGyroPort = 1;
+        public static final double kDistPerRot = (3.072/100);            
+        public static final double kThrottleFilter = 1.5;
+        public static final double kTurnFilter = 1.5;
+        public static final double kMaxPower = 0.75;
+
+        public static class LeftMotors {
+            public static final int kLeftMotor1_Port = 0;
+            public static final int kLeftMotor2_Port = 1;
+            public static final int kLeftMotor3_Port = 2;
+        }
+        public static class RightMotors {
+            public static final int kRightMotor1_Port = 3;
+            public static final int kRightMotor2_Port = 4;
+            public static final int kRightMotor3_Port = 5;
+        }
+
+    }
+
+    public static class Indexer {
+        public static final int kProximityLimit = 1600;
+        public static final int kIndexerPort = 0;
+        public static final double kIndexerSpeed = 0.2;
+    }
+
+    public static class LEDs {
+        public static final int kLEDPort = 0;
     }
 }

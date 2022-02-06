@@ -14,9 +14,9 @@ public class SetPitch extends PIDCommand {
     public SetPitch(double targetYaw, SparkMaxWrapper pitchMotor){
         super(
             new PIDController(
-                Constants.Turret.TunedCoefficients.PitchPID.p,
-                Constants.Turret.TunedCoefficients.PitchPID.i,
-                Constants.Turret.TunedCoefficients.PitchPID.d
+                Constants.Turret.TunedCoefficients.PitchPID.kP,
+                Constants.Turret.TunedCoefficients.PitchPID.kI,
+                Constants.Turret.TunedCoefficients.PitchPID.kD
             ),
             () -> {
                 return pitchMotor.getPosition();

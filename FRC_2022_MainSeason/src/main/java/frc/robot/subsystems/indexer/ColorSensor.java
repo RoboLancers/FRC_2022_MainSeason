@@ -1,12 +1,17 @@
 package frc.robot.subsystems.indexer;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.awt.Color;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.indexer.BallColor;
 
@@ -47,6 +52,7 @@ public class ColorSensor extends SubsystemBase {
 
     //
     public boolean ballHasBeenShot;
+
 
     // Finds the color of the first ball
     public void currentFirstBallColor() {
@@ -98,7 +104,7 @@ public class ColorSensor extends SubsystemBase {
         }
     }
 
-    public void outputToDashBoard() {
+    public void doSendables() {
         if (numberOfBalls == 1) {
             SmartDashboard.putString("First Ball Color", firstBallColor.toString());
             SmartDashboard.putNumber("Number of Balls", numberOfBalls);

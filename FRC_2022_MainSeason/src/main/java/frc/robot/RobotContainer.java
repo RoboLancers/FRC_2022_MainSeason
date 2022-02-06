@@ -7,8 +7,11 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.ToDoubleBiFunction;
 
 import javax.xml.stream.events.DTD;
+
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
 import org.opencv.ml.DTrees;
 
@@ -31,11 +34,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.drivetrain.Pneumatics;
+import frc.robot.subsystems.drivetrain.PneumaticSystem;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
+import frc.robot.subsystems.drivetrain.commands.UseDrivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -48,16 +53,16 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
-  private final Drivetrain dt = new Drivetrain();
+  private WPI_PigeonIMU gyro = new WPI_PigeonIMU(Constants.Drivetrain.kGyroPort);
+  private Field2d m_field = new Field2d();
+  private final Drivetrain dt = new Drivetrain(m_field, gyro);
   private Trajectory trajectory = new Trajectory();
   //private String trajectoryJSON = "paths/MyPath.wpilib.json";
-  private RobotContainer m_robotContainer;
-  private XboxController xboxController = new XboxController(0);
+  private XboxController xboxController = new XboxController(0); 
   private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
-  private Field2d m_field = new Field2d();
-  private Pneumatics pneumatics = new Pneumatics();
+
+  private PneumaticSystem pneumatics = new PneumaticSystem();
   
   
   
@@ -69,13 +74,7 @@ public class RobotContainer {
     // Configure the button bindings
     
     configureButtonBindings();
-    dt.setDefaultCommand(
-      // A split-stick arcade command, with forward/backward controlled by the left
-      // hand, and turning controlled by the right.
-      new RunCommand(
-          () ->
-              dt.arcadeDrive(xboxController.getLeftY(), xboxController.getRightX()),
-          dt));
+    dt.setDefaultCommand(new UseDrivetrain(dt, xboxController.getLeftY(), xboxController.getRightX()));
 }
    
 
@@ -129,6 +128,7 @@ public class RobotContainer {
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+      return null;
     }*/
    
     
@@ -152,19 +152,21 @@ public class RobotContainer {
           dt::tankDriveVolts,
           dt);
 
+    dt.zeroHeading();
+
     dt.resetOdometry(trajectory.getInitialPose());
     return ramseteCommand.andThen(() -> dt.tankDriveVolts(0,0));
   }
 
-  public void update() {
+  public void doSendables() { //this class should only be used for sendables
     SmartDashboard.putNumber("Encoder", dt.getAverageEncoderDistance());
     SmartDashboard.putNumber("Heading", dt.getHeading());
     SmartDashboard.putNumber("Left Voltage", dt.getLeftVoltage());
     SmartDashboard.putNumber("Right Voltage", dt.getRightVoltage());
     SmartDashboard.putData("Right PID Controller",  rightPID);
     SmartDashboard.putData("Left PID Controller", leftPID);
-    SmartDashboard.putNumber("Left Position", Constants.Trajectory.kDistPerRot * dt.getLeftEncoder().getPosition() / 42);
-    SmartDashboard.putNumber("Right Position", Constants.Trajectory.kDistPerRot * dt.getRightEncoder().getPosition() / 42);
+    SmartDashboard.putNumber("Left Position", dt.getLeftEncoder().getPosition());
+    SmartDashboard.putNumber("Right Position", dt.getRightEncoder().getPosition());
 
     
   }

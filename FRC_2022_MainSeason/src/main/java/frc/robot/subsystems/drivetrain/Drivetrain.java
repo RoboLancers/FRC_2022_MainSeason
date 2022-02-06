@@ -16,18 +16,18 @@ import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase{
     //The motors on the left side of the drivetrain
-    private final CANSparkMax leftMotor1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax leftMotor1 = new CANSparkMax(Constants.Drivetrain.LeftMotors.kLeftMotor1_Port, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     private final MotorControllerGroup leftMotors = new MotorControllerGroup(
             leftMotor1,
-            new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless), 
-            new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless));
+            new CANSparkMax(Constants.Drivetrain.LeftMotors.kLeftMotor2_Port, CANSparkMaxLowLevel.MotorType.kBrushless), 
+            new CANSparkMax(Constants.Drivetrain.LeftMotors.kLeftMotor3_Port, CANSparkMaxLowLevel.MotorType.kBrushless));
     //The motors on the right side of the drivetrain
-    private final CANSparkMax rightMotor1 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax rightMotor1 = new CANSparkMax(Constants.Drivetrain.RightMotors.kRightMotor1_Port, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final MotorControllerGroup rightMotors = new MotorControllerGroup(
             rightMotor1,
-            new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless),
-            new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless));
+            new CANSparkMax(Constants.Drivetrain.RightMotors.kRightMotor2_Port, CANSparkMaxLowLevel.MotorType.kBrushless),
+            new CANSparkMax(Constants.Drivetrain.RightMotors.kRightMotor3_Port, CANSparkMaxLowLevel.MotorType.kBrushless));
     //A differential drive object that takes in both motor sides. 
     private final DifferentialDrive difDrive = new DifferentialDrive(leftMotors, rightMotors);
     //An odometry object to keep track of robot pose.
@@ -37,23 +37,26 @@ public class Drivetrain extends SubsystemBase{
     //The encoders on the left motors.
     private final RelativeEncoder leftEncoder = leftMotor1.getEncoder();
     //The PigeonIMU gyro.
-    private final WPI_PigeonIMU gyro = new WPI_PigeonIMU(1); //Check port
+    private final WPI_PigeonIMU gyro; //Check port
     //Field2d object to track pose in Glass
-    private final Field2d m_field = new Field2d();
+    private final Field2d m_field;
   
 
 
     //Drivetrain
-    public Drivetrain(){
+    public Drivetrain(Field2d field, WPI_PigeonIMU gyro){
         
         //Reverses the right motors.
         rightMotors.setInverted(true);
-        //Sets the distance per pulse to the pre-defined constant we calculated for both encoders.
-        rightEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot); // create EncoderDistancePerPulse constant later
-        leftEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot); // same thing
-
+        //Sets the distance per rotation to the pre-defined constant we calculated for both encoders.
+        rightEncoder.setPositionConversionFactor(frc.robot.Constants.Drivetrain.kDistPerRot);
+        leftEncoder.setPositionConversionFactor(frc.robot.Constants.Drivetrain.kDistPerRot);
+        this.m_field = field;
+        this.gyro = gyro;
         //Resets the encoders to 0.
         resetEncoders();
+        
+        setMaxOutput(Constants.Drivetrain.kMaxPower);
         
         odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
     }
@@ -77,7 +80,6 @@ public class Drivetrain extends SubsystemBase{
 
     //Resets the odometry, both rotation and distance traveled.
     public void resetOdometry(Pose2d pose) {
-        gyro.reset();
         resetEncoders();
         odometry.resetPosition(pose, gyro.getRotation2d());
     }
@@ -119,8 +121,8 @@ public class Drivetrain extends SubsystemBase{
     }
 
     //Sets the max output of the drive. Used for scaling the drive to drive more slowly.
-    public void setMaxOutput(double maxOutPut) {
-        difDrive.setMaxOutput(maxOutPut);
+    public void setMaxOutput(double maxOutput) {
+        difDrive.setMaxOutput(maxOutput);
     }
 
     public double getLeftVoltage() {

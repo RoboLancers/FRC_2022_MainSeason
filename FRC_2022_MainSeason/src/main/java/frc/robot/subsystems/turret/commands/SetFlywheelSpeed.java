@@ -13,9 +13,9 @@ public class SetFlywheelSpeed extends PIDCommand {
         // Potentially too naive if there are sizable performance differences between the two motors
         super(
             new PIDController(
-                Constants.Turret.TunedCoefficients.FlywheelPID.p,
-                Constants.Turret.TunedCoefficients.FlywheelPID.i,
-                Constants.Turret.TunedCoefficients.FlywheelPID.d
+                Constants.Turret.TunedCoefficients.FlywheelPID.kP,
+                Constants.Turret.TunedCoefficients.FlywheelPID.kI,
+                Constants.Turret.TunedCoefficients.FlywheelPID.kD
             ),
             () -> {
                 // Measurement source is the average velocity of both motors

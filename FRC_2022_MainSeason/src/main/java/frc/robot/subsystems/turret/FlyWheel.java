@@ -8,8 +8,8 @@ import frc.robot.Constants;
 
 public class FlyWheel{
 
-    CANSparkMax flyWheel = new CANSparkMax(Constants.Turret.Ports.flywheelMotorA, CANSparkMaxLowLevel.MotorType.kBrushless);
-    CANSparkMax kickWheel = new CANSparkMax(Constants.Turret.Ports.flywheelMotorB, CANSparkMaxLowLevel.MotorType.kBrushless);
+    CANSparkMax flyWheel = new CANSparkMax(Constants.Turret.Ports.kFlywheelPort1, CANSparkMaxLowLevel.MotorType.kBrushless);
+    CANSparkMax kickWheel = new CANSparkMax(Constants.Turret.Ports.kFlywheelPort2, CANSparkMaxLowLevel.MotorType.kBrushless);
 
 
     public double FlyWheelSpeed(){

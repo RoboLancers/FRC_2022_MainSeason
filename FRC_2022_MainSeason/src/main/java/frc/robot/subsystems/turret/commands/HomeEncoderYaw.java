@@ -18,7 +18,7 @@ public class HomeEncoderYaw extends CommandBase {
     }
 
     @Override
-    public void execute(){
+    public void execute(){ 
         this.turret.setYawPower(HomeEncoderYaw.objectiveHomeDirection * HomeEncoderYaw.seekAdjustment);
     }
 

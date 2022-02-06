@@ -48,6 +48,17 @@ public class MatchTargetYaw extends CommandBase {
         } else {
             this.turret.setYawPower(seekDirection ? seekAdjustment : -seekAdjustment);
         }
+
+        // This should instead use the SmartMotion syntax for precision. See:
+        
+        // double yaw = this.turret.getYaw();
+        // if(this.turret.limelight.hasTarget()){
+        //     double yawWithRespectToTurret = yaw + this.turret.limelight.yawOffset();
+        //     double yawWithRespectToTurretHome = some math idk
+        //     turret.runYawToAngle(yawWithRespectToTurretHome % 360);
+        // } else {
+        //     implelement orbit mode logic
+        // }
     }
 
     @Override

@@ -3,6 +3,7 @@ package frc.robot.subsystems.lights;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.lights.enums.Colors;
 
 public class AddressableLEDs extends SubsystemBase {
@@ -11,10 +12,14 @@ public class AddressableLEDs extends SubsystemBase {
     AddressableLEDBuffer m_ledBuffer;
 
     public AddressableLEDs(int numPixels) {
-        this.m_led = new AddressableLED(0);
+        this.m_led = new AddressableLED(Constants.LEDs.kLEDPort);
         
         this.m_ledBuffer = new AddressableLEDBuffer(numPixels);
         m_led.setLength(m_ledBuffer.getLength()); //argument is number of LEDs
+
+        // You should set the leds to a color initially, and there needs to be a default color if no balls are indexed in a slot
+
+        m_led.start();
     }
 
     //use this function for all other led functions
@@ -23,12 +28,12 @@ public class AddressableLEDs extends SubsystemBase {
             m_ledBuffer.setRGB(i, color1.red, color1.green, color1.blue);
         } 
 
-        for (int i = m_ledBuffer.getLength()/2 ; i > m_ledBuffer.getLength(); i++) {
+        for (int i = m_ledBuffer.getLength()/2 ; i < m_ledBuffer.getLength(); i++) {
             m_ledBuffer.setRGB(i, color2.red, color2.green, color2.blue);
         }
 
         m_led.setData(m_ledBuffer);
-        m_led.start();
+
     }
 
     //method overloading for if there's only one color needed
@@ -38,7 +43,7 @@ public class AddressableLEDs extends SubsystemBase {
             m_ledBuffer.setRGB(i, color1.red, color1.green, color1.blue);
         } 
         m_led.setData(m_ledBuffer);
-        m_led.start();
+
     }
  
 
@@ -49,7 +54,7 @@ public class AddressableLEDs extends SubsystemBase {
             m_ledBuffer.setRGB(i, Colors.GREEN.red, Colors.GREEN.green, Colors.GREEN.blue);
         } 
         m_led.setData(m_ledBuffer);
-        m_led.start();
+
 
     }
 
@@ -60,7 +65,7 @@ public class AddressableLEDs extends SubsystemBase {
             m_ledBuffer.setRGB(i, Colors.RED.red, Colors.RED.green, Colors.RED.blue);
         } 
         m_led.setData(m_ledBuffer);
-        m_led.start();
+
 
     }
     
@@ -70,7 +75,7 @@ public class AddressableLEDs extends SubsystemBase {
             m_ledBuffer.setRGB(i, Colors.YELLOW.red, Colors.YELLOW.green, Colors.YELLOW.blue);
         } 
         m_led.setData(m_ledBuffer);
-        m_led.start();
+
 
     }
 
