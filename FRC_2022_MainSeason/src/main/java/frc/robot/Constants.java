@@ -12,8 +12,8 @@ public final class Constants {
             // bully electrical to get these
             public static final int yawMotor = 0;
             public static final int pitchMotor = 0;
-            public static final int flywheelMotorA = 0;
-            public static final int flywheelMotorB = 0;
+            public static final int FLYWHEEL_PORT = 0;
+            public static final int KICKWHEEL_PORT = 0;
             public static final int yawLimitSwitch = 0;
             public static final int pitchLimitSwitch = 0;
         }

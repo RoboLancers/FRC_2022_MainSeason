@@ -1,19 +1,16 @@
 package frc.robot.subsystems.turret;
 
-import com.qualcomm.robotcore.hardware;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import frc.robot.Constants;
+import com.revrobotics.CANSparkMax;
 
 public class Flywheel {
 
-CANSparkMax flyWheel = new CANSparkMax(CANSparkMaxLowLevel.MotorType.kBrushless);
-CANSparkMax kickWheel = new CANSparkMax(CANSparkMaxLowLevel.MotorType.kBrushless);
-CANEncoder flyEncoder = flyWheel.getEncoder();
+    CANSparkMax flyWheel = new CANSparkMax(Constants.Turret.Ports.FLYWHEEL_PORT, CANSparkMax.MotorType.kBrushless);
+    CANSparkMax kickWheel = new CANSparkMax(Constants.Turret.Ports.KICKWHEEL_PORT, CANSparkMax.MotorType.kBrushless);
 
-public double FlywheelSpeed(){
-double speed = flyEnocder.getVelocity(); //should return in ticks per second
-return speed;
-}
+    public double FlywheelSpeed(){
+        return flyWheel.getEncoder().getVelocity(); //should return in ticks per second
+    }
 
 }
