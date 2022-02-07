@@ -24,4 +24,13 @@ public class Maths {
         return Math.signum(number) * Math.sqrt(Math.abs(number));
     }
 
+    // Convert degrees to radians
+    public static double toRadians(double degrees){
+        return degrees * Math.PI / 180;
+    }
+
+    // Convert radians to degrees
+    public static double toDegrees(double radians){
+        return radians * 180 / Math.PI;
+    }
 }
