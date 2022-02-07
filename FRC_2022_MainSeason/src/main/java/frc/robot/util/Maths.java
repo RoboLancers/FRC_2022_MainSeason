@@ -23,4 +23,8 @@ public class Maths {
     public static double rootKeepSign(double number){
         return Math.signum(number) * Math.sqrt(Math.abs(number));
     }
+
+    public static double applyDeadband(double value, double deadbandValue){
+        return Math.abs(value) > deadbandValue ? value : 0;
+    }
 }

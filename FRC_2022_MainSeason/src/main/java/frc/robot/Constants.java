@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.revrobotics.ColorMatch;
+
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 public final class Constants {
@@ -60,8 +62,8 @@ public final class Constants {
 
     public static final class Lights {
         public static final class ColorSensor {
-        public static final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-        public static final Color kRedTarget = ColorMatch.makeColor(0.413, 0.378, 0.162);
+        //public static final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+        //public static final Color kRedTarget = ColorMatch.makeColor(0.413, 0.378, 0.162);
         }
     }
 

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.lights.commands;
+/*package frc.robot.subsystems.lights.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.lights.AddressableLEDs;
@@ -37,3 +37,4 @@ public class SeekColors() extends CommandBase {
         }
     }
 }
+*/

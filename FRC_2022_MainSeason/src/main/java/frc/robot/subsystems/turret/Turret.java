@@ -32,8 +32,8 @@ public class Turret extends SubsystemBase {
         this.limelight = limelight;
         this.yawMotor = new SparkMaxWrapper(Constants.Turret.Ports.yawMotor);
         this.pitchMotor = new SparkMaxWrapper(Constants.Turret.Ports.pitchMotor);
-        this.flywheelMotorA = new SparkMaxWrapper(Constants.Turret.Ports.flywheelMotorA);
-        this.flywheelMotorB = new SparkMaxWrapper(Constants.Turret.Ports.flywheelMotorB);
+        this.flywheelMotorA = new SparkMaxWrapper(Constants.Turret.Ports.FLYWHEEL_PORT);
+        this.flywheelMotorB = new SparkMaxWrapper(Constants.Turret.Ports.KICKWHEEL_PORT);
         this.yawLimitSwitch = new DigitalInput(Constants.Turret.Ports.yawLimitSwitch);
         this.pitchLimitSwitch = new DigitalInput(Constants.Turret.Ports.pitchLimitSwitch);
 
