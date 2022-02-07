@@ -1,5 +1,7 @@
 package frc.robot.subsystems.turret.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
@@ -7,9 +9,7 @@ import frc.robot.util.SparkMaxWrapper;
 
 // Set flywheel speed using pid
 public class SetFlywheelSpeed extends PIDCommand {
-    private static double velocityErrorThreshold = 50.0;
-
-    public SetFlywheelSpeed(double targetSpeed, SparkMaxWrapper flywheelMotorA, SparkMaxWrapper flywheelMotorB){
+    public SetFlywheelSpeed(DoubleSupplier targetSpeed, SparkMaxWrapper flywheelMotorA, SparkMaxWrapper flywheelMotorB){
         // Potentially too naive if there are sizable performance differences between the two motors
         super(
             new PIDController(
@@ -21,20 +21,17 @@ public class SetFlywheelSpeed extends PIDCommand {
                 // Measurement source is the average velocity of both motors
                 return (flywheelMotorA.getVelocity() + flywheelMotorB.getVelocity()) / 2;
             },
-            () -> targetSpeed,
+            targetSpeed,
             (output) -> {
                 flywheelMotorA.setPower(output);
                 flywheelMotorB.setPower(output);
             }
         );
-        this.getController().setTolerance(velocityErrorThreshold);
+        this.getController().setTolerance(Constants.Turret.TunedCoefficients.FlywheelPID.errorThreshold);
     }
 
     @Override
-    public void end(boolean interrupted){};
-
-    @Override
     public boolean isFinished(){
-        return this.getController().atSetpoint();
+        return false;
     }
 }
