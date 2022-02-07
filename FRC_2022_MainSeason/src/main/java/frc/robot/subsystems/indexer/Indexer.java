@@ -8,9 +8,12 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.I2C;
 import frc.robot.Constants;
-import frc.robot.Constants.Indexer;
 import frc.robot.subsystems.indexer.Ball.BallPosition;
+import frc.robot.subsystems.turret.Turret;
 
 public class Indexer {
 
@@ -20,9 +23,9 @@ public class Indexer {
     */
     public final ColorSensorV3 bottomColorSensor = new ColorSensorV3(I2C.Port.kOnboard); // not sure what this error is, but you should fix it
 
-    // Maintains the sensor closest to the turret
-    public final ColorSensorV3 middleColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
-    public final ColorSensorV3 topColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+    // Maintains the touch sensor closest to the turret
+    DigitalInput toplimitSwitch = new DigitalInput(0);
+    DigitalInput bottomlimitSwitch = new DigitalInput(1);
     
     public Ball[] balls = new Ball[2]; // Create an array of balls
     public CANSparkMax indexerMotor = new CANSparkMax(Constants.Indexer.kIndexerPort, MotorType.kBrushless);
@@ -57,20 +60,40 @@ public class Indexer {
     }
 
     public boolean indexFinished() {
-        if (balls[0].getPos() == BallPosition.MIDDLE && topColorSensor.getProximity() >= Constants.Indexer.kProximityLimit) { // if the indexer is running until a ball reaches the top
+        if (balls[0].getPos() == BallPosition.MIDDLE && toplimitSwitch.get()) { // if the indexer is running until a ball reaches the top
             balls[1].setPos(BallPosition.MIDDLE); // move both balls up
             balls[0].setPos(BallPosition.TOP);
             return true;
-        } else if (balls[0].getPos() == BallPosition.BOTTOM && middleColorSensor.getProximity() >= Constants.Indexer.kProximityLimit) { // if the indexer is running until a ball reaches the middle
+        } else if (balls[0].getPos() == BallPosition.BOTTOM && toplimitSwitch.get()) { // if the indexer is running until a ball reaches the middle
             balls[0].setPos(BallPosition.MIDDLE); // move the ball up
             return true;
         }
         return false;
     }
 
-    // Methods need to be added to shoot the ball
+    public boolean inShootingPosition() {
+        if ((balls[0].getColor() != Color.kWhite) && (balls[1].getColor() != Color.kWhite)) {
+            if ((balls[0].getPos() == BallPosition.TOP) && ((balls[0].getPos() == BallPosition.BOTTOM) || (balls[0].getPos() == BallPosition.MIDDLE))) {return true;}
+            return false;
+        }
+        else if (balls[0].getColor() != Color.kWhite) {
+            if (balls[0].getPos() == BallPosition.TOP) {return true;}
+            return false;
+        }
+        else {return false;}
+    }
 
+    public void shootBall() {
+        if ((indexFinished()) && (Turret.isReadyToShoot())) {
+            indexerMotor.set(Constants.Indexer.kIndexerSpeed);
+        }
+    }
 
+    public void setStandardSpeed() {
+        if (balls[0].getColor() == Color.kWhite) {
+            indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+        }
+    }
     
 
 }

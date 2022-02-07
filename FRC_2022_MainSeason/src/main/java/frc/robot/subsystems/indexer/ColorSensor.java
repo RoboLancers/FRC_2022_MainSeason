@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.indexer.BallColor;
+import edu.wpi.first.wpilibj.util.Color;
 
 public class ColorSensor extends SubsystemBase {
     

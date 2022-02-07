@@ -11,8 +11,7 @@ public class Ball { // Finn: This class is just a simple utility to hold some in
         BallPosition(int posNumber) {
             this.posNumber = posNumber;
         }
-        
-
+    
     }
     private final Color color;
     private BallPosition pos;

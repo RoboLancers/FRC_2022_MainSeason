@@ -83,6 +83,7 @@ public final class Constants {
         public static final int kProximityLimit = 1600;
         public static final int kIndexerPort = 0;
         public static final double kIndexerSpeed = 0.2;
+        public static final double kStandardIndexerSpeed = 0.1;
     }
 
     public static class LEDs {
