@@ -114,7 +114,7 @@ public class XboxController extends BaseController {
     }
 
     public double getAxisValue(Axis axis){
-        return Maths.applyDeadband(axis.inverted * joystick.getRawAxis(axis.port), deadzone);
+        return Utilities.applyDeadband(axis.inverted * joystick.getRawAxis(axis.port), deadzone);
     }
 
     public boolean getState(Button button){

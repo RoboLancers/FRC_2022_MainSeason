@@ -24,7 +24,4 @@ public class Maths {
         return Math.signum(number) * Math.sqrt(Math.abs(number));
     }
 
-    public static double applyDeadband(double value, double deadbandValue){
-        return Math.abs(value) > deadbandValue ? value : 0;
-    }
 }

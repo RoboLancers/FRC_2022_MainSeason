@@ -18,6 +18,6 @@ public class TriggerButton extends Trigger {
 
     @Override
     public boolean get() {
-        return negative ? (Maths.applyDeadband(joystick.getRawAxis(port), DEADZONE) < 0) : (Maths.applyDeadband(joystick.getRawAxis(port), DEADZONE) > 0);
+        return negative ? (Utilities.applyDeadband(joystick.getRawAxis(port), DEADZONE) < 0) : (Utilities.applyDeadband(joystick.getRawAxis(port), DEADZONE) > 0);
     }
 }
