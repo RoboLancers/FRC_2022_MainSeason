@@ -2,29 +2,18 @@ package frc.robot.subsystems.turret.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.subsystems.flywheel.commands.SetFlywheelSpeed;
+import frc.robot.subsystems.turret.subsystems.pitch.commands.SetPitch;
 
 public class AdjustPitchAndFlywheel extends ParallelRaceGroup {
     public AdjustPitchAndFlywheel(Turret turret){
         addCommands(
-            new SetPitch(
-                () -> {
-                    return turret.trajectory.theta; // TODO: gear ratio math to convert degrees into motor ticks
-                },
-                turret.pitchMotor
-            ),
-            new SetFlywheelSpeed(
-                () -> {
-                    return turret.trajectory.speed;
-                },
-                turret.flywheelMotorA,
-                turret.flywheelMotorB
-            ),
-            new WaitUntilCommand(
-                () -> {
-                    return turret.isAligned();
-                }
-            )
+            // ! make this account for kPitchMountAngle
+            new SetPitch(() -> { return turret.launchTrajectory.theta + Constants.Turret.PhysicsInfo.kPitchMountAngle; }, turret.pitch),
+            new SetFlywheelSpeed(() -> { return turret.launchTrajectory.speed; }, turret.flywheel),
+            new WaitUntilCommand(() -> { return turret.isReadyToShoot(); })
         );
     }
 }

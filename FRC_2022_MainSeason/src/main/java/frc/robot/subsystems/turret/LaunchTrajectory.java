@@ -2,12 +2,12 @@ package frc.robot.subsystems.turret;
 
 // The trajectory information needed to hit the target with certain constraints
 
-public class Trajectory {
+public class LaunchTrajectory {
     public double theta;
     public double speed;
     public double time;
 
-    public Trajectory(
+    public LaunchTrajectory(
         double theta,       // The angle of the determined trajectory [in radians]
         double speed,       // The speed of the determined trajectory [in meters per second]
         double time         // The time in flight of the determined trajectory [in seconds]
@@ -22,7 +22,7 @@ public class Trajectory {
     }
 
     // Calculate the trajectory to hit the target at a given angle alpha
-    public static Trajectory usingAlphaImpact(
+    public static LaunchTrajectory usingAlphaImpact(
         double g,           // Universal acceleration due to gravity [in meters per second]
         double dx,          // Distance away from target on XZ plane [in meters]
         double dy,          // Distance away from target on Y axis [in meters]
@@ -59,10 +59,10 @@ public class Trajectory {
         double speed = dx / Math.cos(theta) / Math.sqrt(2 * (dy - dx * Math.tan(theta)) / g);
         double time = dx / speed / Math.cos(theta);
 
-        return new Trajectory(theta, speed, time);
+        return new LaunchTrajectory(theta, speed, time);
     }
 
-    public static Trajectory usingPassThrough(
+    public static LaunchTrajectory usingPassThrough(
         double g,           // Universal acceleration due to gravity [in meters per second]
         double dx0,         // Distance away from control point on XZ plane [in meters]
         double dy0,         // Distance away from control point on Y axis [in meters]
@@ -83,6 +83,6 @@ public class Trajectory {
         double speed = dx1 / Math.cos(theta) / Math.sqrt(2 * (dy1 - dx1 * Math.tan(theta)) / g);
         double time = dx1 / speed / Math.cos(theta);
 
-        return new Trajectory(theta, speed, time);
+        return new LaunchTrajectory(theta, speed, time);
     }
 }
