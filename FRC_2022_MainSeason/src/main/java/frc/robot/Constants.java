@@ -39,7 +39,7 @@ public final class Constants {
         public static final int kPistonRetract = 0;
         public static final int kRedThreshold = 4000;
         public static final int kBlueThreshold = 4000;
-
+        public static final double kIntakePower = 200;
     }
 
     public static final class Trajectory {
