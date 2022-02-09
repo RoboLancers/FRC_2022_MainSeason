@@ -50,7 +50,8 @@ public class Indexer {
         }
         readyToShoot.whenActive((new RunCommand(this::shootBall)))
         .withInterrupt(this::ballHasBeenShot)
-        .andThen(() -> indexerMotor.set(Constants.)
+        .andThen(() -> indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed)
+        ));
     }
 
     public void processBall() {
@@ -97,13 +98,6 @@ public class Indexer {
             indexerMotor.set(Constants.Indexer.kIndexerSpeed);
         }
     }
-
-    public void setStandardSpeed() {
-        if (balls[0].getColor() == Color.kWhite) {
-            indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
-        }
-    }
-    
 
 }
 
