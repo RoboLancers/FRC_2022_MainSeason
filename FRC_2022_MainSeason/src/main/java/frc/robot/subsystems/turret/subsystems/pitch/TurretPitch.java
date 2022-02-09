@@ -13,12 +13,27 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class TurretPitch extends SubsystemBase {
     private CANSparkMax motor;
     private CANEncoder encoder;
+    private SparkMaxPIDController smartMotionController;
 
     private DigitalInput homingSwitch;
 
     public TurretPitch(){
         this.motor = new CANSparkMax(CANSparkMax.MotorType.kBrushless, Constants.Turret.Ports.kPitchMotor);
         this.encoder = this.motor.getEncoder();
+        this.smartMotionController = this.motor.getPIDController();
+
+        this.smartMotionController.setP(Constants.Turret.TunedCoefficients.PitchPID.kP);
+        this.smartMotionController.setI(Constants.Turret.TunedCoefficients.PitchPID.kI);
+        this.smartMotionController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
+        this.smartMotionController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
+        this.smartMotionController.setIZone(Constants.Turret.TunedCoefficients.PitchPID.kIz);
+        this.smartMotionController.setFF(Constants.Turret.TunedCoefficients.PitchPID.kFF);
+        this.smartMotionController.setOutputRange(
+            -Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput,
+            Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput
+        );
+
+        // TODO: implement the rest of this on a computer that has the api
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
     }

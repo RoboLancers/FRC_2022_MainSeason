@@ -34,9 +34,16 @@ public final class Constants {
             }
 
             public static final class PitchPID {
+                public static final int smartMotionSlot = 0;
                 public static final double kP = 0.00;
                 public static final double kI = 0.00;
                 public static final double kD = 0.00;
+                public static final double kIz = 0.00;
+                public static final double kFF = 0.00;
+                public static final double kMaxAbsoluteOutput = 0.00;
+                public static final double kMaxRPM = 0.00;
+                public static final double kMaxVel = 0.00;
+                public static final double kMaxAcc = 0.00;
                 public static final double kErrorThreshold = 0.50;
             }
 
