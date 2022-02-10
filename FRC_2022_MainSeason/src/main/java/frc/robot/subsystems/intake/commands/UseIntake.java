@@ -6,11 +6,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 
 public class UseIntake extends CommandBase{
-    double intakeMotorPower;
-    double rollerMotorPower;
-    public UseIntake(double rollerMotorPower, double transferMotorPower, Intake intake) {
-        this.intakeMotorPower = intakeMotorPower;
-        this.rollerMotorPower = rollerMotorPower;
+    Intake intake;
+    public UseIntake(Intake intake) {
+        this.intake = intake;
     }
 
     @Override

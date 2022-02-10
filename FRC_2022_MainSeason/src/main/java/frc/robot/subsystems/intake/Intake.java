@@ -12,14 +12,14 @@ import frc.robot.Constants.Indexer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Intake extends SubsystemBase{
-    public CANSparkMax intakeMotor, indexerMotor;
+    public CANSparkMax intakeMotor;
     public DoubleSolenoid retractionPiston;
 
     public Intake() {
         this.intakeMotor = new CANSparkMax(Constants.Intake.kIndexerPort, MotorType.kBrushless); //intake motor for roller
         intakeMotor.setIdleMode(IdleMode.kCoast); // This means that the motor running the intake will not brake
         this.retractionPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.Intake.kPistonDeploy, Constants.Intake.kPistonRetract);
-
+        retractionPiston.set(Value.kReverse);
         // The piston needs additional logic. Something along the lines of:
         // retractionPiston.set(Value.kReverse); 
         // To explain, kReverse just means that the piston will go to its retracted position. kForward is the extended position
@@ -27,7 +27,13 @@ public class Intake extends SubsystemBase{
         
     }
 
-    public CANSparkMax getIntakeMotor() {return intakeMotor;} // You don't need this method
+    public void setPower(double intakePower) {
+        intakeMotor.set(intakePower);
+    }
+
+    public void toggle() {
+
+    }
 
     // You should make a setPower function that does intakeMotor.set()
 
