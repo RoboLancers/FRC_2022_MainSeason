@@ -44,7 +44,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 //import frc.robot.util.XboxController;
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.util.XboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -60,6 +60,7 @@ public class RobotContainer {
   //private String trajectoryJSON = "paths/MyPath.wpilib.json";
   private RobotContainer m_robotContainer;
   private XboxController driverController = new XboxController(0);
+  private XboxController manipulatorController = new XboxController(1);
   private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private Field2d m_field = new Field2d();
@@ -77,16 +78,15 @@ public class RobotContainer {
   public RobotContainer() {
     pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
 
+    
     // Configure the button bindings
     
     configureButtonBindings();
     dt.setDefaultCommand(
       // A split-stick arcade command, with forward/backward controlled by the left
       // hand, and turning controlled by the right.
-      new RunCommand(
-          () ->
-              dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()),
-          dt));
+      new RunCommand(() -> dt.arcadeDrive(-driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X)),
+        dt));
 }
    
 
@@ -97,8 +97,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //new JoystickButton(joystick,XboxController.Button.A ).whenPressed(new InstantCommand(gearshifter::ToggleGearShifter, gearshifter));
-      joystickButton.whenPressed(new InstantCommand(gearshifter::ToggleGearShifter, gearshifter));
+
+    driverController.whenPressed(XboxController.Button.A, new ToggleGearShifter 
+    
+     //JoystickButton(joystick, driverController.Button.A).whenPressed(new InstantCommand(gearshifter::ToggleGearShifter, gearshifter));
+     //joystickButton.whenPressed(new InstantCommand(gearshifter::ToggleGearShifter, gearshifter));
   }
 
   /**
