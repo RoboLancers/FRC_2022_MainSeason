@@ -32,7 +32,11 @@ public class Intake extends SubsystemBase{
     }
 
     public void toggle() {
+        
+    }
 
+    public void setPower() {
+        intakeMotor.set(Constants.Intake.kIntakePower);
     }
 
     // You should make a setPower function that does intakeMotor.set()
