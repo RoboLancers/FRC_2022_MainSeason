@@ -38,7 +38,7 @@ public class TurretFlywheel extends SubsystemBase {
         return 0.5 * (speedA + speedB);
     }
 
-    public void set(double power){
+    public void setPower(double power){
         flywheelMotorA.set(power);
         flywheelMotorB.set(power);
     }
