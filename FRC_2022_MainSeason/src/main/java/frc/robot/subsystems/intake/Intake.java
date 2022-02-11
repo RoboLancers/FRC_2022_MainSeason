@@ -12,8 +12,8 @@ import frc.robot.Constants.Indexer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Intake extends SubsystemBase{
-    public CANSparkMax intakeMotor;
-    public DoubleSolenoid retractionPiston;
+    public CANSparkMax intakeMotor; // for roller
+    public DoubleSolenoid retractionPiston; // for pistons
 
     public Intake() {
         this.intakeMotor = new CANSparkMax(Constants.Intake.kIndexerPort, MotorType.kBrushless); //intake motor for roller
@@ -24,15 +24,11 @@ public class Intake extends SubsystemBase{
         // retractionPiston.set(Value.kReverse); 
         // To explain, kReverse just means that the piston will go to its retracted position. kForward is the extended position
         // Double action solenoids can use a toggle() method, but they need to be set to a position initially
-        
-    }
-
-    public void setPower(double intakePower) {
-        intakeMotor.set(intakePower);
     }
 
     public void toggle() {
-        
+        retractionPiston.set(Value.kReverse);
+        intakeMotor.set(Constants.Intake.kIntakePower);
     }
 
     public void setPower() {
