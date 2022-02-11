@@ -10,12 +10,11 @@ import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 
 import java.util.function.Consumer;
 
-import com.qualcomm.robotcore.hardware;
-
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
 
 public class TurretYaw extends SubsystemBase {
     private Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate;
@@ -23,8 +22,9 @@ public class TurretYaw extends SubsystemBase {
     public LimeLight limelight;
 
     private CANSparkMax motor;
-    private CANEncoder encoder;
+    private RelativeEncoder encoder;
 
+    // TODO: check if encoder should home during periodic
     private DigitalInput homingSwitch;
 
     public TurretYaw(Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate){
@@ -32,8 +32,10 @@ public class TurretYaw extends SubsystemBase {
 
         this.limelight = new LimeLight();
 
-        this.motor = new CANSparkMax(CANSparkMax.MotorType.kBrushless, Constants.Turret.Ports.kYawMotor);
+        this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         this.encoder = this.motor.getEncoder();
+        this.encoder.setVelocityConversionFactor(Math.PI / 180);
+        this.encoder.setPositionConversionFactor(Math.PI / 180);
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
 
@@ -42,22 +44,28 @@ public class TurretYaw extends SubsystemBase {
         new PerpetualCommand(new MatchHeadingYaw(this));
     }
 
+    @Override
+    public void periodic(){
+        if(this.homingSwitch.get()){
+            // TODO: reset encoder
+        }
+    }
+
     public void updateLaunchTrajectory(LaunchTrajectory newLaunchTrajectory){
         this.onLaunchTrajectoryUpdate.accept(newLaunchTrajectory);
     }
 
     public double getVelocity(){
-        // TODO
-        return 0.0;
+        return this.encoder.getVelocity();
     }
 
     public double getPosition(){
-        // TODO
-        return 0.0;
+        // TODO: this.encoder.setPositionConversionFactor(...)
+        return this.encoder.getPosition();
     }
 
     public void setPower(double power){
-        // TODO
+        this.motor.set(power);
     }
 
     public boolean isAligned(){

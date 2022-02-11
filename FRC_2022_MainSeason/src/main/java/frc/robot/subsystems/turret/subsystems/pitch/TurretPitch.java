@@ -3,22 +3,24 @@ package frc.robot.subsystems.turret.subsystems.pitch;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-import com.qualcomm.robotcore.hardware;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class TurretPitch extends SubsystemBase {
     private CANSparkMax motor;
-    private CANEncoder encoder;
+    private RelativeEncoder encoder;
     private SparkMaxPIDController smartMotionController;
 
     private DigitalInput homingSwitch;
 
     public TurretPitch(){
-        this.motor = new CANSparkMax(CANSparkMax.MotorType.kBrushless, Constants.Turret.Ports.kPitchMotor);
+        this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
         this.encoder = this.motor.getEncoder();
         this.smartMotionController = this.motor.getPIDController();
 
