@@ -44,7 +44,7 @@ public boolean runsWhenDisabled() {
 =======
 package frc.robot.subsystems.turret.commands;
 
-public class UseKickWheel {
+public class UseKickwheel {
     // TODO: NS
 >>>>>>> a210acf3ac7b2b4373907f22e36a7544d082f006
 }

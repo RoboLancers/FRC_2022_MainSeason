@@ -1,45 +1,43 @@
-//Nailah (pls don't remove)
 package frc.robot.subsystems.turret.commands;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer; 
-//import frc.robot.utilities.XboxController; Don't have anything related to this that I know of
-import frc.robot.subsystems.turret.Turret;
 
-public class SetPitch extends CommandBase {
-private double pitchangle;
-private Turret turret;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.Constants;
+import frc.robot.util.SparkMaxWrapper;
 
-public SetPitch(double pitchangle, Turret turret) { //initalizing?? (parameter)
-    this.pitchangle = pitchangle;
-    this.turret = turret;
-}
+// Set pitch using pid
+public class SetPitch extends PIDCommand {
+    private static double degreesErrorThreshold = 1.0;
 
-@Override
-public void initialize() {//"set the schedule" ig?
+    private SparkMaxWrapper pitchMotor;
 
-}
+    public SetPitch(double targetYaw, SparkMaxWrapper pitchMotor){
+        super(
+            new PIDController(
+                Constants.Turret.TunedCoefficients.PitchPID.p,
+                Constants.Turret.TunedCoefficients.PitchPID.i,
+                Constants.Turret.TunedCoefficients.PitchPID.d
+            ),
+            () -> {
+                return pitchMotor.getPosition();
+            },
+            () -> targetYaw,
+            (output) -> {
+                pitchMotor.setPower(output);
+            }
+        );
+        this.getController().setTolerance(degreesErrorThreshold);
+        this.pitchMotor = pitchMotor;
+    }
 
-@Override
-public void execute() { //where the action happens? Is this where I set the angle
+    @Override
+    public void end(boolean interrupted){
+        // This is going to need testing, I kinda eyeballed the logic on this one
+        pitchMotor.setPower(0);
+    }
 
-}
-
-@Override
-public void end(boolean interrupted) {
-
-
-}
-
-@Override 
-public boolean isFinished() { //checks to see if command is finished? 
-return pitchangle; //mismatched types; will not work 
-return turret; //mismatched typed; will not work 
-}
-
-@Override 
-public boolean runsWhenDisabled() { //should robot run when disabled? no. 
-    return false;
-}
-
-    
+    @Override
+    public boolean isFinished(){
+        return this.getController().atSetpoint();
+    }
 }
