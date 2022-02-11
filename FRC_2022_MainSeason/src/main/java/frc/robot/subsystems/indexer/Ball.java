@@ -18,10 +18,10 @@ public class Ball { // Finn: This class is just a simple utility to hold some in
 
     public Ball(int redValue, int blueValue, BallPosition pos) {
 
-        if ((redValue >= Constants.Intake.kRedThreshold) && !(blueValue >= Constants.Intake.kBlueThreshold)) {
+        if ((redValue >= Constants.Indexer.kRedThreshold) && !(blueValue >= Constants.Indexer.kBlueThreshold)) {
             color = Color.kRed;
         }
-        else if ((blueValue >= Constants.Intake.kBlueThreshold) && !(redValue >= Constants.Intake.kRedThreshold)) {
+        else if ((blueValue >= Constants.Indexer.kBlueThreshold) && !(redValue >= Constants.Indexer.kRedThreshold)) {
             color = Color.kBlue;
         } 
         else {

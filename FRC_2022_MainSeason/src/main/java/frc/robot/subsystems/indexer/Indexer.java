@@ -45,13 +45,13 @@ public class Indexer {
         Trigger readyToShoot = new Trigger() {
             @Override
             public boolean get() {
-                return((inShootingPosition) && (Turret.isReadyToShoot()));
+                return((inShootingPosition()) && (Turret.isReadyToShoot()));
             }
-        }
+        };
         readyToShoot.whenActive((new RunCommand(this::shootBall)))
-        .withInterrupt(this::ballHasBeenShot)
+        .withInterrupt(this::Turret.ballHasBeenShot())
         .andThen(() -> indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed)
-        ));
+        );
     }
 
     public void processBall() {
@@ -98,3 +98,4 @@ public class Indexer {
             indexerMotor.set(Constants.Indexer.kIndexerSpeed);
         }
     }
+}

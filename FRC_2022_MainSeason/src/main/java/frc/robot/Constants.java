@@ -62,6 +62,8 @@ public final class Constants {
         public static final int kRetractorChannelOne = 0;
         public static final int kRetractorChannelTwo = 0;
         public static final int kIndexerPort = 0;
+        public static final int kPistonDeploy = 0;
+        public static final int kPistonRetract = 0;
         public static final double kIntakePower = 200;
         // Speed of the intake
     }
