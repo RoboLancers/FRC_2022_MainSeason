@@ -33,7 +33,7 @@ public class ActiveLaunchTrajectory extends CommandBase {
                     Constants.Turret.PhysicsInfo.kAlpha
                 ));
             } else {
-                this.turretYaw.updateLaunchTrajectory(new LaunchTrajectory(0, 0, 0));
+                this.turretYaw.updateLaunchTrajectory(new LaunchTrajectory(0, 0));
             }
         }
 

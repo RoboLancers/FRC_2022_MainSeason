@@ -8,7 +8,6 @@ import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
 public class MatchHeadingYaw extends PIDCommand {
     private TurretYaw turretYaw;
 
-    // Boolean representation of the sign coefficient applied to the seek adjustment
     private boolean seekDirection = true;
 
     public MatchHeadingYaw(TurretYaw turretYaw){

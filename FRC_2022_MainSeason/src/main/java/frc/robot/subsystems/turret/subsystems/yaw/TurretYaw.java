@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
 public class TurretYaw extends SubsystemBase {
@@ -24,7 +23,6 @@ public class TurretYaw extends SubsystemBase {
     private CANSparkMax motor;
     private RelativeEncoder encoder;
 
-    // TODO: check if encoder should home during periodic
     private DigitalInput homingSwitch;
 
     public TurretYaw(Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate){
@@ -32,10 +30,12 @@ public class TurretYaw extends SubsystemBase {
 
         this.limelight = new LimeLight();
 
-        this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, CANSparkMax.MotorType.kBrushless);
         this.encoder = this.motor.getEncoder();
-        this.encoder.setVelocityConversionFactor(Math.PI / 180);
-        this.encoder.setPositionConversionFactor(Math.PI / 180);
+       
+        // TODO: double check if this sucessfully returns encoder values in radians
+        this.encoder.setVelocityConversionFactor(2 * Math.PI);
+        this.encoder.setPositionConversionFactor(2 * Math.PI);
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
 
@@ -60,7 +60,6 @@ public class TurretYaw extends SubsystemBase {
     }
 
     public double getPosition(){
-        // TODO: this.encoder.setPositionConversionFactor(...)
         return this.encoder.getPosition();
     }
 

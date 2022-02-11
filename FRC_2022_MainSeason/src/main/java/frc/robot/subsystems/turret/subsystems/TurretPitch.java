@@ -1,56 +1,54 @@
-package frc.robot.subsystems.turret.subsystems.pitch;
+package frc.robot.subsystems.turret.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class TurretPitch extends SubsystemBase {
     private CANSparkMax motor;
     private RelativeEncoder encoder;
-    private SparkMaxPIDController smartMotionController;
+    private SparkMaxPIDController PIDController;
 
     private DigitalInput homingSwitch;
 
     public TurretPitch(){
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
         this.encoder = this.motor.getEncoder();
-        this.smartMotionController = this.motor.getPIDController();
 
-        this.smartMotionController.setP(Constants.Turret.TunedCoefficients.PitchPID.kP);
-        this.smartMotionController.setI(Constants.Turret.TunedCoefficients.PitchPID.kI);
-        this.smartMotionController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
-        this.smartMotionController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
-        this.smartMotionController.setIZone(Constants.Turret.TunedCoefficients.PitchPID.kIz);
-        this.smartMotionController.setFF(Constants.Turret.TunedCoefficients.PitchPID.kFF);
-        this.smartMotionController.setOutputRange(
+        this.PIDController = this.motor.getPIDController();
+
+        this.PIDController.setP(Constants.Turret.TunedCoefficients.PitchPID.kP);
+        this.PIDController.setI(Constants.Turret.TunedCoefficients.PitchPID.kI);
+        this.PIDController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
+        this.PIDController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
+        this.PIDController.setIZone(Constants.Turret.TunedCoefficients.PitchPID.kIz);
+        this.PIDController.setFF(Constants.Turret.TunedCoefficients.PitchPID.kFF);
+        this.PIDController.setOutputRange(
             -Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput,
             Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput
         );
 
-        // TODO: implement the rest of this on a computer that has the api
-
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
     }
 
-    public double getVelocity(){
-        // TODO
-        return 0.0;
+    @Override
+    public void periodic(){
+        if(this.homingSwitch.get()){
+            // TODO: reset encoder
+        }
     }
 
     public double getPosition(){
-        return 0.0;
+        return this.encoder.getPosition();
     }
 
-    public void setPower(double power){
-        // TODO
+    public void setPositionSetpoint(double position){
+        this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
     }
 
     public boolean isAligned(double launchTrajectoryTheta){
