@@ -1,0 +1,18 @@
+package frc.robot.subsystems.climber;
+
+import frc.robot.Constants;
+import com.revrobotics.CANSparkMax;
+
+public class Climber{
+    public CANSparkMax climberMotor;
+
+    public Climber(){
+        climberMotor = new CANSparkMax(Constants.Climber.CLIMBER_PORT, CANSparkMax.MotorType.kBrushless);
+
+    }
+
+    public void set(double power){
+        climberMotor.set(power);
+        
+    }
+}

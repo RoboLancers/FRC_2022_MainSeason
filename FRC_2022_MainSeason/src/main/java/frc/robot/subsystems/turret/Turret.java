@@ -1,50 +1,26 @@
 package frc.robot.subsystems.turret;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.misc.LimeLight;
-import frc.robot.subsystems.turret.commands.MatchTargetYaw;
-import frc.robot.util.SparkMaxWrapper;
+import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
+import frc.robot.subsystems.turret.subsystems.TurretPitch;
+import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
 
 public class Turret extends SubsystemBase {
-    // Limelight mounted on the turret base
-    public LimeLight limelight;
+    public TurretYaw yaw;
+    public TurretPitch pitch;
+    public TurretFlywheel flywheel;
 
-    // Motor used to control the yaw of the turret
-    // Motor used to control the pitch of the turret
-    // First motor used to control the speed of the flywheel
-    // Second motor used to control the speed of the flywheel
-    private SparkMaxWrapper yawMotor, pitchMotor, flywheelMotorA, flywheelMotorB;
+    public LaunchTrajectory launchTrajectory;
 
-    public DigitalInput yawLimitSwitch;
-    public DigitalInput pitchLimitSwitch;
-
-    // Recorded delta yaw on last MatchTargetYaw execution
-    public double deltaYaw;
-
-    // The maximum absolute error in yaw that the turret is willing to shoot with
-    // The turret yaw has to match the heading of the target before it can shoot
-    private static double yawErrorThreshold = 1.0;
-
-    // The maximum absolute change in yaw with respect to one periodic update that the turret is willing to shoot with
-    // The turret yaw has to have stopped before it can shoot
-    private static double yawDerivativeThreshold = 1.0;
-
-    public Turret(
-        LimeLight limelight
-    ){
-        this.limelight = limelight;
-        this.yawMotor = new SparkMaxWrapper(Constants.Turret.Ports.yawMotor);
-        this.pitchMotor = new SparkMaxWrapper(Constants.Turret.Ports.pitchMotor);
-        this.flywheelMotorA = new SparkMaxWrapper(Constants.Turret.Ports.flywheelMotorA);
-        this.flywheelMotorB = new SparkMaxWrapper(Constants.Turret.Ports.flywheelMotorB);
-        this.yawLimitSwitch = new DigitalInput(Constants.Turret.Ports.yawLimitSwitch);
-        this.pitchLimitSwitch = new DigitalInput(Constants.Turret.Ports.pitchLimitSwitch);
-
-        this.setDefaultCommand(new MatchTargetYaw(this));
+    public Turret(){
+        this.yaw = new TurretYaw((LaunchTrajectory newLaunchTrajectory) -> {
+            this.launchTrajectory = newLaunchTrajectory;
+        });
+        this.pitch = new TurretPitch();
+        this.flywheel = new TurretFlywheel();
     }
 
+<<<<<<< HEAD
     public double getYaw(){
         // TODO: NS
         
@@ -82,13 +58,18 @@ public class Turret extends SubsystemBase {
 
     // Determine whether the yaw heading and derivative are valid for shooting
     public boolean headingIsAligned(){
+=======
+    public void adjust(){
+        this.pitch.setPositionSetpoint(this.launchTrajectory.theta);
+        this.flywheel.setVelocitySetpoint(this.launchTrajectory.speed);
+    }
+
+    public boolean isReadyToShoot(){
+>>>>>>> fad666a7499e81a261984e98e3d90c1e5d32903f
         return (
-            // Target must be in limelight view
-            this.limelight.hasTarget() &&
-            // Yaw heading error must be within acceptable threshold
-            Math.abs(this.limelight.yawOffset()) < Turret.yawErrorThreshold &&
-            // Yaw derivative with respect to one MatchTargetYaw execution must be within acceptable threshold
-            Math.abs(this.deltaYaw) < Turret.yawDerivativeThreshold
+            this.yaw.isAligned() &&
+            this.pitch.isAligned(this.launchTrajectory.theta) &&
+            this.flywheel.isUpToSpeed(this.launchTrajectory.speed)
         );
     };
 }

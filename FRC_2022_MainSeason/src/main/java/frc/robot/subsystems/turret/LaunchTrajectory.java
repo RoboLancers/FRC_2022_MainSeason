@@ -2,26 +2,27 @@ package frc.robot.subsystems.turret;
 
 // The trajectory information needed to hit the target with certain constraints
 
-public class Trajectory {
+public class LaunchTrajectory {
     public double theta;
     public double speed;
-    public double time;
 
-    public Trajectory(
+    public LaunchTrajectory(
         double theta,       // The angle of the determined trajectory [in radians]
-        double speed,       // The speed of the determined trajectory [in meters per second]
-        double time         // The time in flight of the determined trajectory [in seconds]
+        double speed        // The speed of the determined trajectory [in meters per second]
     ){
         this.theta = theta;
         this.speed = speed;
-        this.time = time;
+    }
+
+    public static double estimateDistance(double deltaY, double thetaX, double thetaY){
+        return deltaY / (Math.cos(thetaX * Math.PI / 180) * Math.tan(thetaY * Math.PI / 180));
     }
 
     // Calculate the trajectory to hit the target at a given angle alpha
-    static Trajectory usingAlphaImpact(
+    public static LaunchTrajectory usingAlphaImpact(
         double g,           // Universal acceleration due to gravity [in meters per second]
         double dx,          // Distance away from target on XZ plane [in meters]
-        double dy,           // Distance away from target on Y axis [in meters]
+        double dy,          // Distance away from target on Y axis [in meters]
         double alpha        // Angle of impact on target in degrees [in radians]
     ){
         // calculate velocity the final target would need to hit the start point if launched at angle alpha
@@ -53,12 +54,11 @@ public class Trajectory {
 
         // plug in formulas for remaining unknown quantities
         double speed = dx / Math.cos(theta) / Math.sqrt(2 * (dy - dx * Math.tan(theta)) / g);
-        double time = dx / speed / Math.cos(theta);
 
-        return new Trajectory(theta, speed, time);
+        return new LaunchTrajectory(theta, speed);
     }
 
-    static Trajectory usingPassThrough(
+    public static LaunchTrajectory usingPassThrough(
         double g,           // Universal acceleration due to gravity [in meters per second]
         double dx0,         // Distance away from control point on XZ plane [in meters]
         double dy0,         // Distance away from control point on Y axis [in meters]
@@ -77,8 +77,7 @@ public class Trajectory {
         double u = (dx0 * dx0) / (dx1 * dx1);
         double theta = Math.atan((u * dy1 - dy0) / (u * dx1 - dx0));
         double speed = dx1 / Math.cos(theta) / Math.sqrt(2 * (dy1 - dx1 * Math.tan(theta)) / g);
-        double time = dx1 / speed / Math.cos(theta);
 
-        return new Trajectory(theta, speed, time);
+        return new LaunchTrajectory(theta, speed);
     }
 }
