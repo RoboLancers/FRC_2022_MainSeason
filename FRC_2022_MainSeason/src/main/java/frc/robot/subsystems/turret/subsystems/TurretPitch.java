@@ -1,6 +1,8 @@
 package frc.robot.subsystems.turret.subsystems;
 
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -15,6 +17,7 @@ public class TurretPitch extends SubsystemBase {
     private SparkMaxPIDController PIDController;
 
     private DigitalInput homingSwitch;
+    private Trigger homingTrigger;
 
     public TurretPitch(){
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
@@ -33,13 +36,10 @@ public class TurretPitch extends SubsystemBase {
         );
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
-    }
-
-    @Override
-    public void periodic(){
-        if(this.homingSwitch.get()){
+        this.homingTrigger = new Trigger(this.homingSwitch::get);
+        this.homingTrigger.whenActive(new RunCommand(() -> {
             // TODO: reset encoder
-        }
+        }, this));
     }
 
     public double getPosition(){

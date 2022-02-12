@@ -1,7 +1,5 @@
 package frc.robot.subsystems.turret;
 
-import frc.robot.util.Maths;
-
 // The trajectory information needed to hit the target with certain constraints
 
 public class LaunchTrajectory {
@@ -17,7 +15,7 @@ public class LaunchTrajectory {
     }
 
     public static double estimateDistance(double deltaY, double thetaX, double thetaY){
-        return deltaY / (Maths.fastCosine(thetaX * Math.PI / 180) * Math.tan(thetaY * Math.PI / 180));
+        return deltaY / (Math.cos(thetaX * Math.PI / 180) * Math.tan(thetaY * Math.PI / 180));
     }
 
     // Calculate the trajectory to hit the target at a given angle alpha
@@ -57,7 +55,7 @@ public class LaunchTrajectory {
         double theta = Math.atan2(-qB + Math.sqrt((qB * qB) - 4 * qA * qC), 2 * qA);
 
         // plug in formulas for remaining unknown quantities
-        double speed = dx / Maths.fastCosine(theta) / Math.sqrt(2 * (dy - dx * Math.tan(theta)) / g);
+        double speed = dx / Math.cos(theta) / Math.sqrt(2 * (dy - dx * Math.tan(theta)) / g);
 
         return new LaunchTrajectory(theta, speed);
     }
@@ -80,7 +78,7 @@ public class LaunchTrajectory {
         */
         double u = (dx0 * dx0) / (dx1 * dx1);
         double theta = Math.atan((u * dy1 - dy0) / (u * dx1 - dx0));
-        double speed = dx1 / Maths.fastCosine(theta) / Math.sqrt(2 * (dy1 - dx1 * Math.tan(theta)) / g);
+        double speed = dx1 / Math.cos(theta) / Math.sqrt(2 * (dy1 - dx1 * Math.tan(theta)) / g);
 
         return new LaunchTrajectory(theta, speed);
     }

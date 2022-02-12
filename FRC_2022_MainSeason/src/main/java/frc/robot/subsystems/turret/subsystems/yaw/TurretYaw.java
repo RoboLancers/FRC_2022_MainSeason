@@ -1,6 +1,8 @@
 package frc.robot.subsystems.turret.subsystems.yaw;
 
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.subsystems.misc.LimeLight;
 import frc.robot.subsystems.turret.LaunchTrajectory;
@@ -17,7 +19,9 @@ public class TurretYaw extends SubsystemBase {
     private Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate;
 
     public LimeLight limelight;
+
     private DigitalInput homingSwitch;
+    private Trigger homingTrigger;
 
     private CANSparkMax motor;
     private RelativeEncoder encoder;
@@ -27,7 +31,12 @@ public class TurretYaw extends SubsystemBase {
         this.onLaunchTrajectoryUpdate = onLaunchTrajectoryUpdate;
 
         this.limelight = new LimeLight();
+
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
+        this.homingTrigger = new Trigger(this.homingSwitch::get);
+        this.homingTrigger.whenActive(new RunCommand(() -> {
+            // TODO: reset encoder
+        }, this));
 
         this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, CANSparkMax.MotorType.kBrushless);
         this.encoder = this.motor.getEncoder();
@@ -47,13 +56,6 @@ public class TurretYaw extends SubsystemBase {
         this.onLaunchTrajectoryUpdate.accept(newLaunchTrajectory);
     }
 
-    @Override
-    public void periodic(){
-        if(this.homingSwitch.get()){
-            // TODO: reset encoder
-        }
-    }
-
     public double getPosition(){
         return this.encoder.getPosition();
     }
@@ -62,8 +64,8 @@ public class TurretYaw extends SubsystemBase {
         this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
     }
 
-    public void setVelocitySetpoint(double position){
-        this.PIDController.setReference(position, CANSparkMax.ControlType.kVelocity);
+    public void setVelocitySetpoint(double velocity){
+        this.PIDController.setReference(velocity, CANSparkMax.ControlType.kVelocity);
     }
 
     public boolean isAligned(){
