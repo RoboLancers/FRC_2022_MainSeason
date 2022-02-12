@@ -272,6 +272,4 @@ public class XboxController extends BaseController {
         return this;
     }
 
-
-
 }
