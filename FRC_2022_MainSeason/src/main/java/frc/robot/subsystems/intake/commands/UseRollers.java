@@ -1,4 +1,4 @@
-package frc.robot.subsystems.intake;
+package frc.robot.subsystems.intake.commands;
 
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.CommandBase;

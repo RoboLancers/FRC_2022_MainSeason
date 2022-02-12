@@ -64,13 +64,12 @@ public final class Constants {
         public static final int kIndexerPort = 0;
         public static final int kPistonDeploy = 0;
         public static final int kPistonRetract = 0;
-        public static final double kIntakePower = 200;
+        public static final double kIntakePower = 0.6;
         public static final double kErrorMargin = 20;
         public static final double kIRollerOff = 0;
-        // Speed of the intake
     }
 
-    public static final class Indexer {
+    public static final class Indexer (
         public static final int kRedThreshold = 4000;
         public static final int kBlueThreshold = 4000;
         public static final int kProximityLimit = 1600;
@@ -78,7 +77,9 @@ public final class Constants {
         public static final int kIndexerPort = 0;
         public static final double kIndexerSpeed = 0.2;
         public static final double kStandardIndexerSpeed = 0.1;
-    }
+        public static final double kShootTime;
+        public static final double kIndexerOff;
+    )
 
     public static final class Lights {
         //this would be better suited for Variables.java
