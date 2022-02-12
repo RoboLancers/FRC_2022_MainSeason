@@ -4,7 +4,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class ShootBall extends CommandsBase {
+public class ShootBall extends CommandBase {
     public Indexer indexer;
     public double initialFieldTime;
     public double currentFieldTime;

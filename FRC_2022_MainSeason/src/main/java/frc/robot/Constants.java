@@ -64,10 +64,9 @@ public final class Constants {
         public static final int kIndexerPort = 0;
         public static final int kPistonDeploy = 0;
         public static final int kPistonRetract = 0;
-        public static final double kIntakePower = 200;
+        public static final double kIntakePower = 0.6;
         public static final double kErrorMargin = 20;
         public static final double kIRollerOff = 0;
-        // Speed of the intake
     }
 
     public static final class Indexer (

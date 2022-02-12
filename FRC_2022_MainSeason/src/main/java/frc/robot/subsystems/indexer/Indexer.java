@@ -42,16 +42,6 @@ public class Indexer {
         .withInterrupt(this::indexFinished) // Stop this command when the highest ball in the indexer reaches the next color sensor up
         .andThen(() -> indexerMotor.set(0) // After the command is stopped (i.e. the ball reaches the next sensor) stop the indexer motor
         ));
-        Trigger readyToShoot = new Trigger() {
-            @Override
-            public boolean get() {
-                return((inShootingPosition()) && (Turret.isReadyToShoot()));
-            }
-        };
-        readyToShoot.whenActive((new RunCommand(this::shootBall)))
-        .withInterrupt(this::Turret.ballHasBeenShot())
-        .andThen(() -> indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed)
-        );
     }
 
     public void processBall() {
@@ -91,11 +81,5 @@ public class Indexer {
             return false;
         }
         else {return false;}
-    }
-
-    public void shootBall() {
-        if ((indexFinished()) && (Turret.isReadyToShoot())) {
-            indexerMotor.set(Constants.Indexer.kIndexerSpeed);
-        }
     }
 }
