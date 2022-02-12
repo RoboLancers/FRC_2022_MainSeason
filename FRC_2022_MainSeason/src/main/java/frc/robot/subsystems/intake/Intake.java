@@ -20,24 +20,14 @@ public class Intake extends SubsystemBase{
         intakeMotor.setIdleMode(IdleMode.kCoast); // This means that the motor running the intake will not brake
         this.retractionPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.Intake.kPistonDeploy, Constants.Intake.kPistonRetract);
         retractionPiston.set(Value.kReverse);
-        // The piston needs additional logic. Something along the lines of:
-        // retractionPiston.set(Value.kReverse); 
-        // To explain, kReverse just means that the piston will go to its retracted position. kForward is the extended position
-        // Double action solenoids can use a toggle() method, but they need to be set to a position initially
     }
 
     public void toggle() {
-        retractionPiston.set(Value.kReverse);
-        intakeMotor.set(Constants.Intake.kIntakePower);
+        retractionPiston.toggle();
     }
 
     public void setPower() {
         intakeMotor.set(Constants.Intake.kIntakePower);
     }
 
-    // You should make a setPower function that does intakeMotor.set()
-
-    // You should make a toggle() function that calls retractionPiston.toggle()
-
-}
 }
