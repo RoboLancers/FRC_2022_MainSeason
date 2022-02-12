@@ -43,3 +43,4 @@ public class ShootBall extends CommandBase {
 }
 
 // Current based, not a while loop
+// Potential problem, it only checks fi the first has passed the final trigger, the first might no have been shot
