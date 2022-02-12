@@ -82,11 +82,11 @@ public class Indexer {
     }
 
     public boolean inShootingPosition() {
-        if ((balls[0].getColor() != Color.kWhite) && (balls[1].getColor() != Color.kWhite)) {
+        if ((balls[0].getColor() != null) && (balls[1].getColor() != null)) {
             if ((balls[0].getPos() == BallPosition.TOP) && ((balls[0].getPos() == BallPosition.BOTTOM) || (balls[0].getPos() == BallPosition.MIDDLE))) {return true;}
             return false;
         }
-        else if (balls[0].getColor() != Color.kWhite) {
+        else if (balls[0].getColor() != null) {
             if (balls[0].getPos() == BallPosition.TOP) {return true;}
             return false;
         }
