@@ -15,16 +15,19 @@ public final class Constants {
             public static final int kPitchMotor = 0;
             public static final int kFlywheelMotorA = 0;
             public static final int kFlywheelMotorB = 0;
-            public static final int kKickWheel = 0;
             public static final int kYawLimitSwitch = 0;
             public static final int kPitchLimitSwitch = 0;
         }
 
         public static final class TunedCoefficients {
             public static final class YawPID {
+                // PID
                 public static final double kP = 0.00;
                 public static final double kI = 0.00;
                 public static final double kD = 0.00;
+                public static final double kFF = 0.00;
+                public static final double kMaxAbsoluteOutput = 0.00;
+                // logic
                 public static final double kErrorThreshold = 0.50;
                 public static final double kMinSafeAngle = -180.0;
                 public static final double kMaxSafeAngle = 180.0;
@@ -32,31 +35,35 @@ public final class Constants {
             }
 
             public static final class PitchPID {
+                // PID
                 public static final double kP = 0.00;
                 public static final double kI = 0.00;
                 public static final double kD = 0.00;
-                public static final double kIz = 0.00;
                 public static final double kFF = 0.00;
                 public static final double kMaxAbsoluteOutput = 0.00;
+                // logic
                 public static final double kErrorThreshold = 0.50;
             }
 
             public static final class FlywheelPID {
+                // PID
                 public static final double kP = 0.00;
                 public static final double kI = 0.00;
                 public static final double kD = 0.00;
-                public static final double kIz = 0.00;
                 public static final double kFF = 0.00;
                 public static final double kMaxAbsoluteOutput = 0.00;
+                // logic
                 public static final double kErrorThreshold = 100;
             }
         }
 
         public static final class PhysicsInfo {
-            public static final double kDeltaYawRecalculationThreshold = 2.0;
             public static final double kGravity = 9.8;
             public static final double kTurretShotDeltaY = 5.0;
             public static final double kAlpha = 45 * Math.PI / 180;
+            public static final double kSinAlpha = Math.sin(Constants.Turret.PhysicsInfo.kAlpha);
+            public static final double kCosAlpha = Math.cos(Constants.Turret.PhysicsInfo.kAlpha);
+            public static final double kTanAlpha = Math.tan(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kPitchMountAngle = 55.0;
         }
     }

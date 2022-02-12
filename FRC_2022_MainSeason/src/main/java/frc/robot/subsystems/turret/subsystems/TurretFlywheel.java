@@ -24,10 +24,6 @@ public class TurretFlywheel extends SubsystemBase {
         this.encoderA = this.motorA.getEncoder();
         this.encoderB = this.motorB.getEncoder();
 
-        // TODO: double check if this sucessfully returns encoder values in radians
-        this.encoderA.setVelocityConversionFactor(2 * Math.PI);
-        this.encoderB.setVelocityConversionFactor(2 * Math.PI);
-
         this.PIDControllerA = this.motorA.getPIDController();
         this.PIDControllerB = this.motorB.getPIDController();
 
@@ -35,7 +31,6 @@ public class TurretFlywheel extends SubsystemBase {
         this.PIDControllerA.setI(Constants.Turret.TunedCoefficients.FlywheelPID.kI);
         this.PIDControllerA.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
         this.PIDControllerA.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
-        this.PIDControllerA.setIZone(Constants.Turret.TunedCoefficients.FlywheelPID.kIz);
         this.PIDControllerA.setFF(Constants.Turret.TunedCoefficients.FlywheelPID.kFF);
         this.PIDControllerA.setOutputRange(
             -Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput,
@@ -46,7 +41,6 @@ public class TurretFlywheel extends SubsystemBase {
         this.PIDControllerB.setI(Constants.Turret.TunedCoefficients.FlywheelPID.kI);
         this.PIDControllerB.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
         this.PIDControllerB.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
-        this.PIDControllerB.setIZone(Constants.Turret.TunedCoefficients.FlywheelPID.kIz);
         this.PIDControllerB.setFF(Constants.Turret.TunedCoefficients.FlywheelPID.kFF);
         this.PIDControllerB.setOutputRange(
             -Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput,

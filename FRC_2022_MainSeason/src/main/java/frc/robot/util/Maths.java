@@ -1,7 +1,13 @@
 package frc.robot.util;
 
+import frc.robot.Constants;
+
 // Useful math utility functions
 public class Maths {
+    public static final double halfPI = 0.5 * Math.PI;
+    private static final double radianCoefficient = Math.PI / 180;
+    private static final double degreeCoefficient = 180 / Math.PI;
+
     // Clamp value, no sign/abs manipulation
     // min < max
     public static double naiveClamp(double number, double min, double max){
@@ -26,11 +32,15 @@ public class Maths {
 
     // Convert degrees to radians
     public static double toRadians(double degrees){
-        return degrees * Math.PI / 180;
+        return degrees * Maths.radianCoefficient;
     }
 
     // Convert radians to degrees
     public static double toDegrees(double radians){
-        return radians * 180 / Math.PI;
+        return radians * Maths.degreeCoefficient;
+    }
+
+    public static double fastCosine(double x){
+        return -0.4 * x * x + 0.95;
     }
 }

@@ -26,7 +26,6 @@ public class TurretPitch extends SubsystemBase {
         this.PIDController.setI(Constants.Turret.TunedCoefficients.PitchPID.kI);
         this.PIDController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
         this.PIDController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
-        this.PIDController.setIZone(Constants.Turret.TunedCoefficients.PitchPID.kIz);
         this.PIDController.setFF(Constants.Turret.TunedCoefficients.PitchPID.kFF);
         this.PIDController.setOutputRange(
             -Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput,

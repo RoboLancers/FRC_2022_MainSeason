@@ -1,12 +1,9 @@
 package frc.robot.subsystems.turret.subsystems.yaw;
 
-import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.misc.LimeLight;
 import frc.robot.subsystems.turret.LaunchTrajectory;
-import frc.robot.subsystems.turret.subsystems.yaw.commands.ActiveLaunchTrajectory;
-import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 
 import java.util.function.Consumer;
 
@@ -14,34 +11,40 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 
 public class TurretYaw extends SubsystemBase {
     private Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate;
 
     public LimeLight limelight;
+    private DigitalInput homingSwitch;
 
     private CANSparkMax motor;
     private RelativeEncoder encoder;
-
-    private DigitalInput homingSwitch;
+    private SparkMaxPIDController PIDController;
 
     public TurretYaw(Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate){
         this.onLaunchTrajectoryUpdate = onLaunchTrajectoryUpdate;
 
         this.limelight = new LimeLight();
+        this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
 
         this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, CANSparkMax.MotorType.kBrushless);
         this.encoder = this.motor.getEncoder();
-       
-        // TODO: double check if this sucessfully returns encoder values in radians
-        this.encoder.setVelocityConversionFactor(2 * Math.PI);
-        this.encoder.setPositionConversionFactor(2 * Math.PI);
 
-        this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
+        this.PIDController = this.motor.getPIDController();
+        this.PIDController.setP(Constants.Turret.TunedCoefficients.YawPID.kP);
+        this.PIDController.setI(Constants.Turret.TunedCoefficients.YawPID.kI);
+        this.PIDController.setD(Constants.Turret.TunedCoefficients.YawPID.kD);
+        this.PIDController.setFF(Constants.Turret.TunedCoefficients.YawPID.kFF);
+        this.PIDController.setOutputRange(
+            -Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput,
+            Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput
+        );
+    }
 
-        // TODO: use default commands or at least find a way to make it end after shooting phase of the game
-        new PerpetualCommand(new ActiveLaunchTrajectory(this));
-        new PerpetualCommand(new MatchHeadingYaw(this));
+    public void updateLaunchTrajectory(LaunchTrajectory newLaunchTrajectory){
+        this.onLaunchTrajectoryUpdate.accept(newLaunchTrajectory);
     }
 
     @Override
@@ -51,20 +54,16 @@ public class TurretYaw extends SubsystemBase {
         }
     }
 
-    public void updateLaunchTrajectory(LaunchTrajectory newLaunchTrajectory){
-        this.onLaunchTrajectoryUpdate.accept(newLaunchTrajectory);
-    }
-
-    public double getVelocity(){
-        return this.encoder.getVelocity();
-    }
-
     public double getPosition(){
         return this.encoder.getPosition();
     }
 
-    public void setPower(double power){
-        this.motor.set(power);
+    public void setPositionSetpoint(double position){
+        this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void setVelocitySetpoint(double position){
+        this.PIDController.setReference(position, CANSparkMax.ControlType.kVelocity);
     }
 
     public boolean isAligned(){
