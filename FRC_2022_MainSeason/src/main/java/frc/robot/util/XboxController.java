@@ -52,7 +52,12 @@ public class XboxController extends BaseController {
         UP(0,0),
         RIGHT(1,90),
         DOWN(2,180),
-        LEFT(3,270);
+        LEFT(3,270),
+        
+        UPPER_RIGHT(4,45),
+        LOWER_RIGHT(5,135),
+        LOWER_LEFT(6,225),
+        UPPER_LEFT(7,315);
 
         int index;
         int angle;
