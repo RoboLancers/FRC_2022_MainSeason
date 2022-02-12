@@ -15,7 +15,6 @@ public class UseIntake extends CommandBase{
     @Override
     public void execute() {
         intake.toggle(); //extends pistons
-        intake.setPower(); //
     }   
 
     @Override
