@@ -81,12 +81,14 @@ public final class Constants {
         public static final double kIndexerOff = 0;
     }
 
-    public static final class Lights {
-        //this would be better suited for Variables.java
-        public static final class ColorSensor {
-        public static final Color kBlueTarget = Color.kBlue;
-        public static final Color kRedTarget = Color.kRed;
-        }
+    public static final class AddressableLEDs {
+        public static final int BlinkinPort = 0;
+        public static final double YELLOW = 0.69;
+        public static final double BLUE = 0.87;
+        public static final double RED = 0.61;
+        public static final double GREEN = 0.75;
+        public static final double RED_BLUE = 0;
+
     }
 
     public static final class Trajectory {
