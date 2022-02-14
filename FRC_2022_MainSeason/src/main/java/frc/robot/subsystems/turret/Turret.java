@@ -1,15 +1,12 @@
 package frc.robot.subsystems.turret;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.misc.LimeLight;
-import frc.robot.subsystems.turret.commands.ActiveTrajectory;
-import frc.robot.subsystems.turret.commands.MatchHeadingYaw;
-import frc.robot.util.SparkMaxWrapper;
+import frc.robot.subsystems.turret.subsystems.flywheel.TurretFlywheel;
+import frc.robot.subsystems.turret.subsystems.pitch.TurretPitch;
+import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
 
 public class Turret extends SubsystemBase {
+<<<<<<< HEAD
     // Limelight mounted on the turret base
     public LimeLight limelight;
 
@@ -44,18 +41,27 @@ public class Turret extends SubsystemBase {
     public void adjust(){
         this.pitch.setPositionSetpoint(this.launchTrajectory.theta);
         this.flywheel.setVelocitySetpoint(this.launchTrajectory.speed);
+=======
+    public TurretYaw yaw;
+    public TurretPitch pitch;
+    public TurretFlywheel flywheel;
+
+    public LaunchTrajectory launchTrajectory;
+
+    public Turret(){
+        this.yaw = new TurretYaw((LaunchTrajectory newLaunchTrajectory) -> {
+            this.launchTrajectory = newLaunchTrajectory;
+        });
+        this.pitch = new TurretPitch();
+        this.flywheel = new TurretFlywheel();
+>>>>>>> 64592c4a8cccc6cf78f51395f575e44f97cfff84
     }
 
     public boolean isReadyToShoot(){
         return (
-            // Target must be in limelight view
-            this.limelight.hasTarget() &&
-            // Yaw degrees error must be within acceptable threshold
-            Math.abs(this.limelight.yawOffset()) < Constants.Turret.TunedCoefficients.YawPID.errorThreshold &&
-            // Pitch degrees error must be within acceptable threshold
-            Math.abs(this.getPitch() - this.trajectory.theta) < Constants.Turret.TunedCoefficients.PitchPID.errorThreshold &&
-            // Flywheel velocity error must be within acceptable threshold
-            Math.abs(this.getFlywheelAverageSpeed() - this.trajectory.speed) < Constants.Turret.TunedCoefficients.FlywheelPID.errorThreshold
+            this.yaw.isAligned() &&
+            this.pitch.isAligned(this.launchTrajectory.theta) &&
+            this.flywheel.isUpToSpeed(this.launchTrajectory.speed)
         );
     };
 }

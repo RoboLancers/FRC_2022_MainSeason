@@ -29,16 +29,19 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.XboxController;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.drivetrain.GearShifter;
+import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.util.XboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -58,9 +61,9 @@ public class RobotContainer {
   private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private Field2d m_field = new Field2d();
   private Pneumatics pneumatics = new Pneumatics();
-  
-  
-  
+  private XboxController driverController = new XboxController(0);
+  private XboxController manipulatorController = new XboxController(1);
+  private GearShifter gearShifter;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -74,7 +77,7 @@ public class RobotContainer {
       // hand, and turning controlled by the right.
       new RunCommand(
           () ->
-              dt.arcadeDrive(xboxController.getLeftY(), xboxController.getRightX()),
+              dt.arcadeDrive(-driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X)),
           dt));
 }
    
@@ -86,7 +89,23 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    driverController.whenPressed(XboxController.Button.A, new ToggleGearShifter(gearShifter));
+    /*driverController.whenPressed(XboxController.RIGHT_BUMPER, new Intake);
+    driverController.whenPressed(XboxController.Button.B, new Intake Deploy);
+    driverController.whenPressed(XboxController.UP, new HighGear);
+    driverController.whenPressed(XboxController.down, new LowGear);
+    driverController.whenPressed(XboxController.RIGHT_BUMPER, new Intake);
+    manipulatorController.whenPressed(XboxController.RIGHT_TRIGGER, new Shoot);
+    manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
+    manipulatorController.whenPressed(XboxController.RIGHT_BUMPER, new Passthrough In);
+    manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClmber);
+    manipulatorController.whenPressed(XboxController.Up, new REzero);
+    manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
+    manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
+    manipulatorController.whenPressed(XboxController.Button.B, new LowBar);
+    manipulatorController.whenPressed(XboxController.Button.Y, new MidBar);
 
+    */
   }
 
   /**
