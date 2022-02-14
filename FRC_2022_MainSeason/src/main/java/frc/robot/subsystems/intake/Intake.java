@@ -3,12 +3,10 @@ package frc.robot.subsystems.intake;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.Constants;
-import frc.robot.Constants.Indexer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Intake extends SubsystemBase{
@@ -29,11 +27,11 @@ public class Intake extends SubsystemBase{
 
     public void toggleIntake() {
         if (intakeOn) {
-            intakeMotor.setPower(0);
+            intakeMotor.set(0);
             intakeOn = false;
         }
         else {
-            intakeMotor.setPower(Constants.Intake.kIntakePower);
+            intakeMotor.set(Constants.Intake.kIntakePower);
         }
     }
 

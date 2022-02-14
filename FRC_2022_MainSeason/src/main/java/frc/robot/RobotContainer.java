@@ -1,16 +1,6 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
-
-import javax.xml.stream.events.DTD;
-
-import org.opencv.ml.DTrees;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -21,16 +11,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
@@ -43,18 +25,10 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.util.XboxController;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-
   private final Drivetrain dt = new Drivetrain();
   private Trajectory trajectory = new Trajectory();
-  //private String trajectoryJSON = "paths/MyPath.wpilib.json";
+  // private String trajectoryJSON = "paths/MyPath.wpilib.json";
   private RobotContainer m_robotContainer;
   private XboxController xboxController = new XboxController(0);
   private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
@@ -65,81 +39,72 @@ public class RobotContainer {
   private XboxController manipulatorController = new XboxController(1);
   private GearShifter gearShifter;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
-
-    // Configure the button bindings
     
     configureButtonBindings();
+
+    // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
     dt.setDefaultCommand(
-      // A split-stick arcade command, with forward/backward controlled by the left
-      // hand, and turning controlled by the right.
       new RunCommand(
-          () ->
-              dt.arcadeDrive(-driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X)),
-          dt));
-}
-   
-
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    driverController.whenPressed(XboxController.Button.A, new ToggleGearShifter(gearShifter));
-    /*driverController.whenPressed(XboxController.RIGHT_BUMPER, new Intake);
-    driverController.whenPressed(XboxController.Button.B, new Intake Deploy);
-    driverController.whenPressed(XboxController.UP, new HighGear);
-    driverController.whenPressed(XboxController.down, new LowGear);
-    driverController.whenPressed(XboxController.RIGHT_BUMPER, new Intake);
-    manipulatorController.whenPressed(XboxController.RIGHT_TRIGGER, new Shoot);
-    manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
-    manipulatorController.whenPressed(XboxController.RIGHT_BUMPER, new Passthrough In);
-    manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClmber);
-    manipulatorController.whenPressed(XboxController.Up, new REzero);
-    manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
-    manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
-    manipulatorController.whenPressed(XboxController.Button.B, new LowBar);
-    manipulatorController.whenPressed(XboxController.Button.Y, new MidBar);
-
-    */
+        () -> {
+          dt.arcadeDrive(-driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
+        },
+        dt
+      )
+    );
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+  private void configureButtonBindings() {
+    driverController.whenPressed(XboxController.Button.A, new ToggleGearShifter(gearShifter));
+    // driverController.whenPressed(XboxController.RIGHT_BUMPER, new Intake);
+    // driverController.whenPressed(XboxController.Button.B, new Intake Deploy);
+    // driverController.whenPressed(XboxController.UP, new HighGear);
+    // driverController.whenPressed(XboxController.down, new LowGear);
+    // driverController.whenPressed(XboxController.RIGHT_BUMPER, new Intake);
+    // manipulatorController.whenPressed(XboxController.RIGHT_TRIGGER, new Shoot);
+    // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
+    // manipulatorController.whenPressed(XboxController.RIGHT_BUMPER, new Passthrough In);
+    // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
+    // manipulatorController.whenPressed(XboxController.Up, new REzero);
+    // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
+    // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
+    // manipulatorController.whenPressed(XboxController.Button.B, new LowBar);
+    // manipulatorController.whenPressed(XboxController.Button.Y, new MidBar);
+  }
+
   public Command getAutonomousCommand() {
-    //The voltage constraint makes sure the robot doesn't exceed a certain voltage during runtime.
-    var autoVoltageConstraint = 
-      new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(
-          Constants.Trajectory.ksVolts, 
-          Constants.Trajectory.ksVoltSecondsPerMeter,
-          Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
-        Constants.Trajectory.kDriveKinematics, 10);
+    // The voltage constraint makes sure the robot doesn't exceed a certain voltage during runtime.
+    var autoVoltageConstraint =  new DifferentialDriveVoltageConstraint(
+      new SimpleMotorFeedforward(
+        Constants.Trajectory.ksVolts, 
+        Constants.Trajectory.ksVoltSecondsPerMeter,
+        Constants.Trajectory.kaVoltSecondsSquaredPerMeter
+      ),
+      Constants.Trajectory.kDriveKinematics, 10
+    );
 
-    //Gives the trajectory the constants determined in characterization.
-    TrajectoryConfig config = 
-      new TrajectoryConfig(
-        Constants.Trajectory.kMaxSpeedMetersPerSecond,
-        Constants.Trajectory.kMaxAccelerationMetersPerSecondSquared)
-        .setKinematics(Constants.Trajectory.kDriveKinematics )
-        .addConstraint(autoVoltageConstraint);    
+    // Gives the trajectory the constants determined in characterization.
+    TrajectoryConfig config = new TrajectoryConfig(
+      Constants.Trajectory.kMaxSpeedMetersPerSecond,
+      Constants.Trajectory.kMaxAccelerationMetersPerSecondSquared
+    )
+      .setKinematics(Constants.Trajectory.kDriveKinematics)
+      .addConstraint(autoVoltageConstraint);    
 
-    //Generates the actual path with given points.
+    // Generates the actual path with given points.
     trajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
-            // Pass config
-            config);
+      // Pass through these two interior waypoints, making an 's' curve path
+      List.of(
+        new Translation2d(1, 1),
+        new Translation2d(2, -1)
+      ),
+      // End 3 meters straight ahead of where we started, facing forward
+      new Pose2d(3, 0, new Rotation2d(0)),
+      // Pass config
+      config
+    );
     
     /*
     try {
@@ -148,28 +113,26 @@ public class RobotContainer {
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    }*/
-   
-    
+    }
+    */
 
-
-
-    //Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command
-    //so that it constantly updates and corrects the trajectory auto.
+    // Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command
+    // so that it constantly updates and corrects the trajectory auto.
     RamseteCommand ramseteCommand = new RamseteCommand(
       trajectory, 
-      dt::getPose, //Gets the translational and rotational position of the robot.
-        new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),//Uses constants of 2.0 and 0.7
-        new SimpleMotorFeedforward( //Feedforward controller to control the motors before they move
-          Constants.Trajectory.ksVolts,  
-          Constants.Trajectory.ksVoltSecondsPerMeter,
-          Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
-          Constants.Trajectory.kDriveKinematics, 
-          dt::getWheelSpeeds,
-          leftPID,
-          rightPID,
-          dt::tankDriveVolts,
-          dt);
+      dt::getPose, // Gets the translational and rotational position of the robot.
+      new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),//Uses constants of 2.0 and 0.7
+      new SimpleMotorFeedforward( // Feedforward controller to control the motors before they move
+        Constants.Trajectory.ksVolts,  
+        Constants.Trajectory.ksVoltSecondsPerMeter,
+        Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
+        Constants.Trajectory.kDriveKinematics, 
+        dt::getWheelSpeeds,
+        leftPID,
+        rightPID,
+        dt::tankDriveVolts,
+        dt
+    );
 
     dt.resetOdometry(trajectory.getInitialPose());
     return ramseteCommand.andThen(() -> dt.tankDriveVolts(0,0));
@@ -184,10 +147,5 @@ public class RobotContainer {
     SmartDashboard.putData("Left PID Controller", leftPID);
     SmartDashboard.putNumber("Left Position", Constants.Trajectory.kDistPerRot * dt.getLeftEncoder().getPosition() / 42);
     SmartDashboard.putNumber("Right Position", Constants.Trajectory.kDistPerRot * dt.getRightEncoder().getPosition() / 42);
-
-    
   }
-
-  
- 
 }

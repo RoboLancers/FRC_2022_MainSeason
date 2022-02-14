@@ -1,6 +1,5 @@
 package frc.robot.subsystems.intake.commands;
 
-import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.intake.Intake;
 
@@ -14,7 +13,7 @@ public class UseIntake extends CommandBase{ // DeployIntake
 
     @Override
     public void execute() {
-        intake.toggle(); //extends pistons
+        intake.toggleDeploy();; //extends pistons
     }   
 
     @Override

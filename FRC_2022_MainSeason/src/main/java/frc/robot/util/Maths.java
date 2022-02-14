@@ -1,6 +1,6 @@
 package frc.robot.util;
 
-import frc.robot.Constants;
+// TODO: refactor this into Utilities.java or vise versa
 
 // Useful math utility functions
 public class Maths {

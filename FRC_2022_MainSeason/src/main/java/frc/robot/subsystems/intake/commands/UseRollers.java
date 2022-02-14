@@ -1,20 +1,13 @@
 package frc.robot.subsystems.intake.commands;
 
-import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.inake.Intake;
+import frc.robot.Constants;
+import frc.robot.subsystems.intake.Intake;
 
 public class UseRollers extends CommandBase {
-    public Intake intake;
-
     public UseRollers(Intake intake) {
-        this.intake = intake;
-    }
-
-    @Override
-    public void toggle() {
         if (intake.intakeMotor.get() >= Constants.Intake.kIntakePower - Constants.Intake.kErrorMargin) {
-            intake.intakeMotor.set(Constants.Intake.kIntakeOff);
+            intake.intakeMotor.set(0.0);
         }
         else {
             intake.intakeMotor.set(Constants.Intake.kIntakePower);

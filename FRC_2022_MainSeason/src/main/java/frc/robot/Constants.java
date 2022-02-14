@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.util.Color;
 
 public final class Constants {
     public static final class Climber {
@@ -99,7 +98,6 @@ public final class Constants {
         public static final double RED = 0.61;
         public static final double GREEN = 0.75;
         public static final double RED_BLUE = 0;
-
     }
 
     public static final class Trajectory {
