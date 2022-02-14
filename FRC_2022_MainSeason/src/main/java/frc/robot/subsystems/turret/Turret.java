@@ -40,52 +40,13 @@ public class Turret extends SubsystemBase {
         new PerpetualCommand(new ActiveTrajectory(this));
         new PerpetualCommand(new MatchHeadingYaw(this));
     }
-
-    public double getYaw(){
-        // TODO: MJ
-        
-        // silence errors until this is implemented
-        return 0.0;
+    
+    public void adjust(){
+        this.pitch.setPositionSetpoint(this.launchTrajectory.theta);
+        this.flywheel.setVelocitySetpoint(this.launchTrajectory.speed);
     }
 
-    public void setYawPower(double power){
-        // TODO: MJ
-    };
-
-    public void resetYawEncoder(){
-        // TODO: ?
-    }
-
-    public double getPitch(){
-        // TODO: NS
-
-        // silence errors until this is implemented
-        return 0.0;
-    }
-
-    public void setPitchPower(double power){
-        // TODO: NS
-    };
-
-    public void resetPitchEncoder(){
-        // TODO: ?
-    }
-
-    public double getFlywheelAverageSpeed(){
-        // TODO: NS
-
-        // silence errors until this is implemented
-        return 0.0;
-    }
-
-    public void setFlywheelPower(double power){
-        // Very naive implementation, may need some more logic since it uses 2 independent motors
-        this.flywheelMotorA.setPower(power);
-        this.flywheelMotorB.setPower(power);
-    };
-
-    public boolean isAligned(){
-        // TODO: gear ratio math to convert degrees into motor ticks
+    public boolean isReadyToShoot(){
         return (
             // Target must be in limelight view
             this.limelight.hasTarget() &&
