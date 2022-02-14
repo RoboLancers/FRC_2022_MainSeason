@@ -69,18 +69,37 @@ public final class Constants {
     }
 
     public static final class Intake {
-        public static final int ROLLER_PORT = 0;
-        public static final int INDEXER_PORT = 0;
-        public static final int RETRACTOR_CHANNEL_ONE = 0;
-        public static final int RETRACTOR_CHANNEL_TWO = 0;
+        public static final int kRollerPort = 0;
+        public static final int kRetractorChannelOne = 0;
+        public static final int kRetractorChannelTwo = 0;
+        public static final int kIndexerPort = 0;
+        public static final int kPistonDeploy = 0;
+        public static final int kPistonRetract = 0;
+        public static final double kIntakePower = 0.6;
+        public static final double kErrorMargin = 20;
+        public static final double kIRollerOff = 0;
     }
 
-    public static final class Lights {
-        //this would be better suited for Variables.java
-        public static final class ColorSensor {
-        public static final Color kBlueTarget = Color.kBlue;
-        public static final Color kRedTarget = Color.kRed;
-        }
+    public static final class Indexer {
+        public static final int kRedThreshold = 4000;
+        public static final int kBlueThreshold = 4000;
+        public static final int kProximityLimit = 1600;
+        // Color sensor proximity?????
+        public static final int kIndexerPort = 0;
+        public static final double kIndexerSpeed = 0.2;
+        public static final double kStandardIndexerSpeed = 0.1;
+        public static final double kShootTime = 0;
+        public static final double kIndexerOff = 0;
+    }
+
+    public static final class AddressableLEDs {
+        public static final int BlinkinPort = 0;
+        public static final double YELLOW = 0.69;
+        public static final double BLUE = 0.87;
+        public static final double RED = 0.61;
+        public static final double GREEN = 0.75;
+        public static final double RED_BLUE = 0;
+
     }
 
     public static final class Trajectory {

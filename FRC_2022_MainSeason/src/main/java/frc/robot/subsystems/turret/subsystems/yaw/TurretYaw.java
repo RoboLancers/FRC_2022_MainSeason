@@ -9,11 +9,11 @@ import frc.robot.subsystems.turret.LaunchTrajectory;
 
 import java.util.function.Consumer;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class TurretYaw extends SubsystemBase {
     private Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate;
