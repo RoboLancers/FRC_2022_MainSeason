@@ -11,6 +11,8 @@ public class MatchHeadingYaw extends CommandBase {
 
     public MatchHeadingYaw(TurretYaw turretYaw){
         this.turretYaw = turretYaw;
+
+        addRequirements(turretYaw);
     }
 
     @Override

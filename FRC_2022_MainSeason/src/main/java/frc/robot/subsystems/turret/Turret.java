@@ -13,9 +13,7 @@ public class Turret extends SubsystemBase {
     public LaunchTrajectory launchTrajectory;
 
     public Turret(){
-        this.yaw = new TurretYaw((LaunchTrajectory newLaunchTrajectory) -> {
-            this.launchTrajectory = newLaunchTrajectory;
-        });
+        this.yaw = new TurretYaw();
         this.pitch = new TurretPitch();
         this.flywheel = new TurretFlywheel();
     }
@@ -24,6 +22,11 @@ public class Turret extends SubsystemBase {
         this.pitch.setPositionSetpoint(this.launchTrajectory.theta);
         this.flywheel.setVelocitySetpoint(this.launchTrajectory.speed);
     }
+
+    public boolean inShootingRange()
+    {
+        
+    };
 
     public boolean isReadyToShoot(){
         return (

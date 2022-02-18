@@ -53,6 +53,7 @@ public final class Constants {
                 public static final double kMaxAbsoluteOutput = 0.00;
                 // logic
                 public static final double kErrorThreshold = 100;
+                public static final double kMaxVelocity = 40.0;
             }
         }
 

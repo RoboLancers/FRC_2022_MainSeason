@@ -16,8 +16,6 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class TurretYaw extends SubsystemBase {
-    private Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate;
-
     public LimeLight limelight;
 
     private DigitalInput homingSwitch;
@@ -27,9 +25,7 @@ public class TurretYaw extends SubsystemBase {
     private RelativeEncoder encoder;
     private SparkMaxPIDController PIDController;
 
-    public TurretYaw(Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate){
-        this.onLaunchTrajectoryUpdate = onLaunchTrajectoryUpdate;
-
+    public TurretYaw(){
         this.limelight = new LimeLight();
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
@@ -50,10 +46,6 @@ public class TurretYaw extends SubsystemBase {
             -Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput,
             Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput
         );
-    }
-
-    public void updateLaunchTrajectory(LaunchTrajectory newLaunchTrajectory){
-        this.onLaunchTrajectoryUpdate.accept(newLaunchTrajectory);
     }
 
     public double getPosition(){
