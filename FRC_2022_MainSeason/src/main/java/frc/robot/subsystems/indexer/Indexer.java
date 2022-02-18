@@ -45,7 +45,7 @@ public class Indexer extends SubsystemBase {
         if (balls[0] == null && balls[1] == null) { // If no balls are in the indexer
             balls[0] = new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM); // Instatiate a new ball in the bottom position
             indexerMotor.set(Constants.Indexer.kIndexerSpeed); // Set the indexer to the speed we want
-            balls[0].progressPos();
+            balls[0].setPos(BallPosition.MIDDLE); // Check to see if this works
         } else if (balls[1] == null) { // If one ball is indexed, and another is detected, we want to move the indexed one to the top position, which should bring the bottom one into the indexer
             balls[1] = new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM); // Instantiate a new ball in the bottom
             indexerMotor.set(Constants.Indexer.kIndexerSpeed);
@@ -82,5 +82,33 @@ public class Indexer extends SubsystemBase {
 
     public boolean hasTwoBalls() {
         return (balls[1] != null);
+    }
+
+    public void setDefaultCommand() {
+        indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+    }
+
+    public void progressBalls() {
+        if (balls[1] == null) {
+            if (balls[0].getPos() == BallPosition.BOTTOM) {
+                balls[0].setPos(BallPosition.MIDDLE); 
+            }
+            else if (balls[0].getPos() == BallPosition.MIDDLE) {
+                balls[0].setPos(BallPosition.TOP); 
+            }
+            else { 
+                balls[0] = null;
+            }
+        }
+        else {
+            if ((balls[0].getPos() == BallPosition.MIDDLE) && (balls[1].getPos() == BallPosition.BOTTOM)) {
+                balls[0].setPos(BallPosition.TOP);
+                balls[1].setPos(BallPosition.MIDDLE);
+            }
+            else if ((balls[0].getPos() == BallPosition.TOP) && (balls[1].getPos() == BallPosition.MIDDLE)) {
+                balls[0] = null;
+                balls[1].setPos(BallPosition.TOP);
+            }
+        }
     }
 }
