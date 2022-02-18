@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.indexer.commands.ShootBall;
 import frc.robot.subsystems.turret.Turret;
 
 public class GeneralizedReleaseRoutine extends CommandBase {
@@ -15,8 +16,8 @@ public class GeneralizedReleaseRoutine extends CommandBase {
 
     @Override
     public void execute(){
-        if(turret.inShootingRange()){
-            
+        if(turret.inShootingRange()) {
+            ShootBall ballShoot = new ShootBall(indexer);
         }
     }
 }

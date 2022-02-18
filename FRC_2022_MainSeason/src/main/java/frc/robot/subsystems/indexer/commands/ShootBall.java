@@ -27,6 +27,10 @@ public class ShootBall extends CommandBase {
         }
     }
 
+    public boolean isFinished() {
+        
+    }
+
     @Override
     public void end(boolean interrupted) {
         if (indexer.balls[1] == null) {
