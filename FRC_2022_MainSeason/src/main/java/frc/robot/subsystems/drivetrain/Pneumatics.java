@@ -8,7 +8,7 @@ public class Pneumatics extends SubsystemBase {
     private Compressor compressor;
 
     public Pneumatics(){
-        compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+        compressor = new Compressor(PneumaticsModuleType.REVPH);
     }
 
     /**

@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -16,18 +17,18 @@ import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase{
     //The motors on the left side of the drivetrain
-    private final CANSparkMax leftMotor1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax leftMotor1 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     private final MotorControllerGroup leftMotors = new MotorControllerGroup(
             leftMotor1,
-            new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless), 
-            new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless));
+            new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless), 
+            new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless));
     //The motors on the right side of the drivetrain
-    private final CANSparkMax rightMotor1 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax rightMotor1 = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final MotorControllerGroup rightMotors = new MotorControllerGroup(
             rightMotor1,
-            new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless),
-            new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless));
+            new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless),
+            new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless));
     //A differential drive object that takes in both motor sides. 
     private final DifferentialDrive difDrive = new DifferentialDrive(leftMotors, rightMotors);
     //An odometry object to keep track of robot pose.
@@ -40,6 +41,10 @@ public class Drivetrain extends SubsystemBase{
     private final WPI_PigeonIMU gyro = new WPI_PigeonIMU(1); //Check port
     //Field2d object to track pose in Glass
     private final Field2d m_field = new Field2d();
+    private final SlewRateLimiter throttleFilter = new SlewRateLimiter(Constants.kThrottleFilter);
+    // private final SlewRateLimiter turnFilter = new SlewRateLimiter(Constants.kTurnFilter);
+    
+
   
 
 
@@ -85,7 +90,7 @@ public class Drivetrain extends SubsystemBase{
 
     //Drives the robot with arcade controls.
     public void arcadeDrive(double throttle, double turn) {
-        difDrive.arcadeDrive(throttle, turn);
+        difDrive.arcadeDrive(throttleFilter.calculate(throttle), turn);
     }
 
     //Controls the left and right side motors directly with voltage.

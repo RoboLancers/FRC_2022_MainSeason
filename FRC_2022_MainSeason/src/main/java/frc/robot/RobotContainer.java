@@ -7,11 +7,6 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-
-import javax.xml.stream.events.DTD;
-
-import org.opencv.ml.DTrees;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -23,27 +18,19 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
-//import frc.robot.subsystems.drivetrain.commands.ToggleGearShift;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-//import frc.robot.util.XboxController;
 import edu.wpi.first.wpilibj.XboxController;
 
 /**
@@ -57,16 +44,13 @@ public class RobotContainer {
 
   private final Drivetrain dt = new Drivetrain();
   private Trajectory trajectory = new Trajectory();
-  //private String trajectoryJSON = "paths/MyPath.wpilib.json";
-  private RobotContainer m_robotContainer;
+  private String trajectoryJSON = "pathplanner/generatedJSON/Test Path.wpilib.json";
   private XboxController driverController = new XboxController(0);
   private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
-  private Field2d m_field = new Field2d();
   private Pneumatics pneumatics = new Pneumatics();
   public GearShifter gearshifter = new GearShifter();
-  private Joystick joystick = new Joystick(0);
-  private JoystickButton joystickButton = new JoystickButton(joystick, 1);
+ 
   
 
   
@@ -76,9 +60,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
-
-    // Configure the button bindings
-    
+ 
     configureButtonBindings();
     dt.setDefaultCommand(
       // A split-stick arcade command, with forward/backward controlled by the left
@@ -97,8 +79,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //new JoystickButton(joystick,XboxController.Button.A ).whenPressed(new InstantCommand(gearshifter::ToggleGearShifter, gearshifter));
-      joystickButton.whenPressed(new InstantCommand(gearshifter::ToggleGearShifter, gearshifter));
+    //Toggle Gearshift
+    new JoystickButton(driverController, Button.kA.value)
+        .whenPressed(gearshifter::ToggleGearShifter);
   }
 
   /**
@@ -125,23 +108,23 @@ public class RobotContainer {
         .addConstraint(autoVoltageConstraint);    
 
     //Generates the actual path with given points.
-    trajectory = TrajectoryGenerator.generateTrajectory(
+    /*trajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
             // End 3 meters straight ahead of where we started, facing forward
             new Pose2d(3, 0, new Rotation2d(0)),
             // Pass config
-            config);
+            config);*/
     
-    /*
+    
     try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON); 
 
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    }*/
+    }
    
     
 
@@ -165,18 +148,21 @@ public class RobotContainer {
           dt);
 
     dt.resetOdometry(trajectory.getInitialPose());
-    return ramseteCommand.andThen(() -> dt.tankDriveVolts(0,0));
+    return null;
+    //return ramseteCommand.andThen(() -> dt.tankDriveVolts(0,0));
   }
 
-  public void update() {
+  public void doSendables() {
     SmartDashboard.putNumber("Encoder", dt.getAverageEncoderDistance());
     SmartDashboard.putNumber("Heading", dt.getHeading());
     SmartDashboard.putNumber("Left Voltage", dt.getLeftVoltage());
     SmartDashboard.putNumber("Right Voltage", dt.getRightVoltage());
     SmartDashboard.putData("Right PID Controller",  rightPID);
     SmartDashboard.putData("Left PID Controller", leftPID);
+    //Are these encoder positions correct?
     SmartDashboard.putNumber("Left Position", Constants.Trajectory.kDistPerRot * dt.getLeftEncoder().getPosition() / 42);
     SmartDashboard.putNumber("Right Position", Constants.Trajectory.kDistPerRot * dt.getRightEncoder().getPosition() / 42);
+    
     SmartDashboard.putNumber("Left Encoder Ticks", dt.getLeftEncoder().getPosition() * 4096);
     SmartDashboard.putNumber("Right Encoder Ticks", dt.getRightEncoder().getPosition() * 4096);
     

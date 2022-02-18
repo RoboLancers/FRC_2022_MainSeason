@@ -58,4 +58,6 @@ public final class Constants {
 
         public static final double kDistPerRot = (3.072/100);
     }
+
+    public static final double kThrottleFilter = 1.5;
 }
