@@ -54,6 +54,12 @@ public class TurretFlywheel extends SubsystemBase {
         return 0.5 * (speedA + speedB);
     }
 
+    public double getCurrent(){
+        double currentA = this.motorA.getOutputCurrent();
+        double currentB = this.motorB.getOutputCurrent();
+        return 0.5 * (currentA + currentB);
+    }
+
     public void setVelocitySetpoint(double velocity){
         this.PIDControllerA.setReference(velocity, CANSparkMax.ControlType.kVelocity);
         this.PIDControllerB.setReference(velocity, CANSparkMax.ControlType.kVelocity);

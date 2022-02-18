@@ -1,7 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants;
 import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.indexer.commands.ShootBall;
 import frc.robot.subsystems.turret.Turret;
 
 public class GeneralizedReleaseRoutine extends CommandBase {
@@ -15,8 +23,18 @@ public class GeneralizedReleaseRoutine extends CommandBase {
 
     @Override
     public void execute(){
-        if(turret.inShootingRange()){
-            
+        if(this.indexer.balls[0] != null && this.turret.inShootingRange() && this.turret.isReadyToShoot()){
+            new SequentialCommandGroup(
+                new InstantCommand(() -> {
+                    this.indexer.indexerMotor.set(Constants.Indexer.kIndexerSpeed);
+                }),
+                new WaitUntilCommand(() -> {
+                    return turret.flywheel.getCurrent() < Constants.Turret.TunedCoefficients.FlywheelPID.kCurrentSpikeThreshold;
+                }),
+                // TODO: if we want to make adjustments to rpm uncomment this and add a command after the wait
+                // new WaitCommand(Constants.Turret.TunedCoefficients.FlywheelPID.kPostSpikeDelay),
+                new ProgressBall(indexer)
+            );
         }
     }
 }
