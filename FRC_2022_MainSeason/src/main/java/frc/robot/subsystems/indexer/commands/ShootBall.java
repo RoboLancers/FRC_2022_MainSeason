@@ -13,6 +13,8 @@ public class ShootBall extends CommandBase {
 
     public ShootBall(Indexer indexer) {
         this.indexer = indexer;
+
+        addRequirements(indexer);
     }
 
     public void execute() {

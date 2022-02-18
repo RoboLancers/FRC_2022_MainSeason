@@ -15,7 +15,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.indexer.Ball.BallPosition;
 import frc.robot.subsystems.turret.Turret;
 
-public class Indexer {
+public class Indexer extends SubsystemBase {
 
     /*
     Finn: I would suggest instead doing something like this to track the shots.
