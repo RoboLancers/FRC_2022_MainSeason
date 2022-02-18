@@ -21,8 +21,8 @@ public class Indexer extends SubsystemBase {
     public final ColorSensorV3 bottomColorSensor = new ColorSensorV3(I2C.Port.kOnboard); // not sure what this error is, but you should fix it
 
     // Maintains the touch sensor closest to the turret
-    DigitalInput toplimitSwitch = new DigitalInput(0);
-    DigitalInput bottomlimitSwitch = new DigitalInput(1);
+    DigitalInput topLimitSwitch = new DigitalInput(0);
+    DigitalInput bottomLimitSwitch = new DigitalInput(1);
     
     public Ball[] balls = new Ball[2]; // Create an array of balls
     public CANSparkMax indexerMotor = new CANSparkMax(Constants.Indexer.kIndexerPort, MotorType.kBrushless);
@@ -57,11 +57,11 @@ public class Indexer extends SubsystemBase {
     }
 
     public boolean indexFinished() {
-        if (balls[0].getPos() == BallPosition.MIDDLE && toplimitSwitch.get()) { // if the indexer is running until a ball reaches the top
+        if (balls[0].getPos() == BallPosition.MIDDLE && topLimitSwitch.get()) { // if the indexer is running until a ball reaches the top
             balls[1].setPos(BallPosition.MIDDLE); // move both balls up
             balls[0].setPos(BallPosition.TOP);
             return true;
-        } else if (balls[0].getPos() == BallPosition.BOTTOM && toplimitSwitch.get()) { // if the indexer is running until a ball reaches the middle
+        } else if (balls[0].getPos() == BallPosition.BOTTOM && topLimitSwitch.get()) { // if the indexer is running until a ball reaches the middle
             balls[0].setPos(BallPosition.MIDDLE); // move the ball up
             return true;
         }
