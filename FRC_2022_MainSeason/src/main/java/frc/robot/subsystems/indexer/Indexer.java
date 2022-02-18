@@ -106,8 +106,8 @@ public class Indexer extends SubsystemBase {
                 balls[1].setPos(BallPosition.MIDDLE);
             }
             else if ((balls[0].getPos() == BallPosition.TOP) && (balls[1].getPos() == BallPosition.MIDDLE)) {
-                balls[0] = null;
-                balls[1].setPos(BallPosition.TOP);
+                balls[0].setPos(BallPosition.TOP);
+                balls[1] = null;
             }
         }
     }
