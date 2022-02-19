@@ -12,7 +12,7 @@ public class LowRung extends CommandBase{
     }
 
     // spelling
-    public void extecute(){
+    public void execute(){
         climber.set(Constants.Climber.kPower);
     }
 
