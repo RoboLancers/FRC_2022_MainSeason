@@ -20,10 +20,20 @@ import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
+<<<<<<< HEAD
+<<<<<<< HEAD
+import frc.robot.subsystems.misc.AddressableLEDs;
+=======
+=======
+>>>>>>> e7729969a129f7bd5ff57bdf05ca8dc7a4d4fdbf
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
+<<<<<<< HEAD
+>>>>>>> e7729969a129f7bd5ff57bdf05ca8dc7a4d4fdbf
+=======
+>>>>>>> e7729969a129f7bd5ff57bdf05ca8dc7a4d4fdbf
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -45,6 +55,7 @@ public class RobotContainer {
   private XboxController driverController = new XboxController(0);
   private XboxController manipulatorController = new XboxController(1);
   private GearShifter gearShifter;
+  private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   public RobotContainer() {
     this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
@@ -61,6 +72,7 @@ public class RobotContainer {
       )
     );
 
+    m_AddressableLEDs.setDefaultCommand(new InstantCommand(() -> {m_AddressableLEDs.setNoCargo();}, m_AddressableLEDs));
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
     turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
   }

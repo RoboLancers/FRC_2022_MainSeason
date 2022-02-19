@@ -16,15 +16,31 @@ public class AddressableLEDs extends SubsystemBase {
         m_blinkin.set(color1);
     }
  
-    public void setLoading() {
+    public void setHanging() {
+        setLightsColor(Constants.AddressableLEDs.CRIMSON_GOLD);
+    }
+
+    public void setNoCargo() {
+        setLightsColor(Constants.AddressableLEDs.WHITE);
+    }
+
+    public void setOneCargo() {
         setLightsColor(Constants.AddressableLEDs.YELLOW);
     }
 
-    public void setReadyToShoot() {
-        setLightsColor(Constants.AddressableLEDs.GREEN);
+    public void setTwoCargo() {
+
     }
 
-    public void setMulticolor() {
-        setLightsColor(Constants.AddressableLEDs.RED_BLUE);
+    public void setDistanceBad() {
+        setLightsColor(Constants.AddressableLEDs.RED);
+    }
+
+    public void setFiringUp() {
+        setLightsColor(Constants.AddressableLEDs.BLUE);
+    }
+
+    public void setTargetLocked() {
+        setLightsColor(Constants.AddressableLEDs.GREEN);
     }
 }
