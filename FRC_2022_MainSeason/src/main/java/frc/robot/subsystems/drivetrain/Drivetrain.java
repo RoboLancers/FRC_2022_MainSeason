@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase{
     //The motors on the left side of the drivetrain
@@ -40,15 +41,12 @@ public class Drivetrain extends SubsystemBase{
     private final RelativeEncoder leftEncoder = leftMotor1.getEncoder();
     //The PigeonIMU gyro.
     //private final WPI_PigeonIMU gyro; //Check port
-    private final AHRS gyro = new AHRS();    
+    private final AHRS gyro = new AHRS(SPI.Port.kMXP);    
     //Field2d object to track pose in Glass
     private final Field2d m_field = new Field2d();
     private final SlewRateLimiter throttleFilter = new SlewRateLimiter(Constants.kThrottleFilter);
     // private final SlewRateLimiter turnFilter = new SlewRateLimiter(Constants.kTurnFilter);
     
-
-  
-
 
     //Drivetrain
     public Drivetrain(){

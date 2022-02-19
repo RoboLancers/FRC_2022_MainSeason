@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 /*package frc.robot.subsystems.turret.subsystems.pitch;
+=======
+package frc.robot.subsystems.turret.subsystems.pitch;
+>>>>>>> master
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
@@ -10,16 +15,28 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+=======
+import com.qualcomm.robotcore.hardware;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+>>>>>>> master
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class TurretPitch extends SubsystemBase {
     private CANSparkMax motor;
+<<<<<<< HEAD
     private RelativeEncoder encoder;
     private SparkMaxPIDController smartMotionController;
+=======
+    private CANEncoder encoder;
+>>>>>>> master
 
     private DigitalInput homingSwitch;
 
     public TurretPitch(){
+<<<<<<< HEAD
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
         this.encoder = this.motor.getEncoder();
         this.smartMotionController = this.motor.getPIDController();
@@ -36,6 +53,10 @@ public class TurretPitch extends SubsystemBase {
         );
 
         // TODO: implement the rest of this on a computer that has the api
+=======
+        this.motor = new CANSparkMax(CANSparkMax.MotorType.kBrushless, Constants.Turret.Ports.kPitchMotor);
+        this.encoder = this.motor.getEncoder();
+>>>>>>> master
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
     }
@@ -57,4 +78,7 @@ public class TurretPitch extends SubsystemBase {
         return Math.abs((this.getPosition() + Constants.Turret.PhysicsInfo.kPitchMountAngle) - launchTrajectoryTheta) < Constants.Turret.TunedCoefficients.PitchPID.kErrorThreshold;
     }
 }
+<<<<<<< HEAD
 */
+=======
+>>>>>>> master
