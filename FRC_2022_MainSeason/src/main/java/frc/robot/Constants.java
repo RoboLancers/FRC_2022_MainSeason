@@ -100,9 +100,12 @@ public final class Constants {
         public static final double BLUE = 0.87;
         public static final double RED = 0.61;
         public static final double GREEN = 0.75;
-        public static final double RED_BLUE = 0;
-        public static final double WHITE = 0;
-        public static final double CRIMSON_GOLD = 0;
+        public static final double WHITE = 0.93;
+        public static final double CRIMSON_GOLD_STROBE = 0.41;
+        public static final double CRIMSON_GOLD_STROBE2 = 0.42;
+        public static final double CRIMSON_GOLD_SOLID = 0.49;
+        public static final double RAINBOW = -0.99;
+
     }
 
     public static final class Trajectory {
