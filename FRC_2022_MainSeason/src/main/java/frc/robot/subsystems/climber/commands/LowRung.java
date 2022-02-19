@@ -3,10 +3,10 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber.Climber;
 
-public class MidRung extends CommandBase{
+public class LowRung extends CommandBase{
     Climber climber;
     double climbHeight;
-    public MidRung(Climber climber, double climbHeight) {
+    public LowRung(Climber climber, double climbHeight) {
         this.climber = climber;
         this.climbHeight = climbHeight;
     }
@@ -20,6 +20,7 @@ public class MidRung extends CommandBase{
         if (climber.getPosition() <= (climbHeight)){
             return true;
         }
+        return false;
     }
     
     @Override
