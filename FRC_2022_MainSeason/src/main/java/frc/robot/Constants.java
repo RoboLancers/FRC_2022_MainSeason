@@ -99,6 +99,8 @@ public final class Constants {
         public static final double RED = 0.61;
         public static final double GREEN = 0.75;
         public static final double RED_BLUE = 0;
+        public static final double WHITE = 0;
+        public static final double CRIMSON_GOLD = 0;
     }
 
     public static final class Trajectory {
