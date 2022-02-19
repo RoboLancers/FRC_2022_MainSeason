@@ -17,7 +17,7 @@ public class AddressableLEDs extends SubsystemBase {
     }
  
     public void setHanging() {
-        setLightsColor(Constants.AddressableLEDs.CRIMSON_GOLD);
+        setLightsColor(Constants.AddressableLEDs.CRIMSON_GOLD_STROBE2);
     }
 
     public void setNoCargo() {

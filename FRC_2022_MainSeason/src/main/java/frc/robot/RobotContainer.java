@@ -17,27 +17,32 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.commands.GeneralizedReleaseRoutine;
+<<<<<<< HEAD
 import frc.robot.subsystems.Climber.commands.LowRung;
 import frc.robot.subsystems.Climber.commands.MidRung;
+=======
+import frc.robot.commands.UpdateLights;
+import frc.robot.subsystems.climber.Climber;
+>>>>>>> 46611f6eee493ac6f69e9384d94ffd7186543a4c
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
-<<<<<<< HEAD
-<<<<<<< HEAD
+
+
 import frc.robot.subsystems.misc.AddressableLEDs;
-=======
-=======
->>>>>>> e7729969a129f7bd5ff57bdf05ca8dc7a4d4fdbf
+
+
+
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
-<<<<<<< HEAD
->>>>>>> e7729969a129f7bd5ff57bdf05ca8dc7a4d4fdbf
-=======
->>>>>>> e7729969a129f7bd5ff57bdf05ca8dc7a4d4fdbf
+
+
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.util.XboxController;
@@ -76,7 +81,8 @@ public class RobotContainer {
       )
     );
 
-    m_AddressableLEDs.setDefaultCommand(new InstantCommand(() -> {m_AddressableLEDs.setNoCargo();}, m_AddressableLEDs));
+    m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
+    
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
     turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
   }
