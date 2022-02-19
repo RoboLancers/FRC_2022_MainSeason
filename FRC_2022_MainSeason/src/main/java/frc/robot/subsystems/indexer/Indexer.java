@@ -85,7 +85,9 @@ public class Indexer extends SubsystemBase {
     }
 
     public void setDefaultCommand() {
-        indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+        if (balls[0] =) {
+            indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+        }    
     }
 
     public void progressBalls() {
