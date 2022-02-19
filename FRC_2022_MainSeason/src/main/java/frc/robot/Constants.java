@@ -21,39 +21,41 @@ public final class Constants {
         public static final class TunedCoefficients {
             public static final class YawPID {
                 // PID
-                public static final double kP = 0.00;
-                public static final double kI = 0.00;
-                public static final double kD = 0.00;
-                public static final double kFF = 0.00;
-                public static final double kMaxAbsoluteOutput = 0.00;
+                public static final double kP = 0.0;
+                public static final double kI = 0.0;
+                public static final double kD = 0.0;
+                public static final double kFF = 0.0;
+                public static final double kMaxAbsoluteOutput = 0.0;
                 // logic
-                public static final double kErrorThreshold = 0.50;
-                public static final double kMinSafeAngle = -180.0;
-                public static final double kMaxSafeAngle = 180.0;
-                public static final double kSeekAdjustment = 0.10;
+                public static final double kErrorThreshold = 0.5;
+                public static final double kMinSafeAngle = -180;
+                public static final double kMaxSafeAngle = 180;
+                public static final double kSeekAdjustment = 0.1;
             }
 
             public static final class PitchPID {
                 // PID
-                public static final double kP = 0.00;
-                public static final double kI = 0.00;
-                public static final double kD = 0.00;
-                public static final double kFF = 0.00;
-                public static final double kMaxAbsoluteOutput = 0.00;
+                public static final double kP = 0.0;
+                public static final double kI = 0.0;
+                public static final double kD = 0.0;
+                public static final double kFF = 0.0;
+                public static final double kMaxAbsoluteOutput = 0.0;
                 // logic
-                public static final double kErrorThreshold = 0.50;
+                public static final double kErrorThreshold = 0.5;
             }
 
             public static final class FlywheelPID {
                 // PID
-                public static final double kP = 0.00;
-                public static final double kI = 0.00;
-                public static final double kD = 0.00;
-                public static final double kFF = 0.00;
-                public static final double kMaxAbsoluteOutput = 0.00;
+                public static final double kP = 0.0;
+                public static final double kI = 0.0;
+                public static final double kD = 0.0;
+                public static final double kFF = 0.0;
+                public static final double kMaxAbsoluteOutput = 0.0;
                 // logic
                 public static final double kErrorThreshold = 100;
-                public static final double kMaxVelocity = 40.0;
+                public static final double kMaxVelocity = 40;
+                public static final double kCurrentSpikeThreshold = 0.0;
+                public static final double kPostSpikeDelay = 0.2;
             }
         }
 
@@ -64,7 +66,7 @@ public final class Constants {
             public static final double kSinAlpha = Math.sin(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kCosAlpha = Math.cos(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kTanAlpha = Math.tan(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kPitchMountAngle = 55.0;
+            public static final double kPitchMountAngle = 55;
         }
     }
 

@@ -15,11 +15,19 @@ import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstrai
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
+import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
+<<<<<<< HEAD
 import frc.robot.subsystems.misc.AddressableLEDs;
+=======
+import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
+import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
+>>>>>>> e7729969a129f7bd5ff57bdf05ca8dc7a4d4fdbf
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -27,7 +35,10 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.util.XboxController;
 
 public class RobotContainer {
-  private final Drivetrain dt = new Drivetrain();
+  private final Drivetrain driveTrain = new Drivetrain();
+  private final Indexer indexer = new Indexer();
+  private final Turret turret = new Turret();
+
   private Trajectory trajectory = new Trajectory();
   // private String trajectoryJSON = "paths/MyPath.wpilib.json";
   private RobotContainer m_robotContainer;
@@ -42,21 +53,23 @@ public class RobotContainer {
   private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   public RobotContainer() {
-    pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
+    this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
     
-    configureButtonBindings();
+    this.configureButtonBindings();
 
     // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
-    dt.setDefaultCommand(
+    this.driveTrain.setDefaultCommand(
       new RunCommand(
         () -> {
-          dt.arcadeDrive(-driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
+          this.driveTrain.arcadeDrive(-driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
         },
-        dt
+        driveTrain
       )
     );
 
     m_AddressableLEDs.setDefaultCommand(new InstantCommand(() -> {m_AddressableLEDs.setNoCargo();}, m_AddressableLEDs));
+    turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
+    turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
   }
 
   private void configureButtonBindings() {
@@ -66,7 +79,8 @@ public class RobotContainer {
     // driverController.whenPressed(XboxController.UP, new HighGear);
     // driverController.whenPressed(XboxController.down, new LowGear);
     // driverController.whenPressed(XboxController.RIGHT_BUMPER, new Intake);
-    // manipulatorController.whenPressed(XboxController.RIGHT_TRIGGER, new Shoot);
+
+    manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
     // manipulatorController.whenPressed(XboxController.RIGHT_BUMPER, new Passthrough In);
     // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
@@ -124,32 +138,32 @@ public class RobotContainer {
     // so that it constantly updates and corrects the trajectory auto.
     RamseteCommand ramseteCommand = new RamseteCommand(
       trajectory, 
-      dt::getPose, // Gets the translational and rotational position of the robot.
+      driveTrain::getPose, // Gets the translational and rotational position of the robot.
       new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),//Uses constants of 2.0 and 0.7
       new SimpleMotorFeedforward( // Feedforward controller to control the motors before they move
         Constants.Trajectory.ksVolts,  
         Constants.Trajectory.ksVoltSecondsPerMeter,
         Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
         Constants.Trajectory.kDriveKinematics, 
-        dt::getWheelSpeeds,
+        driveTrain::getWheelSpeeds,
         leftPID,
         rightPID,
-        dt::tankDriveVolts,
-        dt
+        driveTrain::tankDriveVolts,
+        driveTrain
     );
 
-    dt.resetOdometry(trajectory.getInitialPose());
-    return ramseteCommand.andThen(() -> dt.tankDriveVolts(0,0));
+    driveTrain.resetOdometry(trajectory.getInitialPose());
+    return ramseteCommand.andThen(() -> driveTrain.tankDriveVolts(0,0));
   }
 
   public void update() {
-    SmartDashboard.putNumber("Encoder", dt.getAverageEncoderDistance());
-    SmartDashboard.putNumber("Heading", dt.getHeading());
-    SmartDashboard.putNumber("Left Voltage", dt.getLeftVoltage());
-    SmartDashboard.putNumber("Right Voltage", dt.getRightVoltage());
+    SmartDashboard.putNumber("Encoder", driveTrain.getAverageEncoderDistance());
+    SmartDashboard.putNumber("Heading", driveTrain.getHeading());
+    SmartDashboard.putNumber("Left Voltage", driveTrain.getLeftVoltage());
+    SmartDashboard.putNumber("Right Voltage", driveTrain.getRightVoltage());
     SmartDashboard.putData("Right PID Controller",  rightPID);
     SmartDashboard.putData("Left PID Controller", leftPID);
-    SmartDashboard.putNumber("Left Position", Constants.Trajectory.kDistPerRot * dt.getLeftEncoder().getPosition() / 42);
-    SmartDashboard.putNumber("Right Position", Constants.Trajectory.kDistPerRot * dt.getRightEncoder().getPosition() / 42);
+    SmartDashboard.putNumber("Left Position", Constants.Trajectory.kDistPerRot * driveTrain.getLeftEncoder().getPosition() / 42);
+    SmartDashboard.putNumber("Right Position", Constants.Trajectory.kDistPerRot * driveTrain.getRightEncoder().getPosition() / 42);
   }
 }

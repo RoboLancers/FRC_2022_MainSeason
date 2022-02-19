@@ -4,18 +4,15 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import frc.robot.Constants;
 import frc.robot.subsystems.indexer.Ball.BallPosition;
-import frc.robot.subsystems.turret.Turret;
 
-public class Indexer {
+public class Indexer extends SubsystemBase {
 
     /*
     Finn: I would suggest instead doing something like this to track the shots.
@@ -24,8 +21,8 @@ public class Indexer {
     public final ColorSensorV3 bottomColorSensor = new ColorSensorV3(I2C.Port.kOnboard); // not sure what this error is, but you should fix it
 
     // Maintains the touch sensor closest to the turret
-    DigitalInput toplimitSwitch = new DigitalInput(0);
-    DigitalInput bottomlimitSwitch = new DigitalInput(1);
+    DigitalInput topLimitSwitch = new DigitalInput(0);
+    DigitalInput bottomLimitSwitch = new DigitalInput(1);
     
     public Ball[] balls = new Ball[2]; // Create an array of balls
     public CANSparkMax indexerMotor = new CANSparkMax(Constants.Indexer.kIndexerPort, MotorType.kBrushless);
@@ -48,7 +45,7 @@ public class Indexer {
         if (balls[0] == null && balls[1] == null) { // If no balls are in the indexer
             balls[0] = new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM); // Instatiate a new ball in the bottom position
             indexerMotor.set(Constants.Indexer.kIndexerSpeed); // Set the indexer to the speed we want
-            balls[0].progressPos();
+            balls[0].setPos(BallPosition.MIDDLE); // Check to see if this works
         } else if (balls[1] == null) { // If one ball is indexed, and another is detected, we want to move the indexed one to the top position, which should bring the bottom one into the indexer
             balls[1] = new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM); // Instantiate a new ball in the bottom
             indexerMotor.set(Constants.Indexer.kIndexerSpeed);
@@ -60,11 +57,11 @@ public class Indexer {
     }
 
     public boolean indexFinished() {
-        if (balls[0].getPos() == BallPosition.MIDDLE && toplimitSwitch.get()) { // if the indexer is running until a ball reaches the top
+        if (balls[0].getPos() == BallPosition.MIDDLE && topLimitSwitch.get()) { // if the indexer is running until a ball reaches the top
             balls[1].setPos(BallPosition.MIDDLE); // move both balls up
             balls[0].setPos(BallPosition.TOP);
             return true;
-        } else if (balls[0].getPos() == BallPosition.BOTTOM && toplimitSwitch.get()) { // if the indexer is running until a ball reaches the middle
+        } else if (balls[0].getPos() == BallPosition.BOTTOM && topLimitSwitch.get()) { // if the indexer is running until a ball reaches the middle
             balls[0].setPos(BallPosition.MIDDLE); // move the ball up
             return true;
         }
@@ -85,5 +82,33 @@ public class Indexer {
 
     public boolean hasTwoBalls() {
         return (balls[1] != null);
+    }
+
+    public void setDefaultCommand() {
+        indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+    }
+
+    public void progressBalls() {
+        if (balls[1] == null) {
+            if (balls[0].getPos() == BallPosition.BOTTOM) {
+                balls[0].setPos(BallPosition.MIDDLE); 
+            }
+            else if (balls[0].getPos() == BallPosition.MIDDLE) {
+                balls[0].setPos(BallPosition.TOP); 
+            }
+            else { 
+                balls[0] = null;
+            }
+        }
+        else {
+            if ((balls[0].getPos() == BallPosition.MIDDLE) && (balls[1].getPos() == BallPosition.BOTTOM)) {
+                balls[0].setPos(BallPosition.TOP);
+                balls[1].setPos(BallPosition.MIDDLE);
+            }
+            else if ((balls[0].getPos() == BallPosition.TOP) && (balls[1].getPos() == BallPosition.MIDDLE)) {
+                balls[0].setPos(BallPosition.TOP);
+                balls[1] = null;
+            }
+        }
     }
 }

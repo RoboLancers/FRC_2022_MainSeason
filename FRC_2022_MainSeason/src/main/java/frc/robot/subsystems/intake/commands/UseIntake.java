@@ -9,6 +9,7 @@ public class UseIntake extends CommandBase{ // DeployIntake
 
     public UseIntake(Intake intake) {
         this.intake = new Intake();
+        addRequirements(intake);
     }
 
     @Override
