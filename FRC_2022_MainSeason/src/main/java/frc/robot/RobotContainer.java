@@ -12,7 +12,6 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
-
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
@@ -21,12 +20,20 @@ import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
+
+
+import frc.robot.subsystems.misc.AddressableLEDs;
+
+
+
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
+
+
+
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.util.XboxController;
@@ -47,6 +54,7 @@ public class RobotContainer {
   private XboxController driverController = new XboxController(0);
   private XboxController manipulatorController = new XboxController(1);
   private GearShifter gearShifter;
+  private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   public RobotContainer() {
     this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
@@ -63,6 +71,7 @@ public class RobotContainer {
       )
     );
 
+    m_AddressableLEDs.setDefaultCommand(new InstantCommand(() -> {m_AddressableLEDs.setNoCargo();}, m_AddressableLEDs));
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
     turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
   }
@@ -151,7 +160,7 @@ public class RobotContainer {
     return ramseteCommand.andThen(() -> driveTrain.tankDriveVolts(0,0));
   }
 
-  public void update() {
+  public void updateSmartDashboard(){
     SmartDashboard.putNumber("Encoder", driveTrain.getAverageEncoderDistance());
     SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     SmartDashboard.putNumber("Left Voltage", driveTrain.getLeftVoltage());
