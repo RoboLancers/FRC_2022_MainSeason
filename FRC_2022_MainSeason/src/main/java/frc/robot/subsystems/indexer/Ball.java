@@ -1,0 +1,43 @@
+package frc.robot.subsystems.indexer;
+
+import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.Constants;
+
+public class Ball { // Finn: This class is just a simple utility to hold some information about the ball's indexing state
+    public enum BallPosition {
+        BOTTOM (0), MIDDLE (1), TOP(2);
+
+        int posNumber;
+        BallPosition(int posNumber) {
+            this.posNumber = posNumber;
+        }
+    
+    }
+    private final Color color;
+    private BallPosition pos;
+
+    public Ball(int redValue, int blueValue, BallPosition pos) {
+
+        if ((redValue >= Constants.Indexer.kRedThreshold) && !(blueValue >= Constants.Indexer.kBlueThreshold)) {
+            color = Color.kRed;
+        }
+        else if ((blueValue >= Constants.Indexer.kBlueThreshold) && !(redValue >= Constants.Indexer.kRedThreshold)) {
+            color = Color.kBlue;
+        } 
+        else {
+            color = Color.kWhite;
+        }
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public BallPosition getPos() {
+        return pos;
+    }
+
+    public void setPos(BallPosition pos) {
+        this.pos = pos;
+    }
+}
