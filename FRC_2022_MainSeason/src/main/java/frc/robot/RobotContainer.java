@@ -34,7 +34,6 @@ import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.util.XboxController;
@@ -161,7 +160,7 @@ public class RobotContainer {
     return ramseteCommand.andThen(() -> driveTrain.tankDriveVolts(0,0));
   }
 
-  public void update() {
+  public void updateSmartDashboard(){
     SmartDashboard.putNumber("Encoder", driveTrain.getAverageEncoderDistance());
     SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     SmartDashboard.putNumber("Left Voltage", driveTrain.getLeftVoltage());

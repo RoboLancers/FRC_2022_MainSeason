@@ -1,7 +1,7 @@
-package frc.robot.subsystems.climber.commands;
+package frc.robot.subsystems.Climber.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.Climber.Climber;
 
 public class UseClimber extends CommandBase{
     Climber climber;

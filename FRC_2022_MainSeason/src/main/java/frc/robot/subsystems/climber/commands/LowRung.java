@@ -11,6 +11,7 @@ public class LowRung extends CommandBase{
         this.climbHeight = climbHeight;
     }
 
+    // spelling
     public void extecute(){
         climber.set(Constants.Climber.kPower);
     }
