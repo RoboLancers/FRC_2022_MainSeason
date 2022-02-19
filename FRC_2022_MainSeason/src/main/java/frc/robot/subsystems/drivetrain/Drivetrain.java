@@ -1,6 +1,7 @@
 package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
@@ -17,18 +18,18 @@ import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase{
     //The motors on the left side of the drivetrain
-    private final CANSparkMax leftMotor1 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax leftMotor1 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     private final MotorControllerGroup leftMotors = new MotorControllerGroup(
             leftMotor1,
-            new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless), 
-            new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless));
+            new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless), 
+            new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless));
     //The motors on the right side of the drivetrain
-    private final CANSparkMax rightMotor1 = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax rightMotor1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final MotorControllerGroup rightMotors = new MotorControllerGroup(
             rightMotor1,
-            new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless),
-            new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless));
+            new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless),
+            new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless));
     //A differential drive object that takes in both motor sides. 
     private final DifferentialDrive difDrive = new DifferentialDrive(leftMotors, rightMotors);
     //An odometry object to keep track of robot pose.
@@ -38,7 +39,8 @@ public class Drivetrain extends SubsystemBase{
     //The encoders on the left motors.
     private final RelativeEncoder leftEncoder = leftMotor1.getEncoder();
     //The PigeonIMU gyro.
-    private final WPI_PigeonIMU gyro = new WPI_PigeonIMU(1); //Check port
+    //private final WPI_PigeonIMU gyro; //Check port
+    private final AHRS gyro = new AHRS();    
     //Field2d object to track pose in Glass
     private final Field2d m_field = new Field2d();
     private final SlewRateLimiter throttleFilter = new SlewRateLimiter(Constants.kThrottleFilter);
@@ -148,7 +150,7 @@ public class Drivetrain extends SubsystemBase{
 
     //Returns the rate at which the robot is turning in degrees per second.
     public double getTurnRate() {
-        return -gyro.getRate();
+       return -gyro.getRate();
     }
 
 

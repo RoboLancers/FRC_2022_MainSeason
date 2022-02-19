@@ -28,6 +28,7 @@ import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.NotifierCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -49,7 +50,7 @@ public class RobotContainer {
   private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private Pneumatics pneumatics = new Pneumatics();
-  public GearShifter gearshifter = new GearShifter();
+  public GearShifter gearshifter = new GearShifter(pneumatics);
  
   
 
@@ -80,7 +81,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //Toggle Gearshift
-    new JoystickButton(driverController, Button.kA.value)
+    new JoystickButton(driverController, Button.kB.value).whenPressed(pneumatics::compressorOff);
+    new JoystickButton(driverController, Button.kX.value).whenPressed(pneumatics::compressorOn);
+    new JoystickButton(driverController, 1)
         .whenPressed(gearshifter::ToggleGearShifter);
   }
 
@@ -152,24 +155,20 @@ public class RobotContainer {
     //return ramseteCommand.andThen(() -> dt.tankDriveVolts(0,0));
   }
 
-  public void doSendables() {
+  public void doSendables(){
     SmartDashboard.putNumber("Encoder", dt.getAverageEncoderDistance());
     SmartDashboard.putNumber("Heading", dt.getHeading());
     SmartDashboard.putNumber("Left Voltage", dt.getLeftVoltage());
     SmartDashboard.putNumber("Right Voltage", dt.getRightVoltage());
     SmartDashboard.putData("Right PID Controller",  rightPID);
     SmartDashboard.putData("Left PID Controller", leftPID);
+    SmartDashboard.putString("Gearshifter",gearshifter.getState().toString());
     //Are these encoder positions correct?
     SmartDashboard.putNumber("Left Position", Constants.Trajectory.kDistPerRot * dt.getLeftEncoder().getPosition() / 42);
     SmartDashboard.putNumber("Right Position", Constants.Trajectory.kDistPerRot * dt.getRightEncoder().getPosition() / 42);
-    
+    SmartDashboard.putNumber("System pressure", pneumatics.getPressure());
+    SmartDashboard.putBoolean("System pressure switch tripped", pneumatics.pressureSwitchTripped());
     SmartDashboard.putNumber("Left Encoder Ticks", dt.getLeftEncoder().getPosition() * 4096);
     SmartDashboard.putNumber("Right Encoder Ticks", dt.getRightEncoder().getPosition() * 4096);
-    
-
-    
   }
-
-  
- 
 }

@@ -10,8 +10,8 @@ import frc.robot.subsystems.drivetrain.enums.GearShifterState;
 public class GearShifter extends SubsystemBase {
     private DoubleSolenoid gearShifter;
 
-        public GearShifter() {
-            gearShifter = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1,3);  // This is the value of the gearshifter as read by the solenoid
+        public GearShifter(Pneumatics pneumatics) {
+            gearShifter = pneumatics.getDoubleSolenoid(0, 1);  // This is the value of the gearshifter as read by the solenoid
             ///gearShifter.set(Value.kReverse);
          } // created variable to represent the current gearshifter state
     
