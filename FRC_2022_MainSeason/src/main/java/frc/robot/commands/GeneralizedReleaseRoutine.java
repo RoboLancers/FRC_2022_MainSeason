@@ -31,11 +31,13 @@ public class GeneralizedReleaseRoutine extends CommandBase {
                     return turret.flywheel.getCurrent() < Constants.Turret.TunedCoefficients.FlywheelPID.kCurrentSpikeThreshold;
                 }),
                 // TODO: if we want to make adjustments to rpm uncomment this and add a command after the wait
-                new WaitCommand(Constants.Turret.TunedCoefficients.FlywheelPID.kPostSpikeDelay)
-                this.indexer.progressBalls();
+                new WaitCommand(Constants.Turret.TunedCoefficients.FlywheelPID.kPostSpikeDelay),
+                new InstantCommand (() -> {
+                    indexer.progressBalls();
                     if (indexer.balls[0] != null) {
                         indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
                     }
+                })
             );
         }
     }

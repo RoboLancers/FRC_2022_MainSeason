@@ -5,6 +5,11 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 public final class Constants {
     public static final class Climber {
         public static final int CLIMBER_PORT = 0;
+        public static final double kSpoolRadius = 1.375;
+        public static final double kRotationToInch = Math.PI*kSpoolRadius/15;
+        public static final double kLowClimb = 48.75;
+        public static final double kMidClimb = 60.25;
+        public static final double kPower = 1;
     }
 
     public static final class Turret {
@@ -126,4 +131,5 @@ public final class Constants {
 
         public static final double kDistPerRot = (3.072/100);
     }
+    
 }
