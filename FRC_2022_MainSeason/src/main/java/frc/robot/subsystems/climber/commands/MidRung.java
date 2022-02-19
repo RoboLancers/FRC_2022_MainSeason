@@ -11,12 +11,15 @@ public class MidRung extends CommandBase{
         this.climbHeight = climbHeight;
     }
 
+    // spelling
     public void extecute(){
         climber.set(Constants.Climber.kPower);
     }
 
     @Override
     public boolean isFinished(){
+        // change to "return climber.getPosition() <= climbHeight"
+        // right now it will have an error for not returning false
         if (climber.getPosition() <= (climbHeight)){
             return true;
         }
