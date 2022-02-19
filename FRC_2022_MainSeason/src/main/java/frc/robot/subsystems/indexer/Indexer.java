@@ -70,11 +70,11 @@ public class Indexer extends SubsystemBase {
 
     public boolean inShootingPosition() {
         if ((balls[0].getColor() != null) && (balls[1].getColor() != null)) {
-            if ((balls[0].getPos() == BallPosition.TOP) && ((balls[0].getPos() == BallPosition.BOTTOM) || (balls[0].getPos() == BallPosition.MIDDLE))) {return true;}
+            if (((balls[0].getPos() == BallPosition.TOP) || (balls[0].getPos() == BallPosition.MIDDLE)) && ((balls[0].getPos() == BallPosition.BOTTOM) || (balls[0].getPos() == BallPosition.MIDDLE))) {return true;}
             return false;
         }
         else if (balls[0].getColor() != null) {
-            if (balls[0].getPos() == BallPosition.TOP) {return true;}
+            if ((balls[0].getPos() == BallPosition.TOP) || (balls[0].getPos() == BallPosition.MIDDLE)) {return true;}
             return false;
         }
         else {return false;}
@@ -84,10 +84,17 @@ public class Indexer extends SubsystemBase {
         return (balls[1] != null);
     }
 
+    public boolean hasOneBall() {
+        return ((balls[1] == null) && (balls[0] != null));
+    }
+
     public void setDefaultCommand() {
-        if (balls[0] =) {
+        if (balls[0] == null) {
             indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
-        }    
+        }
+        else {
+            indexerMotor.set(Constants.Indexer.kIndexerOff);
+        }
     }
 
     public void progressBalls() {
