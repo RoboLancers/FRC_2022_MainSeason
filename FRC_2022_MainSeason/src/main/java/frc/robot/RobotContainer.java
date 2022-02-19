@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.commands.GeneralizedReleaseRoutine;
+import frc.robot.commands.UpdateLights;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
@@ -34,6 +36,7 @@ import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.util.XboxController;
@@ -42,6 +45,7 @@ public class RobotContainer {
   private final Drivetrain driveTrain = new Drivetrain();
   private final Indexer indexer = new Indexer();
   private final Turret turret = new Turret();
+  private final Climber climber = new Climber();
 
   private Trajectory trajectory = new Trajectory();
   // private String trajectoryJSON = "paths/MyPath.wpilib.json";
@@ -71,7 +75,8 @@ public class RobotContainer {
       )
     );
 
-    m_AddressableLEDs.setDefaultCommand(new InstantCommand(() -> {m_AddressableLEDs.setNoCargo();}, m_AddressableLEDs));
+    m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
+    
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
     turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
   }
