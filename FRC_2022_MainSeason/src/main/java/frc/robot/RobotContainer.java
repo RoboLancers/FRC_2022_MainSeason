@@ -1,7 +1,8 @@
 package frc.robot;
 
 import java.util.List;
-
+import frc.robot.subsystems.Climber.Climber;
+package frc.robot.subsystems.Climber.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -16,6 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.commands.GeneralizedReleaseRoutine;
+import frc.robot.subsystems.Climber.commands.LowRung;
+import frc.robot.subsystems.Climber.commands.MidRung;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
@@ -43,6 +46,7 @@ public class RobotContainer {
   private final Drivetrain driveTrain = new Drivetrain();
   private final Indexer indexer = new Indexer();
   private final Turret turret = new Turret();
+  private final Climber climber = new Climber();
 
   private Trajectory trajectory = new Trajectory();
   // private String trajectoryJSON = "paths/MyPath.wpilib.json";
@@ -92,8 +96,8 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
     // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
-    // manipulatorController.whenPressed(XboxController.Button.B, new LowBar);
-    // manipulatorController.whenPressed(XboxController.Button.Y, new MidBar);
+    manipulatorController.whenPressed(XboxController.Button.B, new LowRung(climber,Constants.Climber.kLowClimb));
+    manipulatorController.whenPressed(XboxController.Button.Y, new MidRung(climber,Constants.Climber.kMidClimb));
   }
 
   public Command getAutonomousCommand() {
