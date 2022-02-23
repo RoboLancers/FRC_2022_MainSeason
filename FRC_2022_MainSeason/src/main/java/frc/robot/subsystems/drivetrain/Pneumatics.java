@@ -8,21 +8,22 @@ public class Pneumatics extends SubsystemBase {
     private Compressor compressor;
 
     public Pneumatics(){
-        compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+        compressor = new Compressor(PneumaticsModuleType.REVPH);
+        compressor.enableDigital();
     }
 
     /**
      * Regulates the compressor
      */
-    public void regulateCompressor(){
-        if(!compressor.getPressureSwitchValue() && !compressor.enabled()
-                && isCompressorSafeToUse()){
-            compressor.enableDigital();
-        }else if(compressor.getPressureSwitchValue() && compressor.enabled()
-                || !isCompressorSafeToUse()){
-            compressor.disable();
-        }
-    }
+    // public void regulateCompressor(){
+    //     if(!compressor.getPressureSwitchValue() && !compressor.enabled()
+    //             && isCompressorSafeToUse()){
+    //         compressor.enableDigital();
+    //     }else if(compressor.getPressureSwitchValue() && compressor.enabled()
+    //             || !isCompressorSafeToUse()){
+    //         compressor.disable();
+    //     }
+    // }
 
     /**
      * Checks if compressor is safe to use

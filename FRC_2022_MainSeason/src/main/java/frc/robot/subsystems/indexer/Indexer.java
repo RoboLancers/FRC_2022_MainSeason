@@ -61,7 +61,7 @@ public class Indexer extends SubsystemBase {
             balls[1].setPos(BallPosition.MIDDLE); // move both balls up
             balls[0].setPos(BallPosition.TOP);
             return true;
-        } else if (balls[0].getPos() == BallPosition.BOTTOM && topLimitSwitch.get()) { // if the indexer is running until a ball reaches the middle
+        } else if (balls[0].getPos() == BallPosition.BOTTOM && bottomLimitSwitch.get()) { // if the indexer is running until a ball reaches the middle
             balls[0].setPos(BallPosition.MIDDLE); // move the ball up
             return true;
         }

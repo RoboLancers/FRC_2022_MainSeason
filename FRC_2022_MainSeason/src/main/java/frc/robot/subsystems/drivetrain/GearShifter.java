@@ -12,7 +12,7 @@ public class GearShifter extends SubsystemBase {
     private GearShifterState state;
 
         public GearShifter() {
-            DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2,3);  // This is the value of the gearshifter as read by the solenoid
+            DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1,0);  // This is the value of the gearshifter as read by the solenoid
             gearShifter.set(Value.kReverse);
          } // created variable to represent the current gearshifter state
     
@@ -25,9 +25,9 @@ public class GearShifter extends SubsystemBase {
             return state;
         }
 
-        /*public void ToggleGearShifter() {
-            gearShifter.setGearShifter(gearShifter.getState() == GearShifterState.HIGHGEAR ? GearShifterState.LOWGEAR : GearShifterState.HIGHGEAR);
-        }*/
+        public void ToggleGearShifter() {
+            gearShifter.toggle();
+        }
 
     
     

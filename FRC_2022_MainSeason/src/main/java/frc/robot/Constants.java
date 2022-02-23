@@ -94,6 +94,8 @@ public final class Constants {
         // Color sensor proximity?????
         public static final int kIndexerPort = 0;
         public static final double kIndexerSpeed = 0.2;
+        public static final int ktopSwitch = 1;
+        public static final int kbottomSwitch = 0;
         public static final double kStandardIndexerSpeed = 0.1;
         public static final double kShootTime = 0;
         public static final double kIndexerOff = 0;
