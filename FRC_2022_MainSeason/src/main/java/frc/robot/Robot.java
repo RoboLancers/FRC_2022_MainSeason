@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.List;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.SPI;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -28,9 +31,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Field2d m_field;
   private Trajectory trajectoree;
+
   //private Trajectory trajectoree = new Trajectory();
  
-
   private RobotContainer m_robotContainer = new RobotContainer();
   /*private String trajectoryJSON = "paths/TestNumbaWon.wpilib.json";
   private Trajectory trajectory;*/
@@ -58,7 +61,7 @@ public class Robot extends TimedRobot {
     m_field.getObject("traj").setTrajectory(trajectoree);*/
   
     setNetworkTablesFlushEnabled(true);
-
+    
     
   }
 

@@ -7,6 +7,9 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -22,6 +25,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.subsystems.drivetrain.Drivetrain;
@@ -32,7 +36,10 @@ import edu.wpi.first.wpilibj2.command.NotifierCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.SPI;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,19 +54,20 @@ public class RobotContainer {
   private Trajectory trajectory = new Trajectory();
   private String trajectoryJSON = "pathplanner/generatedJSON/Test Path.wpilib.json";
   private XboxController driverController = new XboxController(0);
-  private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
-  private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
+  private PIDController rightPID = new PIDController(Constants.Trajectory.kP, 0, 0);
+  private PIDController leftPID = new PIDController(Constants.Trajectory.kP, 0, 0);
   private Pneumatics pneumatics = new Pneumatics();
   public GearShifter gearshifter = new GearShifter(pneumatics);
+  private AHRS gyro = new AHRS(SPI.Port.kMXP);
  
-  
-
   
   
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    //LiveWindow.disableAllTelemetry();
     pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
  
     configureButtonBindings();
@@ -70,6 +78,18 @@ public class RobotContainer {
           () ->
               dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()),
           dt));
+    // Trigger readyToShoot = new Trigger() {
+    //     @Override
+    //     public boolean get() {
+    //         return((m_indexer.inShootingPosition()) && (Turret.isReadyToShoot()));
+    //     }
+    //   };
+    //   readyToShoot.whenActive((new RunCommand(() -> {shootBall();}))
+    //   .withInterrupt(turret::ballHasBeenShot)
+    //   .andThen(() -> indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed))
+    //   );
+
+    
 }
    
 
@@ -151,18 +171,17 @@ public class RobotContainer {
           dt);
 
     dt.resetOdometry(trajectory.getInitialPose());
-    return null;
-    //return ramseteCommand.andThen(() -> dt.tankDriveVolts(0,0));
+    return ramseteCommand.andThen(() -> dt.tankDriveVolts(0,0));
   }
 
   public void doSendables(){
     SmartDashboard.putNumber("Encoder", dt.getAverageEncoderDistance());
-    SmartDashboard.putNumber("Heading", dt.getHeading());
-    SmartDashboard.putNumber("Left Voltage", dt.getLeftVoltage());
-    SmartDashboard.putNumber("Right Voltage", dt.getRightVoltage());
-    SmartDashboard.putData("Right PID Controller",  rightPID);
-    SmartDashboard.putData("Left PID Controller", leftPID);
     SmartDashboard.putString("Gearshifter",gearshifter.getState().toString());
+    SmartDashboard.putNumber("Yaw", gyro.getYaw());
+    SmartDashboard.putNumber("Altitude", gyro.getAltitude());
+    SmartDashboard.putNumber("Joystick Value", driverController.getLeftY());
+    SmartDashboard.putNumber("Left voltage", dt.getLeftVoltage());
+    SmartDashboard.putNumber("Right voltage", dt.getRightVoltage());
     //Are these encoder positions correct?
     SmartDashboard.putNumber("Left Position", Constants.Trajectory.kDistPerRot * dt.getLeftEncoder().getPosition() / 42);
     SmartDashboard.putNumber("Right Position", Constants.Trajectory.kDistPerRot * dt.getRightEncoder().getPosition() / 42);

@@ -41,37 +41,4 @@ public class AddressableLEDs extends SubsystemBase {
         m_led.start();
     }
  
-
-    //have a command group such that if cargo is loaded into turret, run this method
-    public void setReadyToShoot() {
-        
-        for (int i = 1; i < m_ledBuffer.getLength(); i++){
-            m_ledBuffer.setRGB(i, Colors.GREEN.red, Colors.GREEN.green, Colors.GREEN.blue);
-        } 
-        m_led.setData(m_ledBuffer);
-        m_led.start();
-
-    }
-
-    //have a command group such that if hub is out of range, run this method
-    public void setOutOfRange() {
-
-        for (int i = 1; i < m_ledBuffer.getLength(); i++){
-            m_ledBuffer.setRGB(i, Colors.RED.red, Colors.RED.green, Colors.RED.blue);
-        } 
-        m_led.setData(m_ledBuffer);
-        m_led.start();
-
-    }
-    
-    public void setLoading() {
-
-        for (int i = 1; i < m_ledBuffer.getLength(); i++){
-            m_ledBuffer.setRGB(i, Colors.YELLOW.red, Colors.YELLOW.green, Colors.YELLOW.blue);
-        } 
-        m_led.setData(m_ledBuffer);
-        m_led.start();
-
-    }
-
 }

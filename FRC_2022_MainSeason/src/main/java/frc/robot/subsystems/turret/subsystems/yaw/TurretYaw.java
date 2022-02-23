@@ -10,11 +10,12 @@ import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 
 import java.util.function.Consumer;
 
-import com.qualcomm.robotcore.hardware;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class TurretYaw extends SubsystemBase {
@@ -23,7 +24,7 @@ public class TurretYaw extends SubsystemBase {
     public LimeLight limelight;
 
     private CANSparkMax motor;
-    private CANEncoder encoder;
+    private RelativeEncoder encoder;
 
     private DigitalInput homingSwitch;
 
@@ -32,7 +33,7 @@ public class TurretYaw extends SubsystemBase {
 
         this.limelight = new LimeLight();
 
-        this.motor = new CANSparkMax(CANSparkMax.MotorType.kBrushless, Constants.Turret.Ports.kYawMotor);
+        this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, MotorType.kBrushless);
         this.encoder = this.motor.getEncoder();
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);

@@ -45,7 +45,7 @@ public class Drivetrain extends SubsystemBase{
     //Field2d object to track pose in Glass
     private final Field2d m_field = new Field2d();
     private final SlewRateLimiter throttleFilter = new SlewRateLimiter(Constants.kThrottleFilter);
-    // private final SlewRateLimiter turnFilter = new SlewRateLimiter(Constants.kTurnFilter);
+    private final SlewRateLimiter turnFilter = new SlewRateLimiter(Constants.kTurnFilter);
     
 
     //Drivetrain
@@ -90,7 +90,11 @@ public class Drivetrain extends SubsystemBase{
 
     //Drives the robot with arcade controls.
     public void arcadeDrive(double throttle, double turn) {
-        difDrive.arcadeDrive(throttleFilter.calculate(throttle), turn);
+        difDrive.arcadeDrive(throttleFilter.calculate(throttle), turn*0.6, false);
+        // if (throttle == 0 && turn == 0) {
+        //     tankDriveVolts(0, 0);
+        // }
+        
     }
 
     //Controls the left and right side motors directly with voltage.

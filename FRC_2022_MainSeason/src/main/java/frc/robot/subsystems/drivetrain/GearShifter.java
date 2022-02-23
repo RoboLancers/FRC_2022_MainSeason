@@ -11,8 +11,9 @@ public class GearShifter extends SubsystemBase {
     private DoubleSolenoid gearShifter;
 
         public GearShifter(Pneumatics pneumatics) {
-            gearShifter = pneumatics.getDoubleSolenoid(0, 1);  // This is the value of the gearshifter as read by the solenoid
+            gearShifter = pneumatics.getDoubleSolenoid(1, 0);  // This is the value of the gearshifter as read by the solenoid
             ///gearShifter.set(Value.kReverse);
+            ToggleGearShifter();
          } // created variable to represent the current gearshifter state
     
         public void setGearShifter(GearShifterState gearShifterState) {
