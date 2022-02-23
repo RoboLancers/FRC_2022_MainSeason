@@ -1,7 +1,7 @@
 package frc.robot.subsystems.climber.commands;
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.climber.Climber;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class LowRung extends CommandBase{
     Climber climber;
@@ -11,7 +11,10 @@ public class LowRung extends CommandBase{
         this.climbHeight = climbHeight;
     }
 
+<<<<<<< HEAD
     // spelling
+=======
+>>>>>>> fd23291be5ce8e345af78822ffd4827d3e7477de
     public void execute(){
         climber.set(Constants.Climber.kPower);
     }

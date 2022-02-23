@@ -10,7 +10,6 @@ import frc.robot.subsystems.turret.Turret;
 public class UpdateLights extends CommandBase {
     public AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
-
     public UpdateLights(Turret turret, Climber climber, Indexer indexer) {
 
         if (indexer.hasTwoBalls()) { //two cargo in indexer ; 
