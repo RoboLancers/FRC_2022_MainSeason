@@ -3,14 +3,16 @@ import frc.robot.Constants;
 import frc.robot.subsystems.climber.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class LowRung extends CommandBase{
+public class MidRung extends CommandBase{
     Climber climber;
     double climbHeight;
-    public LowRung(Climber climber, double climbHeight) {
+    public MidRung(Climber climber, double climbHeight) {
         this.climber = climber;
         this.climbHeight = climbHeight;
     }
 
+    // spelling
+    
     public void execute(){
         climber.set(Constants.Climber.kPower);
     }

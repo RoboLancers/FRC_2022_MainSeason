@@ -9,25 +9,30 @@ import frc.robot.subsystems.drivetrain.enums.GearShifterState;
 
 public class GearShifter extends SubsystemBase {
     private DoubleSolenoid gearShifter;
-    private GearShifterState state;
 
-        public GearShifter() {
-            DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2,3);  // This is the value of the gearshifter as read by the solenoid
-            gearShifter.set(Value.kReverse);
+        public GearShifter(Pneumatics pneumatics) {
+            gearShifter = pneumatics.getDoubleSolenoid(1, 0);  // This is the value of the gearshifter as read by the solenoid
+            ///gearShifter.set(Value.kReverse);
+            ToggleGearShifter();
          } // created variable to represent the current gearshifter state
     
         public void setGearShifter(GearShifterState gearShifterState) {
             gearShifter.set(gearShifterState.getValue());  //This is changing the value set on the solenoid 
-            state = gearShifterState; //this is changing the state of the gear shifter to high gear to low gear or low to high gear
         }
  
-        public GearShifterState getState() {
-            return state;
+        public Value getState() {
+            return gearShifter.get();
         }
 
-        /*public void ToggleGearShifter() {
-            gearShifter.setGearShifter(gearShifter.getState() == GearShifterState.HIGHGEAR ? GearShifterState.LOWGEAR : GearShifterState.HIGHGEAR);
-        }*/
+        public void ToggleGearShifter() {
+            if (getState() == Value.kOff) {
+                gearShifter.set(Value.kReverse);
+            } else {
+               gearShifter.toggle();
+            }
+        }
+
+     
 
     
     

@@ -22,9 +22,9 @@ public class UpdateLights extends CommandBase {
             m_AddressableLEDs.setNoCargo(); 
         }
 
-        if (climber.isClung()) { //climber is hung ; crimson and gold
-            m_AddressableLEDs.setHanging();
-        }
+        // if (climber.isClung()) { //climber is hung ; crimson and gold
+        //     m_AddressableLEDs.setHanging();
+        // }
     }
 
     public void turretLEDCondition(Turret turret) {
