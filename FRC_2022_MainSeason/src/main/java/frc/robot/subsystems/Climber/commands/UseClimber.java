@@ -9,7 +9,4 @@ public class UseClimber extends CommandBase{
     public UseClimber(Climber climber) {
         this.climber = climber;
     }
-
-
-    
 }

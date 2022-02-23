@@ -40,8 +40,4 @@ public class Ball { // Finn: This class is just a simple utility to hold some in
     public void setPos(BallPosition pos) {
         this.pos = pos;
     }
-
-    public void progressPos() {
-        pos.posNumber++; // does this work? Check with Matt
-    }
 }

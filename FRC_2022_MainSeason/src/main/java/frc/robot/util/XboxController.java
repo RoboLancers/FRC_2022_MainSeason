@@ -52,7 +52,12 @@ public class XboxController extends BaseController {
         UP(0,0),
         RIGHT(1,90),
         DOWN(2,180),
-        LEFT(3,270);
+        LEFT(3,270),
+        
+        UPPER_RIGHT(4,45),
+        LOWER_RIGHT(5,135),
+        LOWER_LEFT(6,225),
+        UPPER_LEFT(7,315);
 
         int index;
         int angle;
@@ -117,8 +122,8 @@ public class XboxController extends BaseController {
         return Utilities.applyDeadband(axis.inverted * joystick.getRawAxis(axis.port), deadzone);
     }
 
-    public boolean getState(Button button){
-        return joystick.getRawButton(button.port);
+    public boolean getState(Button buttons){
+        return joystick.getRawButton(buttons.port);
     }
 
     public boolean getState(Trigger trigger){
@@ -208,5 +213,159 @@ public class XboxController extends BaseController {
         joystick.setRumble(GenericHID.RumbleType.kLeftRumble, rumble ? 1 : 0);
         joystick.setRumble(GenericHID.RumbleType.kRightRumble, rumble ? 1 : 0);
     }
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public XboxController toggleWhenBothPressed(Button button1, Button button2, Command command) {
+        if (getState(button1) && getState(button2)) {
+            buttons[button1.port].toggleWhenPressed(command);
+        }
+        return this;
+    }
+
+    public XboxController toggleWhenBothPressed(Trigger trigger1, Trigger trigger2, Command command) {
+        if (getState(trigger1) && getState(trigger2)) {
+            triggerButtons[trigger1.port].toggleWhenActive(command);
+        }
+        return this;
+    }
+
+    public XboxController toggleWhenBothPressed(POV pov1, POV pov2, Command command) {
+        if (getState(pov1) && getState(pov2)) {
+            povButtons[pov1.index].toggleWhenPressed(command);
+        }
+        return this;
+    }
+
+    public XboxController toggleWhenBothPressed(Button button, Trigger trigger, Command command) {
+        if (getState(button) && getState(trigger)) {
+            buttons[button.port].toggleWhenPressed(command);
+        }
+        return this;
+    }
+
+    public XboxController toggleWhenBothPressed(Trigger trigger, POV pov, Command command) {
+        if (getState(trigger) && getState(pov)) {
+            triggerButtons[trigger.port].toggleWhenActive(command);
+        }
+        return this;
+    }
+
+    public XboxController toggleWhenBothPressed(POV pov, Button button, Command command) {
+        if (getState(pov) && getState(button)) {
+            povButtons[pov.index].toggleWhenPressed(command);
+        }
+        return this;
+    }
+
+    public XboxController toggleWhenBothPressed(Trigger trigger, Button button, Command command) {
+        if (getState(button) && getState(trigger)) {
+            buttons[button.port].toggleWhenPressed(command);
+        }
+        return this;
+    }
+
+    public XboxController toggleWhenBothPressed(POV pov, Trigger trigger, Command command) {
+        if (getState(trigger) && getState(pov)) {
+            triggerButtons[trigger.port].toggleWhenActive(command);
+        }
+        return this;
+    }
+
+    public XboxController toggleWhenBothPressed(Button button, POV pov, Command command) {
+        if (getState(pov) && getState(button)) {
+            povButtons[pov.index].toggleWhenPressed(command);
+        }
+        return this;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public XboxController whenBothPressed(Button button1, Button button2, Command command) {
+        if (getState(button1) && getState(button2)) {
+            buttons[button1.port].whenPressed(command);
+        }
+        return this;
+    }
+
+    public XboxController whenBothPressed(Trigger trigger1, Trigger trigger2, Command command) {
+        if (getState(trigger1) && getState(trigger2)) {
+            triggerButtons[trigger1.port].whenActive(command);
+        }
+        return this;
+    }
+
+    public XboxController whenBothPressed(POV pov1, POV pov2, Command command) {
+        if (getState(pov1) && getState(pov2)) {
+            povButtons[pov1.index].whenPressed(command);
+        }
+        return this;
+    }
+
+    public XboxController whenBothPressed(Button button, Trigger trigger, Command command) {
+        if (getState(button) && getState(trigger)) {
+            buttons[button.port].whenPressed(command);
+        }
+        return this;
+    }
+
+    public XboxController whenBothPressed(Trigger trigger, POV pov, Command command) {
+        if (getState(trigger) && getState(pov)) {
+            triggerButtons[trigger.port].whenActive(command);
+        }
+        return this;
+    }
+
+    public XboxController whenBothPressed(POV pov, Button button, Command command) {
+        if (getState(pov) && getState(button)) {
+            povButtons[pov.index].whenPressed(command);
+        }
+        return this;
+    }
+
+    public XboxController whenBothPressed(Trigger trigger, Button button, Command command) {
+        if (getState(button) && getState(trigger)) {
+            buttons[button.port].whenPressed(command);
+        }
+        return this;
+    }
+
+    public XboxController whenBothPressed(POV pov, Trigger trigger, Command command) {
+        if (getState(trigger) && getState(pov)) {
+            triggerButtons[trigger.port].whenActive(command);
+        }
+        return this;
+    }
+
+    public XboxController whenBothPressed(Button button, POV pov, Command command) {
+        if (getState(pov) && getState(button)) {
+            povButtons[pov.index].whenPressed(command);
+        }
+        return this;
+    }
 }
