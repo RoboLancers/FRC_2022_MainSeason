@@ -42,10 +42,10 @@ public class Climber extends SubsystemBase{
     //         climbEncoder.setPosition(0);
     //     }
 
-    public boolean isClung() {
-        if () {
-            
-        }
-    }
+    // public boolean isClung() {
+    //     if () {
+
+    //     }
+//    }
 }
 
