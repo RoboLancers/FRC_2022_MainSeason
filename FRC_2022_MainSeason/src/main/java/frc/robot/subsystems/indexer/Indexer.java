@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
@@ -18,7 +19,7 @@ public class Indexer extends SubsystemBase {
     Finn: I would suggest instead doing something like this to track the shots.
      - Make a new class called Ball that has a color and a position as shown below
     */
-    public final ColorSensorV3 bottomColorSensor = new ColorSensorV3(I2C.Port.kOnboard); // not sure what this error is, but you should fix it
+    public final ColorSensorV3 bottomColorSensor = new ColorSensorV3(I2C.Port.kMXP); // not sure what this error is, but you should fix it
 
     // Maintains the touch sensor closest to the turret
     DigitalInput topLimitSwitch = new DigitalInput(0);
@@ -35,7 +36,11 @@ public class Indexer extends SubsystemBase {
             }
         };
         // This is an example of command composition.
-        threshColorSensor.whenActive((new RunCommand(this::processBall)) // This runs the processBall() function once the color sensor is activated
+        // threshColorSensor.whenActive((new RunCommand(this::processBall)) // This runs the processBall() function once the color sensor is activated
+        // .withInterrupt(this::indexFinished) // Stop this command when the highest ball in the indexer reaches the next color sensor up
+        // .andThen(() -> indexerMotor.set(0) // After the command is stopped (i.e. the ball reaches the next sensor) stop the indexer motor
+        // ));
+        JoystickButton.whenActive((new RunCommand(this::processBall)) // This runs the processBall() function once the color sensor is activated
         .withInterrupt(this::indexFinished) // Stop this command when the highest ball in the indexer reaches the next color sensor up
         .andThen(() -> indexerMotor.set(0) // After the command is stopped (i.e. the ball reaches the next sensor) stop the indexer motor
         ));
