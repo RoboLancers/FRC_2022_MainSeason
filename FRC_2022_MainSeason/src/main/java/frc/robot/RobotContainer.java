@@ -55,7 +55,15 @@ public class RobotContainer {
   public RobotContainer() {
     this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
 
-    this.indexer.setDefaultCommand();
+    this.indexer.setDefaultCommand(new RunCommand(
+      () -> {
+        if(this.indexer.balls[0] == null) {
+          this.indexer.indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+        } else {
+          this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
+        }
+      }, this.indexer
+    ));
     
     this.configureButtonBindings();
 
