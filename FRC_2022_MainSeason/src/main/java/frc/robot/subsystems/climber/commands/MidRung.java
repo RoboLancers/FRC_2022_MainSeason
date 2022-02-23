@@ -11,11 +11,6 @@ public class MidRung extends CommandBase{
         this.climbHeight = climbHeight;
     }
 
-<<<<<<< HEAD
-    // spelling
-=======
-    
->>>>>>> 6202e94a8999bdb9e8df53905f3d83cbdbbd41a4
     public void execute(){
         climber.set(Constants.Climber.kPower);
     }

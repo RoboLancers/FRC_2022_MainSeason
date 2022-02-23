@@ -46,11 +46,5 @@ public class Climber extends SubsystemBase{
     //         climberMotor1.set(power);
     //         climbEncoder.setPosition(0);
     //     }
-
-    public boolean isClung() {
-        if () {
-            
-        }
-    }
 }
 
