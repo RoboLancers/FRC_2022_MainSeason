@@ -26,27 +26,20 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.commands.GeneralizedReleaseRoutine;
-import frc.robot.commands.UpdateLights;
-import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.climber.commands.LowRung;
 import frc.robot.subsystems.climber.commands.MidRung;
+import frc.robot.commands.UpdateLights;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.commands.UpdateLights;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
-
-
 import frc.robot.subsystems.misc.AddressableLEDs;
-
-
-
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
-
-
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.NotifierCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -63,8 +56,8 @@ import frc.robot.util.XboxController.Axis;
 public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
   private final Indexer indexer = new Indexer();
-  private final Turret turret = new Turret();
-  private final Climber climber = new Climber();
+  // private final Turret turret = new Turret();
+  // private final Climber climber = new Climber();
 
   private Trajectory trajectory = new Trajectory();
   private String trajectoryJSON = "pathplanner/generatedJSON/Test Path.wpilib.json";
@@ -85,10 +78,20 @@ public class RobotContainer {
   private XboxController driverController = new XboxController(0);
   private XboxController manipulatorController = new XboxController(1);
   private GearShifter gearShifter;
-  private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
+  //private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   public RobotContainer() {
     this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
+
+    this.indexer.setDefaultCommand(new RunCommand(
+      () -> {
+        if(this.indexer.balls[0] == null) {
+          this.indexer.indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+        } else {
+          this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
+        }
+      }, this.indexer
+    ));
     
     this.configureButtonBindings();
 
@@ -102,10 +105,14 @@ public class RobotContainer {
       )
     );
 
-    m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
+    //m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
     
-    turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
-    turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
+    //turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
+    //turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
+    // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
+    
+    // turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
+    // turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
   }
 
   private void configureButtonBindings() {
@@ -116,15 +123,18 @@ public class RobotContainer {
     // driverController.whenPressed(XboxController.down, new LowGear);
     // driverController.whenPressed(XboxController.RIGHT_BUMPER, new Intake);
 
-    manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
+    //manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
+    // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
     // manipulatorController.whenPressed(XboxController.RIGHT_BUMPER, new Passthrough In);
     // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
     // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
-    manipulatorController.whenPressed(XboxController.Button.B, new LowRung(climber,Constants.Climber.kLowClimb));
-    manipulatorController.whenPressed(XboxController.Button.Y, new MidRung(climber,Constants.Climber.kMidClimb));
+    //manipulatorController.whenPressed(XboxController.Button.B, new LowRung(climber,Constants.Climber.kLowClimb));
+    //manipulatorController.whenPressed(XboxController.Button.Y, new MidRung(climber,Constants.Climber.kMidClimb));
+    // manipulatorController.whenPressed(XboxController.Button.B, new LowRung(climber,Constants.Climber.kLowClimb));
+    // manipulatorController.whenPressed(XboxController.Button.Y, new MidRung(climber,Constants.Climber.kMidClimb));
   }
 
   public Command getAutonomousCommand() {

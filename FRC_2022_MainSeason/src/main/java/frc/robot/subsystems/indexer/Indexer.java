@@ -88,15 +88,6 @@ public class Indexer extends SubsystemBase {
         return ((balls[1] == null) && (balls[0] != null));
     }
 
-    public void setDefaultCommand() {
-        if (balls[0] == null) {
-            indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
-        }
-        else {
-            indexerMotor.set(Constants.Indexer.kIndexerOff);
-        }
-    }
-
     public void progressBalls() {
         if (balls[1] == null) {
             if (balls[0].getPos() == BallPosition.BOTTOM) {

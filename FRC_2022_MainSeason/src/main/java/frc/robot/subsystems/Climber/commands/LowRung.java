@@ -2,6 +2,7 @@ package frc.robot.subsystems.climber.commands;
 
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.Constants;
+import frc.robot.subsystems.climber.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class LowRung extends CommandBase{
