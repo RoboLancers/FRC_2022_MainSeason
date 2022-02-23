@@ -27,11 +27,6 @@ public class Climber extends SubsystemBase{
         return climbEncoder.getPosition();
     }
 
-    public boolean isClung(){
-        // TODO
-        return false;
-    }
-
     //this.motor.getOutputCurrent();
 
     // public void LowRung(){
@@ -47,10 +42,10 @@ public class Climber extends SubsystemBase{
     //         climbEncoder.setPosition(0);
     //     }
 
-    // public boolean isClung() {
-    //     if () {
-
-    //     }
-//    }
+    //public boolean isClung() {
+    //    if () {
+    //        
+    //    }
+    //}
 }
 
