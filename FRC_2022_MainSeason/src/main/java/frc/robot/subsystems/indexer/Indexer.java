@@ -43,7 +43,7 @@ public class Indexer extends SubsystemBase {
 
     public void processBall() {
         if (balls[0] == null && balls[1] == null) { // If no balls are in the indexer
-            balls[0] = new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM); // Instatiate a new ball in the bottom position
+            balls[0] = new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM); // Instantiate a new ball in the bottom position
             indexerMotor.set(Constants.Indexer.kIndexerSpeed); // Set the indexer to the speed we want
             balls[0].setPos(BallPosition.MIDDLE); // Check to see if this works
         } else if (balls[1] == null) { // If one ball is indexed, and another is detected, we want to move the indexed one to the top position, which should bring the bottom one into the indexer
