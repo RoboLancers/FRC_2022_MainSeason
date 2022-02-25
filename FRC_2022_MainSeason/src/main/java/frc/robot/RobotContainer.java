@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
-import frc.robot.commands.GeneralizedReleaseRoutine;
+// import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.subsystems.climber.commands.LowRung;
 import frc.robot.subsystems.climber.commands.MidRung;
 import frc.robot.commands.UpdateLights;
@@ -88,12 +88,7 @@ public class RobotContainer {
         SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
         SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
         SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
-        if(this.indexer.balls[0] == null) {
-          // this.indexer.indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
-          this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-        } else {
-          this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-        }
+        this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
       }, this.indexer
     ));
     
