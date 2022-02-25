@@ -90,7 +90,8 @@ public class RobotContainer {
         SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
         SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
         if(this.indexer.balls[0] == null) {
-          this.indexer.indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+          // this.indexer.indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+          this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
         } else {
           this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
         }

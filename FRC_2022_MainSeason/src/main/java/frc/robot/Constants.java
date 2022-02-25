@@ -92,7 +92,7 @@ public final class Constants {
         public static final int kBlueThreshold = 4000;
         public static final int kProximityLimit = 1600;
         // Color sensor proximity?????
-        public static final int kIndexerPort = 0;
+        public static final int kIndexerPort = 13;
         public static final double kIndexerSpeed = 0.2;
         public static final int ktopSwitch = 1;
         public static final int kbottomSwitch = 0;
