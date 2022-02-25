@@ -9,7 +9,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose2d;  
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -81,12 +81,17 @@ public class RobotContainer {
   //private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   public RobotContainer() {
-    this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
+    // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
 
     this.indexer.setDefaultCommand(new RunCommand(
       () -> {
+        SmartDashboard.putNumber("proximity", indexer.bottomColorSensor.getProximity());
+        SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
+        SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
+        SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
         if(this.indexer.balls[0] == null) {
-          this.indexer.indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+          // this.indexer.indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
+          this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
         } else {
           this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
         }

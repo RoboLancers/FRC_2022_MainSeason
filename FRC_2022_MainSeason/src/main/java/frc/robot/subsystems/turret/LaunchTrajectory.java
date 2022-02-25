@@ -60,6 +60,7 @@ public class LaunchTrajectory {
         return new LaunchTrajectory(theta, speed);
     }
 
+    // Calculate the trajectory to hit the target having passed through a given control point
     public static LaunchTrajectory usingPassThrough(
         double g,           // Universal acceleration due to gravity [in meters per second]
         double dx0,         // Distance away from control point on XZ plane [in meters]
@@ -82,4 +83,65 @@ public class LaunchTrajectory {
 
         return new LaunchTrajectory(theta, speed);
     }
+
+    public static class InterpolationTable {
+        public static class Entry {
+            private double key;
+            private LaunchTrajectory value;
+    
+            public Entry(double key, LaunchTrajectory value){
+                this.key = key;
+                this.value = value;
+            }
+        }
+
+        private Entry entries[];
+
+        public InterpolationTable(Entry... entries){
+            this.entries = entries;
+        };
+
+        LaunchTrajectory interpolate(double key){
+            // check if key is within bounds of the table
+            if(key < this.entries[0].key){
+                return this.entries[0].value;
+            } else if(key > this.entries[this.entries.length - 1].key){
+                return this.entries[this.entries.length - 1].value;
+            }
+            // find lower and upper bounds of interpolation
+            Entry lowerBound = new Entry(0.0, new LaunchTrajectory(0.0, 0.0));
+            Entry upperBound = new Entry(0.0, new LaunchTrajectory(0.0, 0.0));
+            for(int i = 0;i<this.entries.length - 1;i++){
+                if(this.entries[i].key < key && this.entries[i + 1].key > key){
+                    lowerBound = this.entries[i];
+                    upperBound = this.entries[i + 1];
+                }
+            }
+            // calculate interpolation coefficients and use them to determine the interpolated launch trajectory
+            // note that the upper interpolation coefficient can be calculated as 1 - the lower interpolation coefficient
+            double lowerInterpolationCoefficient = (key - lowerBound.key) / (upperBound.key - lowerBound.key);
+            double upperInterpolationCoefficient = (upperBound.key - key) / (upperBound.key - lowerBound.key);
+            return new LaunchTrajectory(
+                lowerBound.value.theta * lowerInterpolationCoefficient + upperBound.value.theta * upperInterpolationCoefficient,
+                lowerBound.value.speed * lowerInterpolationCoefficient + upperBound.value.speed * upperInterpolationCoefficient
+            );
+        };
+    }
+
+    // Calculate the trajectory by interpolating between known shot trajectories with respect to distance
+    private static final InterpolationTable trajectoryMap = new InterpolationTable(
+        // TODO: tune this very much
+        new InterpolationTable.Entry(0.0, new LaunchTrajectory(0.0, 0.0)),
+        new InterpolationTable.Entry(3.0, new LaunchTrajectory(0.0, 0.0)),
+        new InterpolationTable.Entry(6.0, new LaunchTrajectory(0.0, 0.0)),
+        new InterpolationTable.Entry(9.0, new LaunchTrajectory(0.0, 0.0)),
+        new InterpolationTable.Entry(12.0, new LaunchTrajectory(0.0, 0.0)),
+        new InterpolationTable.Entry(15.0, new LaunchTrajectory(0.0, 0.0))
+    );
+
+    /*
+        usage would be:
+
+            LaunchTrajectory newTurretTrajectory = LaunchTrajectory.trajectoryMap.interpolate(givenDistance);
+    */
 }

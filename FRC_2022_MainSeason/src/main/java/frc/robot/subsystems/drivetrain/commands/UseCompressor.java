@@ -11,10 +11,10 @@ public class UseCompressor extends CommandBase {
         addRequirements(pneumatics);
     }
 
-    @Override
-    public void execute() {
-        pneumatics.regulateCompressor();
-    }
+    // @Override
+    // public void execute() {
+    //     pneumatics.regulateCompressor();
+    // }
 
     @Override
     public boolean isFinished() {

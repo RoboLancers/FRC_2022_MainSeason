@@ -92,8 +92,10 @@ public final class Constants {
         public static final int kBlueThreshold = 4000;
         public static final int kProximityLimit = 1600;
         // Color sensor proximity?????
-        public static final int kIndexerPort = 0;
+        public static final int kIndexerPort = 13;
         public static final double kIndexerSpeed = 0.2;
+        public static final int ktopSwitch = 1;
+        public static final int kbottomSwitch = 0;
         public static final double kStandardIndexerSpeed = 0.1;
         public static final double kShootTime = 0;
         public static final double kIndexerOff = 0;
@@ -130,8 +132,10 @@ public final class Constants {
         public static final double kP = 0;
 
         public static final double kDistPerRot = (3.072/100);
+        
     }
-
+    
     public static final double kThrottleFilter = 1.7;
     public static final double kTurnFilter = 1.5;
+
 }
