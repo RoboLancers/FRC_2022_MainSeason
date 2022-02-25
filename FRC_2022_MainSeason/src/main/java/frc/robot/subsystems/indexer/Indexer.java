@@ -18,7 +18,7 @@ public class Indexer extends SubsystemBase {
     Finn: I would suggest instead doing something like this to track the shots.
      - Make a new class called Ball that has a color and a position as shown below
     */
-    public final ColorSensorV3 bottomColorSensor = new ColorSensorV3(I2C.Port.kOnboard); // not sure what this error is, but you should fix it
+    public final ColorSensorV3 bottomColorSensor = new ColorSensorV3(I2C.Port.kMXP); // not sure what this error is, but you should fix it
 
     // Maintains the touch sensor closest to the turret
     DigitalInput topLimitSwitch = new DigitalInput(0);
