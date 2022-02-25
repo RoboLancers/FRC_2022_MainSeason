@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase{
     public Drivetrain(){
         
         //Reverses the right motors.
-        rightMotors.setInverted(true);
+        rightMotors.setInverted(false);
         //Sets the distance per pulse to the pre-defined constant we calculated for both encoders.
         rightEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot); // create EncoderDistancePerPulse constant later
         leftEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot); // same thing
