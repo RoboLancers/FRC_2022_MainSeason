@@ -1,5 +1,9 @@
 package frc.robot.subsystems.indexer;
 
+
+import java.util.Queue;
+import java.util.PriorityQueue;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -25,7 +29,7 @@ public class Indexer extends SubsystemBase {
     DigitalInput topLimitSwitch = new DigitalInput(0);
     DigitalInput bottomLimitSwitch = new DigitalInput(1);
     
-    public Ball[] balls = new Ball[2]; // Create an array of balls
+    public Queue<Ball> ballQueue= new PriorityQueue<Ball>();
     public CANSparkMax indexerMotor = new CANSparkMax(Constants.Indexer.kIndexerPort, MotorType.kBrushless);
 
     public Indexer(){
@@ -43,73 +47,55 @@ public class Indexer extends SubsystemBase {
     }
 
     public void processBall() {
-        if (balls[0] == null && balls[1] == null) { // If no balls are in the indexer
-            balls[0] = new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM); // Instantiate a new ball in the bottom position
+        if (ballQueue.size() == 0) { // If no balls are in the indexer
+            Ball newBall = new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM);
+            ballQueue.add(newBall); // Instantiate a new ball in the bottom position
             indexerMotor.set(Constants.Indexer.kIndexerSpeed); // Set the indexer to the speed we want
-            balls[0].setPos(BallPosition.MIDDLE); // Check to see if this works
-        } else if (balls[1] == null) { // If one ball is indexed, and another is detected, we want to move the indexed one to the top position, which should bring the bottom one into the indexer
-            balls[1] = new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM); // Instantiate a new ball in the bottom
+            newBall.setPos(BallPosition.MIDDLE); // Check to see if this works
+        } else { // If one ball is indexed, and another is detected, we want to move the indexed one to the top position, which should bring the bottom one into the indexer
+            ballQueue.add(new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM)); // Instantiate a new ball in the bottom
             indexerMotor.set(Constants.Indexer.kIndexerSpeed);
-        } else { // This is an edge case that comes up if one ball is at the top and the other ball is at the bottom, triggering the bottom sensor
-            // which would mean that something went wrong with our indexing, and we should bring the top ball back to the middle and try again.
-            balls[0].setPos(BallPosition.BOTTOM); // this just makes sure that the next ball to come through the middle is set as the middle ball
-            indexerMotor.set(-Constants.Indexer.kIndexerSpeed); // run the indexer down
         }
     }
 
     public boolean indexFinished() {
-        if (balls[0].getPos() == BallPosition.MIDDLE && topLimitSwitch.get()) { // if the indexer is running until a ball reaches the top
-            balls[1].setPos(BallPosition.MIDDLE); // move both balls up
-            balls[0].setPos(BallPosition.TOP);
+        if (ballQueue.peek().getPos() == BallPosition.MIDDLE && topLimitSwitch.get()) { // if the indexer is running until a ball reaches the top
+            ((Ball[]) ballQueue.toArray())[1].setPos(BallPosition.MIDDLE);; // move both balls up
+            ballQueue.peek().setPos(BallPosition.TOP);
             return true;
-        } else if (balls[0].getPos() == BallPosition.BOTTOM && bottomLimitSwitch.get()) { // if the indexer is running until a ball reaches the middle
-            balls[0].setPos(BallPosition.MIDDLE); // move the ball up
+        } else if (ballQueue.peek().getPos() == BallPosition.BOTTOM && bottomLimitSwitch.get()) { // if the indexer is running until a ball reaches the middle
+            ballQueue.peek().setPos(BallPosition.MIDDLE); // move the ball up
             return true;
         }
         return false;
     }
 
     public boolean inShootingPosition() {
-        if ((balls[0].getColor() != null) && (balls[1].getColor() != null)) {
-            if (((balls[0].getPos() == BallPosition.TOP) || (balls[0].getPos() == BallPosition.MIDDLE)) && ((balls[0].getPos() == BallPosition.BOTTOM) || (balls[0].getPos() == BallPosition.MIDDLE))) {return true;}
-            return false;
-        }
-        else if (balls[0].getColor() != null) {
-            if ((balls[0].getPos() == BallPosition.TOP) || (balls[0].getPos() == BallPosition.MIDDLE)) {return true;}
-            return false;
-        }
-        else {return false;}
+        return (ballQueue.size() > 0);
     }
 
     public boolean hasTwoBalls() {
-        return (balls[1] != null);
+        return (ballQueue.size() == 2);
     }
 
     public boolean hasOneBall() {
-        return ((balls[1] == null) && (balls[0] != null));
+        return (ballQueue.size() == 1);
     }
 
     public void progressBalls() {
-        if (balls[1] == null) {
-            if (balls[0].getPos() == BallPosition.BOTTOM) {
-                balls[0].setPos(BallPosition.MIDDLE); 
+        if (ballQueue.size() == 1) {
+            if (ballQueue.peek().getPos() == BallPosition.TOP) {
+                ballQueue.poll();
             }
-            else if (balls[0].getPos() == BallPosition.MIDDLE) {
-                balls[0].setPos(BallPosition.TOP); 
-            }
-            else { 
-                balls[0] = null;
-            }
+            ballQueue.peek().progressPos();
         }
-        else {
-            if ((balls[0].getPos() == BallPosition.MIDDLE) && (balls[1].getPos() == BallPosition.BOTTOM)) {
-                balls[0].setPos(BallPosition.TOP);
-                balls[1].setPos(BallPosition.MIDDLE);
-            }
-            else if ((balls[0].getPos() == BallPosition.TOP) && (balls[1].getPos() == BallPosition.MIDDLE)) {
-                balls[0].setPos(BallPosition.TOP);
-                balls[1] = null;
-            }
+        else if (ballQueue.size() == 2) {
+            Ball[] ballArray = ((Ball[]) ballQueue.toArray());
+            ballArray[0].progressPos();
+            ballArray[1].progressPos();
+        }
+        else if (ballQueue.size() > 2) {
+            // TODO: What do i do?
         }
     }
 
