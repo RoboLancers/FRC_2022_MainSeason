@@ -8,7 +8,7 @@ public class ToggleGearShifter extends InstantCommand {
     
     private final GearShifter gearShifter;
 
-    public ToggleGearShifter(final GearShifter gearShifter) {
+    public ToggleGearShifter(GearShifter gearShifter) {
         this.gearShifter = gearShifter;
         addRequirements(gearShifter);
     }
@@ -17,4 +17,6 @@ public class ToggleGearShifter extends InstantCommand {
     public void initialize() {
         //this.gearShifter.setGearShifter(gearShifter.getState() == GearShifterState.HIGHGEAR ? GearShifterState.LOWGEAR : GearShifterState.HIGHGEAR);
     }
+
+  
 }
