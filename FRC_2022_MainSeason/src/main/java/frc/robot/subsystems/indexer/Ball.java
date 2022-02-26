@@ -30,7 +30,7 @@ public class Ball { // Finn: This class is just a simple utility to hold some in
         if (colorResult.equals(Constants.Indexer.kRedTarget)) {
             color = Color.kRed;
         }
-        else if (colorResult.equals(Constants.Indexer.kBlueTarget)) {
+        else if (colorResult.color.equals(Constants.Indexer.kBlueTarget)) {
             color = Color.kBlue;
         }
         else {
