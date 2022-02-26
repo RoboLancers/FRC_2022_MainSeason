@@ -24,34 +24,41 @@ public class Drivetrain extends SubsystemBase{
             leftMotor1,
             new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless), 
             new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless));
+
     //The motors on the right side of the drivetrain
     private final CANSparkMax rightMotor1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final MotorControllerGroup rightMotors = new MotorControllerGroup(
             rightMotor1,
             new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless),
             new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless));
+
     //A differential drive object that takes in both motor sides. 
     private final DifferentialDrive difDrive = new DifferentialDrive(leftMotors, rightMotors);
+
     //An odometry object to keep track of robot pose.
     private final DifferentialDriveOdometry odometry;
+
     //The encoders on the right motors. Reverse the encoders to match the reversed motors of the right side.
     private final RelativeEncoder rightEncoder = rightMotor1.getEncoder();
+
     //The encoders on the left motors.
     private final RelativeEncoder leftEncoder = leftMotor1.getEncoder();
+
     //The PigeonIMU gyro.
     //private final WPI_PigeonIMU gyro; //Check port
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);    
+
     //Field2d object to track pose in Glass
     private final Field2d m_field = new Field2d();
+
     private final SlewRateLimiter throttleFilter = new SlewRateLimiter(Constants.kThrottleFilter);
     private final SlewRateLimiter turnFilter = new SlewRateLimiter(Constants.kTurnFilter);
     
-
     //Drivetrain
     public Drivetrain(){
-        
         //Reverses the right motors.
         rightMotors.setInverted(false);
+
         //Sets the distance per pulse to the pre-defined constant we calculated for both encoders.
         rightEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot); // create EncoderDistancePerPulse constant later
         leftEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot); // same thing
@@ -93,7 +100,6 @@ public class Drivetrain extends SubsystemBase{
         // if (throttle == 0 && turn == 0) {
         //     tankDriveVolts(0, 0);
         // }
-        
     }
 
     //Controls the left and right side motors directly with voltage.
@@ -108,7 +114,6 @@ public class Drivetrain extends SubsystemBase{
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
     }
-
 
     //These methods are never used?
     //Returns the average of the distances between both sides of encoders.
@@ -153,12 +158,4 @@ public class Drivetrain extends SubsystemBase{
     public double getTurnRate() {
        return -gyro.getRate();
     }
-
-
-    
 }
-
-
-
-
-

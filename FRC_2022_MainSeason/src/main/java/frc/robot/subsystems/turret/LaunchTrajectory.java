@@ -85,7 +85,7 @@ public class LaunchTrajectory {
     }
 
     public static class InterpolationTable {
-        public static class Entry {
+        private static class Entry {
             private double key;
             private LaunchTrajectory value;
     
@@ -101,7 +101,7 @@ public class LaunchTrajectory {
             this.entries = entries;
         };
 
-        LaunchTrajectory interpolate(double key){
+        public LaunchTrajectory interpolate(double key){
             // check if key is within bounds of the table
             if(key < this.entries[0].key){
                 return this.entries[0].value;
@@ -119,8 +119,8 @@ public class LaunchTrajectory {
             }
             // calculate interpolation coefficients and use them to determine the interpolated launch trajectory
             // note that the upper interpolation coefficient can be calculated as 1 - the lower interpolation coefficient
-            double lowerInterpolationCoefficient = (key - lowerBound.key) / (upperBound.key - lowerBound.key);
-            double upperInterpolationCoefficient = (upperBound.key - key) / (upperBound.key - lowerBound.key);
+            double lowerInterpolationCoefficient = (upperBound.key - key) / (upperBound.key - lowerBound.key);
+            double upperInterpolationCoefficient = (key - lowerBound.key) / (upperBound.key - lowerBound.key);
             return new LaunchTrajectory(
                 lowerBound.value.theta * lowerInterpolationCoefficient + upperBound.value.theta * upperInterpolationCoefficient,
                 lowerBound.value.speed * lowerInterpolationCoefficient + upperBound.value.speed * upperInterpolationCoefficient
@@ -129,7 +129,7 @@ public class LaunchTrajectory {
     }
 
     // Calculate the trajectory by interpolating between known shot trajectories with respect to distance
-    private static final InterpolationTable trajectoryMap = new InterpolationTable(
+    public static final InterpolationTable trajectoryMap = new InterpolationTable(
         // TODO: tune this very much
         new InterpolationTable.Entry(0.0, new LaunchTrajectory(0.0, 0.0)),
         new InterpolationTable.Entry(3.0, new LaunchTrajectory(0.0, 0.0)),

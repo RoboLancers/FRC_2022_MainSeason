@@ -4,14 +4,13 @@ import frc.robot.subsystems.climber.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class MidRung extends CommandBase{
-    Climber climber;
-    double climbHeight;
+    private Climber climber;
+    private double climbHeight;
+
     public MidRung(Climber climber, double climbHeight) {
         this.climber = climber;
         this.climbHeight = climbHeight;
     }
-
-    // spelling
     
     public void execute(){
         climber.set(Constants.Climber.kPower);
@@ -28,6 +27,5 @@ public class MidRung extends CommandBase{
     @Override
     public void end(boolean interrupted){
         climber.set(0);
-
     }
 }

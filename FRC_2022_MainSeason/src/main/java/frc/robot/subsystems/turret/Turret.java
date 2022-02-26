@@ -2,12 +2,13 @@ package frc.robot.subsystems.turret;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.TurretPitch;
 import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
 
 public class Turret extends SubsystemBase {
+    public boolean readyToHang = false;
+
     public TurretYaw yaw;
     public TurretPitch pitch;
     public TurretFlywheel flywheel;

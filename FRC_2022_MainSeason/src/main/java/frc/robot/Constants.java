@@ -65,6 +65,9 @@ public final class Constants {
         }
 
         public static final class PhysicsInfo {
+            public static final double minLimelightViewableDistance = 2.0;
+            public static final double maxLimelightViewableDistance = 10.0;
+            // Not necessary if we are using interpolation table
             public static final double kGravity = 9.8;
             public static final double kTurretShotDeltaY = 5.0;
             public static final double kAlpha = 45 * Math.PI / 180;

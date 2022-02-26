@@ -5,25 +5,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.subsystems.misc.LimeLight;
-import frc.robot.subsystems.turret.LaunchTrajectory;
-import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
-
-import java.util.function.Consumer;
-
+// mport edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-
 public class TurretYaw extends SubsystemBase {
+    // public boolean hasRelativeHub = false;
+    // public Pose2d relativeHub;
+
     public LimeLight limelight;
 
     private DigitalInput homingSwitch;

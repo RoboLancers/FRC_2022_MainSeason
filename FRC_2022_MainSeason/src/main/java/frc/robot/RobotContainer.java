@@ -63,12 +63,8 @@ public class RobotContainer {
   private String trajectoryJSON = "pathplanner/generatedJSON/Test Path.wpilib.json";
   
   private AHRS gyro = new AHRS(SPI.Port.kMXP);
- 
-  
-  
   
   // private String trajectoryJSON = "paths/MyPath.wpilib.json";
-  private RobotContainer m_robotContainer;
   private XboxController xboxController = new XboxController(0);
   private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
@@ -109,10 +105,6 @@ public class RobotContainer {
     
     //turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
     //turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
-    // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
-    
-    // turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
-    // turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
   }
 
   private void configureButtonBindings() {

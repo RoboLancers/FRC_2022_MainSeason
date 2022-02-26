@@ -14,5 +14,4 @@ public enum GearShifterState {
         public DoubleSolenoid.Value getValue() {
             return value;
         }
-    
 }
