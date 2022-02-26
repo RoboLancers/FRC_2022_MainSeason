@@ -99,7 +99,10 @@ public class Indexer extends SubsystemBase {
             ballArray[1].progressPos();
         }
         else if (ballQueue.size() > 2) {
-            // TODO: What do i do?
+            Ball[] ballArray = ((Ball[]) ballQueue.toArray());
+            for (int i = 0; i < ballArray.length; i++) {
+                ballArray[i].progressPos();
+            }
         }
     }
 
