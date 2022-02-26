@@ -10,6 +10,7 @@ public final class Constants {
         public static final double kLowClimb = 48.75;
         public static final double kMidClimb = 60.25;
         public static final double kPower = 1;
+        public static final double kNegativePower = -1;
         public static final double kNormalHangCurrent = 1;
     }
 
