@@ -28,6 +28,7 @@ import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.subsystems.climber.commands.LowRung;
 import frc.robot.subsystems.climber.commands.MidRung;
+import frc.robot.subsystems.climber.commands.UpClimber;
 import frc.robot.commands.UpdateLights;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.commands.UpdateLights;
@@ -57,7 +58,7 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
   private final Indexer indexer = new Indexer();
   // private final Turret turret = new Turret();
-  // private final Climber climber = new Climber();
+  private final Climber climber = new Climber();
 
   private Trajectory trajectory = new Trajectory();
   private String trajectoryJSON = "pathplanner/generatedJSON/Test Path.wpilib.json";
@@ -135,12 +136,9 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
     // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
-    //manipulatorController.whenPressed(XboxController.Button.B, new LowRung(climber,Constants.Climber.kLowClimb));
-    //manipulatorController.whenPressed(XboxController.Button.Y, new MidRung(climber,Constants.Climber.kMidClimb));
-    // manipulatorController.whenPressed(XboxController.Button.B, new LowRung(climber,Constants.Climber.kLowClimb));
-    // manipulatorController.whenPressed(XboxController.Button.Y, new MidRung(climber,Constants.Climber.kMidClimb));
+    manipulatorController.whenPressed(XboxController.Button.B, new UpClimber(climber,Constants.Climber.kLowClimb));
+    manipulatorController.whenPressed(XboxController.Button.Y, new UpClimber(climber,Constants.Climber.kMidClimb));
   }
-
   public Command getAutonomousCommand() {
     //The voltage constraint makes sure the robot doesn't exceed a certain voltage during runtime.
     var autoVoltageConstraint = 
