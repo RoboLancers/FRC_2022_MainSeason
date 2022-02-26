@@ -86,6 +86,10 @@ public class Indexer extends SubsystemBase {
         return (ballQueue.size() >= 3);
     }
 
+    public boolean hasFewBalls() {
+        return (ballQueue.size() < 3);
+    }
+
     public void progressBalls() {
         if (ballQueue.size() == 1) {
             if (ballQueue.peek().getPos() == BallPosition.TOP) {

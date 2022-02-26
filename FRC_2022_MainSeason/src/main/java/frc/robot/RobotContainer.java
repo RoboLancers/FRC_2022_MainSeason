@@ -175,7 +175,15 @@ public class RobotContainer {
     }
    
     
-
+    Trigger manyBalls = new Trigger() {
+    @Override
+    public boolean get() {
+        return (indexer.ballQueue.size() > 2);
+        }
+    };
+    manyBalls.whenActive((new RunCommand(this::GeneralizedReleaseRoutine))
+    .withInterrupt(this.indexer::hasFewBalls)
+    ));
 
 
     // Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command
