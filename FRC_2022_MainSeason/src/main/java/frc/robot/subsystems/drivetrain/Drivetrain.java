@@ -1,6 +1,5 @@
 package frc.robot.subsystems.drivetrain;
 
-import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -52,7 +51,7 @@ public class Drivetrain extends SubsystemBase{
     public Drivetrain(){
         
         //Reverses the right motors.
-        rightMotors.setInverted(true);
+        rightMotors.setInverted(false);
         //Sets the distance per pulse to the pre-defined constant we calculated for both encoders.
         rightEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot); // create EncoderDistancePerPulse constant later
         leftEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot); // same thing

@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
-import frc.robot.commands.GeneralizedReleaseRoutine;
+// import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.subsystems.climber.commands.LowRung;
 import frc.robot.subsystems.climber.commands.MidRung;
 import frc.robot.subsystems.climber.commands.UpClimber;
@@ -75,10 +75,9 @@ public class RobotContainer {
   private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
   private Field2d m_field = new Field2d();
   private Pneumatics pneumatics = new Pneumatics();
-  public GearShifter gearshifter = new GearShifter(pneumatics);
   private XboxController driverController = new XboxController(0);
   private XboxController manipulatorController = new XboxController(1);
-  private GearShifter gearShifter;
+  private GearShifter gearShifter = new GearShifter(pneumatics);
   //private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   public RobotContainer() {
@@ -90,11 +89,8 @@ public class RobotContainer {
         SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
         SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
         SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
-        if(this.indexer.balls[0] == null) {
-          this.indexer.indexerMotor.set(Constants.Indexer.kStandardIndexerSpeed);
-        } else {
-          this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-        }
+        SmartDashboard.putNumber("ball number", indexer.ballQueue.size());
+        this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
       }, this.indexer
     ));
     
@@ -104,7 +100,7 @@ public class RobotContainer {
     this.drivetrain.setDefaultCommand(
       new RunCommand(
         () -> {
-          this.drivetrain.arcadeDrive(-driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
+          this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
         },
         drivetrain
       )
@@ -204,7 +200,7 @@ public class RobotContainer {
 
   public void doSendables(){
     SmartDashboard.putNumber("Encoder", drivetrain.getAverageEncoderDistance());
-    SmartDashboard.putString("Gearshifter",gearshifter.getState().toString());
+    SmartDashboard.putString("Gearshifter",gearShifter.getState().toString());
     SmartDashboard.putNumber("Yaw", gyro.getYaw());
     SmartDashboard.putNumber("Altitude", gyro.getAltitude());
     SmartDashboard.putNumber("Joystick Value", driverController.getAxisValue(Axis.LEFT_Y));
