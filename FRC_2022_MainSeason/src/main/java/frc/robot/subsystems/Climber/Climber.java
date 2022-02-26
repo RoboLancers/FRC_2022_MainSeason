@@ -27,25 +27,12 @@ public class Climber extends SubsystemBase{
         return climbEncoder.getPosition();
     }
 
-    //this.motor.getOutputCurrent();
-
-    // public void LowRung(){
-    //     while (climbEncoder.getPosition() < (Constants.Climber.kLowClimb/Constants.Climber.kRotationToInch)){
-    //         climberMotor1.set(power);
-    //         climbEncoder.setPosition(0);
-    //     }
-    // }
-
-    // public void midRung(){
-    //     while (climbEncoder.getPosition() < (Constants.Climber.kHighClimb/Constants.Climber.kRotationToInch)){
-    //         climberMotor1.set(power);
-    //         climbEncoder.setPosition(0);
-    //     }
-
-    //public boolean isClung() {
-    //    if () {
-    //        
-    //    }
-    //}
+    public boolean isHung(){
+        if (this.climberMotor1.getOutputCurrent() >= Constants.Climber.kNormalHangCurrent){
+            return true;
+        }
+        else{
+            return false;
+        } 
+    }
 }
-
