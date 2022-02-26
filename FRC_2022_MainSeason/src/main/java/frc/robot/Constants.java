@@ -88,8 +88,8 @@ public final class Constants {
     }
 
     public static final class Indexer {
-        public static final int kRedThreshold = 4000;
-        public static final int kBlueThreshold = 4000;
+        public static final int kRedThreshold = 1000;
+        public static final int kBlueThreshold = 1000;
         public static final int kProximityLimit = 1600;
         // Color sensor proximity?????
         public static final int kIndexerPort = 13;
