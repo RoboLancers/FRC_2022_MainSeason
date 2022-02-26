@@ -1,6 +1,7 @@
 package frc.robot.subsystems.turret;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.turret.subsystems.flywheel.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.pitch.TurretPitch;
 import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
@@ -19,6 +20,16 @@ public class Turret extends SubsystemBase {
         this.pitch = new TurretPitch();
         this.flywheel = new TurretFlywheel();
     }
+
+    // public void adjust(){
+    //     this.pitch.setPositionSetpoint(this.launchTrajectory.theta);
+    //     this.flywheel.setVelocitySetpoint(this.launchTrajectory.speed);
+    // }
+
+    public boolean inShootingRange()
+    {
+        return this.flywheel.getVelocity() < Constants.Turret.TunedCoefficients.FlywheelPID.kMaxVelocity;
+    };
 
     public boolean isReadyToShoot(){
         return (

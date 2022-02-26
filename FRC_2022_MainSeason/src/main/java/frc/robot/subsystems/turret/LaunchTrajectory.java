@@ -5,16 +5,13 @@ package frc.robot.subsystems.turret;
 public class LaunchTrajectory {
     public double theta;
     public double speed;
-    public double time;
 
     public LaunchTrajectory(
         double theta,       // The angle of the determined trajectory [in radians]
-        double speed,       // The speed of the determined trajectory [in meters per second]
-        double time         // The time in flight of the determined trajectory [in seconds]
+        double speed        // The speed of the determined trajectory [in meters per second]
     ){
         this.theta = theta;
         this.speed = speed;
-        this.time = time;
     }
 
     public static double estimateDistance(double deltaY, double thetaX, double thetaY){
@@ -26,7 +23,9 @@ public class LaunchTrajectory {
         double g,           // Universal acceleration due to gravity [in meters per second]
         double dx,          // Distance away from target on XZ plane [in meters]
         double dy,          // Distance away from target on Y axis [in meters]
-        double alpha        // Angle of impact on target in degrees [in radians]
+        double sinAlpha,    // Sine of angle of impact (should be precalculated and constant for efficiency)
+        double cosAlpha,    // Cosine of angle of impact (should be precalculated and constant for efficiency)
+        double tanAlpha     // Tangent of angle of impact (should be precalculated and constant for efficiency)
     ){
         // calculate velocity the final target would need to hit the start point if launched at angle alpha
         /*
@@ -35,13 +34,13 @@ public class LaunchTrajectory {
             ...
             vf = dx / cos(alpha) / sqrt(2 * (-dy - dx tan(alpha)) / g)
         */
-        double vf = dx / Math.cos(alpha) / Math.sqrt(2 * (-dy - dx * Math.tan(alpha)) / g);
-
+        double vf = dx / cosAlpha / Math.sqrt(2 * (-dy - dx * tanAlpha) / g);
+                                                            
         // derive initial velocity squared using kinematics
         /*
             v^2 * sin(theta)^2 = vf^2 * sin(alpha)^2 - 2 g dy
         */
-        double v2 = (vf * vf) * (Math.sin(alpha) * Math.sin(alpha)) - 2 * g * dy;
+        double v2 = (vf * vf) * (sinAlpha * sinAlpha) - 2 * g * dy;
 
         // determine quadratic polynomial to calculate theta
         /*
@@ -57,11 +56,11 @@ public class LaunchTrajectory {
 
         // plug in formulas for remaining unknown quantities
         double speed = dx / Math.cos(theta) / Math.sqrt(2 * (dy - dx * Math.tan(theta)) / g);
-        double time = dx / speed / Math.cos(theta);
 
-        return new LaunchTrajectory(theta, speed, time);
+        return new LaunchTrajectory(theta, speed);
     }
 
+    // Calculate the trajectory to hit the target having passed through a given control point
     public static LaunchTrajectory usingPassThrough(
         double g,           // Universal acceleration due to gravity [in meters per second]
         double dx0,         // Distance away from control point on XZ plane [in meters]
@@ -81,8 +80,67 @@ public class LaunchTrajectory {
         double u = (dx0 * dx0) / (dx1 * dx1);
         double theta = Math.atan((u * dy1 - dy0) / (u * dx1 - dx0));
         double speed = dx1 / Math.cos(theta) / Math.sqrt(2 * (dy1 - dx1 * Math.tan(theta)) / g);
-        double time = dx1 / speed / Math.cos(theta);
 
-        return new LaunchTrajectory(theta, speed, time);
+        return new LaunchTrajectory(theta, speed);
     }
+
+    public static class InterpolationTable {
+        public static class Entry {
+            private double key;
+            private LaunchTrajectory value;
+    
+            public Entry(double key, LaunchTrajectory value){
+                this.key = key;
+                this.value = value;
+            }
+        }
+
+        private Entry entries[];
+
+        public InterpolationTable(Entry... entries){
+            this.entries = entries;
+        };
+
+        LaunchTrajectory interpolate(double key){
+            // check if key is within bounds of the table
+            if(key < this.entries[0].key){
+                return this.entries[0].value;
+            } else if(key > this.entries[this.entries.length - 1].key){
+                return this.entries[this.entries.length - 1].value;
+            }
+            // find lower and upper bounds of interpolation
+            Entry lowerBound = new Entry(0.0, new LaunchTrajectory(0.0, 0.0));
+            Entry upperBound = new Entry(0.0, new LaunchTrajectory(0.0, 0.0));
+            for(int i = 0;i<this.entries.length - 1;i++){
+                if(this.entries[i].key < key && this.entries[i + 1].key > key){
+                    lowerBound = this.entries[i];
+                    upperBound = this.entries[i + 1];
+                }
+            }
+            // calculate interpolation coefficients and use them to determine the interpolated launch trajectory
+            // note that the upper interpolation coefficient can be calculated as 1 - the lower interpolation coefficient
+            double lowerInterpolationCoefficient = (key - lowerBound.key) / (upperBound.key - lowerBound.key);
+            double upperInterpolationCoefficient = (upperBound.key - key) / (upperBound.key - lowerBound.key);
+            return new LaunchTrajectory(
+                lowerBound.value.theta * lowerInterpolationCoefficient + upperBound.value.theta * upperInterpolationCoefficient,
+                lowerBound.value.speed * lowerInterpolationCoefficient + upperBound.value.speed * upperInterpolationCoefficient
+            );
+        };
+    }
+
+    // Calculate the trajectory by interpolating between known shot trajectories with respect to distance
+    private static final InterpolationTable trajectoryMap = new InterpolationTable(
+        // TODO: tune this very much
+        new InterpolationTable.Entry(0.0, new LaunchTrajectory(0.0, 0.0)),
+        new InterpolationTable.Entry(3.0, new LaunchTrajectory(0.0, 0.0)),
+        new InterpolationTable.Entry(6.0, new LaunchTrajectory(0.0, 0.0)),
+        new InterpolationTable.Entry(9.0, new LaunchTrajectory(0.0, 0.0)),
+        new InterpolationTable.Entry(12.0, new LaunchTrajectory(0.0, 0.0)),
+        new InterpolationTable.Entry(15.0, new LaunchTrajectory(0.0, 0.0))
+    );
+
+    /*
+        usage would be:
+            LaunchTrajectory newTurretTrajectory = LaunchTrajectory.trajectoryMap.interpolate(givenDistance);
+    */
 }

@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.misc.LimeLight;
 import frc.robot.subsystems.turret.LaunchTrajectory;
-import frc.robot.subsystems.turret.subsystems.yaw.commands.ActiveLaunchTrajectory;
+import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 
 import java.util.function.Consumer;
@@ -39,7 +39,7 @@ public class TurretYaw extends SubsystemBase {
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
 
         // TODO: use default commands or at least find a way to make it end after shooting phase of the game
-        new PerpetualCommand(new ActiveLaunchTrajectory(this));
+        //new PerpetualCommand(new ActiveLaunchTrajectory(this));
         new PerpetualCommand(new MatchHeadingYaw(this));
     }
 
