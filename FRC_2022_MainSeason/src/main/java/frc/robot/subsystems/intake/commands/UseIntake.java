@@ -23,5 +23,5 @@ public class UseIntake extends CommandBase{ // DeployIntake
     }
 }
 
-// In-line command on the rrobot container file
+// In-line command on the robot container file
 // It should be when pressed,  intake.toggle();

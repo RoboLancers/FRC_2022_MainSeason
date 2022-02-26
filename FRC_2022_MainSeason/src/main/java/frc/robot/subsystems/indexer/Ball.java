@@ -26,10 +26,10 @@ public class Ball { // Finn: This class is just a simple utility to hold some in
         colorMatcher.setConfidenceThreshold(0.75);
         Color ballColor = new Color(redValue, greenValue, blueValue);
         ColorMatchResult colorResult = colorMatcher.matchColor(ballColor);
-        if (colorResult.equals(Constants.Indexer.kRedTarget)) {
+        if (colorResult.color.equals(Constants.Indexer.kRedTarget)) {
             color = Color.kRed;
         }
-        else if (colorResult.equals(Constants.Indexer.kBlueTarget)) {
+        else if (colorResult.color.equals(Constants.Indexer.kBlueTarget)) {
             color = Color.kBlue;
         }
         else {

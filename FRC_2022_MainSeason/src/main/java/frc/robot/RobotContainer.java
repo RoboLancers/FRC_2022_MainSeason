@@ -26,8 +26,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
-import frc.robot.subsystems.climber.commands.LowRung;
-import frc.robot.subsystems.climber.commands.MidRung;
 import frc.robot.subsystems.climber.commands.UpClimber;
 import frc.robot.commands.UpdateLights;
 import frc.robot.subsystems.climber.Climber;
@@ -99,9 +97,7 @@ public class RobotContainer {
     // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
     this.drivetrain.setDefaultCommand(
       new RunCommand(
-        () -> {
-          this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
-        },
+        () -> this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X)),
         drivetrain
       )
     );
