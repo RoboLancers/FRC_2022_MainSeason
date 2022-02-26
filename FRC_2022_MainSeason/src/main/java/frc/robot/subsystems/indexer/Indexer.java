@@ -5,8 +5,8 @@ import java.util.Queue;
 import java.util.PriorityQueue;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -48,12 +48,12 @@ public class Indexer extends SubsystemBase {
 
     public void processBall() {
         if (ballQueue.size() == 0) { // If no balls are in the indexer
-            Ball newBall = new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM);
+            Ball newBall = new Ball((int) (bottomColorSensor.getColor().red), (int) (bottomColorSensor.getColor().green), (int) (bottomColorSensor.getColor().blue), BallPosition.BOTTOM);
             ballQueue.add(newBall); // Instantiate a new ball in the bottom position
             indexerMotor.set(Constants.Indexer.kIndexerSpeed); // Set the indexer to the speed we want
             newBall.setPos(BallPosition.MIDDLE); // Check to see if this works
         } else { // If one ball is indexed, and another is detected, we want to move the indexed one to the top position, which should bring the bottom one into the indexer
-            ballQueue.add(new Ball(bottomColorSensor.getRed(), bottomColorSensor.getBlue(), BallPosition.BOTTOM)); // Instantiate a new ball in the bottom
+            ballQueue.add(new Ball(bottomColorSensor.getRed(), bottomColorSensor.getGreen(), bottomColorSensor.getBlue(), BallPosition.BOTTOM)); // Instantiate a new ball in the bottom
             indexerMotor.set(Constants.Indexer.kIndexerSpeed);
         }
     }
@@ -80,6 +80,10 @@ public class Indexer extends SubsystemBase {
 
     public boolean hasOneBall() {
         return (ballQueue.size() == 1);
+    }
+
+    public boolean hasManyBalls() {
+        return (ballQueue.size() >= 3);
     }
 
     public void progressBalls() {
