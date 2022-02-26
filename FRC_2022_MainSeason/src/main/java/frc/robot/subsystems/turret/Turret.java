@@ -2,6 +2,8 @@ package frc.robot.subsystems.turret;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.TurretPitch;
 import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
@@ -15,10 +17,16 @@ public class Turret extends SubsystemBase {
 
     public LaunchTrajectory launchTrajectory;
 
-    public Turret(){
-        this.yaw = new TurretYaw();
+    public Turret(Drivetrain driveTrain){
+        this.yaw = new TurretYaw(driveTrain);
         this.pitch = new TurretPitch();
         this.flywheel = new TurretFlywheel();
+
+        initDefaultCommand(driveTrain);
+    }
+
+    private void initDefaultCommand(Drivetrain driveTrain){
+        setDefaultCommand(new ActiveLaunchTrajectory(this, driveTrain));
     }
 
     public void adjust(){

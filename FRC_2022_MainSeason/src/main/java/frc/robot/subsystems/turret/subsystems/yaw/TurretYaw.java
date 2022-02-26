@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
+import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.misc.LimeLight;
-// mport edu.wpi.first.math.geometry.Pose2d;
+import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.revrobotics.CANSparkMax;
@@ -13,8 +15,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 public class TurretYaw extends SubsystemBase {
-    // public boolean hasRelativeHub = false;
-    // public Pose2d relativeHub;
+    public boolean hasRelativeHub = false;
+    public Pose2d relativeHub;
 
     public LimeLight limelight;
 
@@ -25,13 +27,13 @@ public class TurretYaw extends SubsystemBase {
     private RelativeEncoder encoder;
     private SparkMaxPIDController PIDController;
 
-    public TurretYaw(){
+    public TurretYaw(Drivetrain driveTrain){
         this.limelight = new LimeLight();
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
         this.homingTrigger = new Trigger(this.homingSwitch::get);
         this.homingTrigger.whenActive(new RunCommand(() -> {
-            // TODO: reset encoder
+            this.encoder.setPosition(0);
         }, this));
 
         this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, CANSparkMax.MotorType.kBrushless);
@@ -46,6 +48,12 @@ public class TurretYaw extends SubsystemBase {
             -Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput,
             Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput
         );
+
+        initDefaultCommand(driveTrain);
+    }
+
+    private void initDefaultCommand(Drivetrain driveTrain){
+        setDefaultCommand(new MatchHeadingYaw(this, driveTrain));
     }
 
     public double getPosition(){

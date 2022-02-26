@@ -14,87 +14,84 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.drivetrain.commands.TeleopDrive;
+import frc.robot.util.XboxController;
 import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase{
-    //The motors on the left side of the drivetrain
     private final CANSparkMax leftMotor1 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
-
     private final MotorControllerGroup leftMotors = new MotorControllerGroup(
-            leftMotor1,
-            new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless), 
-            new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless));
+        leftMotor1,
+        new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless), 
+        new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless)
+    );
 
-    //The motors on the right side of the drivetrain
     private final CANSparkMax rightMotor1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final MotorControllerGroup rightMotors = new MotorControllerGroup(
-            rightMotor1,
-            new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless),
-            new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless));
+        rightMotor1,
+        new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless),
+        new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless)
+    );
 
-    //A differential drive object that takes in both motor sides. 
     private final DifferentialDrive difDrive = new DifferentialDrive(leftMotors, rightMotors);
 
-    //An odometry object to keep track of robot pose.
     private final DifferentialDriveOdometry odometry;
 
-    //The encoders on the right motors. Reverse the encoders to match the reversed motors of the right side.
+    // reverse the encoders to match the reversed motors of the right side.
     private final RelativeEncoder rightEncoder = rightMotor1.getEncoder();
-
-    //The encoders on the left motors.
     private final RelativeEncoder leftEncoder = leftMotor1.getEncoder();
 
-    //The PigeonIMU gyro.
-    //private final WPI_PigeonIMU gyro; //Check port
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);    
 
-    //Field2d object to track pose in Glass
     private final Field2d m_field = new Field2d();
 
     private final SlewRateLimiter throttleFilter = new SlewRateLimiter(Constants.kThrottleFilter);
     private final SlewRateLimiter turnFilter = new SlewRateLimiter(Constants.kTurnFilter);
     
-    //Drivetrain
-    public Drivetrain(){
-        //Reverses the right motors.
+    public Drivetrain(XboxController driverController){
+        // Reverses the right motors.
         rightMotors.setInverted(false);
 
-        //Sets the distance per pulse to the pre-defined constant we calculated for both encoders.
-        rightEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot); // create EncoderDistancePerPulse constant later
-        leftEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot); // same thing
+        // Sets the distance per pulse to the pre-defined constant we calculated for both encoders.
+        rightEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot);
+        leftEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot);
 
-        //Resets the encoders to 0.
         resetEncoders();
         
         odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
+
+        initDefaultCommand(driverController);
     }
 
+    private void initDefaultCommand(XboxController driverController){
+        setDefaultCommand(new TeleopDrive(this, driverController));
+    }
+
+    // Constantly updates the odometry of the robot with the rotation and the distance traveled.
     @Override
-    //Constantly updates the odometry of the robot with the rotation and the distance traveled.
     public void periodic() {
         odometry.update(gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
         m_field.setRobotPose(odometry.getPoseMeters());
     }
 
-    //Returns the pose of the robot.
+    // Returns the pose of the robot.
     public Pose2d getPose() {
         return odometry.getPoseMeters();
     }
 
-    //Returns the current speed of the wheels of the robot.
+    // Returns the current speed of the wheels of the robot.
     public DifferentialDriveWheelSpeeds getWheelSpeeds() { 
         return new DifferentialDriveWheelSpeeds(leftEncoder.getVelocity(), -rightEncoder.getVelocity());
     }
 
-    //Resets the odometry, both rotation and distance traveled.
+    // Resets the odometry, both rotation and distance traveled.
     public void resetOdometry(Pose2d pose) {
         gyro.reset();
         resetEncoders();
         odometry.resetPosition(pose, gyro.getRotation2d());
     }
 
-
-    //Drives the robot with arcade controls.
+    // Drives the robot with arcade controls.
     public void arcadeDrive(double throttle, double turn) {
         difDrive.arcadeDrive(throttleFilter.calculate(throttle), turn*0.6, false);
         // if (throttle == 0 && turn == 0) {
@@ -102,36 +99,36 @@ public class Drivetrain extends SubsystemBase{
         // }
     }
 
-    //Controls the left and right side motors directly with voltage.
+    // Controls the left and right side motors directly with voltage.
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         leftMotors.setVoltage(leftVolts);
         rightMotors.setVoltage(rightVolts);
         difDrive.feed();
     }
 
-    //Resets the record values of both sides of encoders.
+    // Resets the record values of both sides of encoders.
     public void resetEncoders() {
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
     }
 
-    //These methods are never used?
-    //Returns the average of the distances between both sides of encoders.
+    // These methods are never used?
+    // Returns the average of the distances between both sides of encoders.
     public double getAverageEncoderDistance() {
         return (leftEncoder.getPosition() + rightEncoder.getPosition()) / 2.0;
     }
 
-    //Returns the left encoders.
+    // Returns the left encoders.
     public RelativeEncoder getLeftEncoder() {
         return leftEncoder;
     }
 
-    //Returns the right encoders.
+    // Returns the right encoders.
     public RelativeEncoder getRightEncoder() {
         return rightEncoder;
     }
 
-    //Sets the max output of the drive. Used for scaling the drive to drive more slowly.
+    // Sets the max output of the drive. Used for scaling the drive to drive more slowly.
     public void setMaxOutput(double maxOutPut) {
         difDrive.setMaxOutput(maxOutPut);
     }
@@ -144,17 +141,17 @@ public class Drivetrain extends SubsystemBase{
         return rightMotors.get();
     }
 
-    //Sets the recorded heading to 0. Makes new direction the 0 heading.
+    // Sets the recorded heading to 0. Makes new direction the 0 heading.
     public void zeroHeading() {
         gyro.reset();
     }
 
-    //Returns the direction the robot is facing in degrees from -180 to 180 degrees. 
+    // Returns the direction the robot is facing in degrees from -180 to 180 degrees. 
     public double getHeading() {
         return gyro.getRotation2d().getDegrees();
     }
 
-    //Returns the rate at which the robot is turning in degrees per second.
+    // Returns the rate at which the robot is turning in degrees per second.
     public double getTurnRate() {
        return -gyro.getRate();
     }

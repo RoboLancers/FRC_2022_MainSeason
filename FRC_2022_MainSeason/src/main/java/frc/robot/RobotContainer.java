@@ -25,12 +25,9 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
-// import frc.robot.commands.GeneralizedReleaseRoutine;
-import frc.robot.subsystems.climber.commands.LowRung;
-import frc.robot.subsystems.climber.commands.MidRung;
+import frc.robot.subsystems.climber.commands.UpClimber;
 import frc.robot.commands.UpdateLights;
 import frc.robot.subsystems.climber.Climber;
-import frc.robot.commands.UpdateLights;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
@@ -47,64 +44,37 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.SPI;
-
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 
 public class RobotContainer {
-  private final Drivetrain drivetrain = new Drivetrain();
-  private final Indexer indexer = new Indexer();
-  // private final Turret turret = new Turret();
-  // private final Climber climber = new Climber();
+  /*   Controllers   */
+  private final XboxController driverController = new XboxController(0);
+  private final XboxController manipulatorController = new XboxController(1);
 
+  /*   Subsystems   */
+  private final Drivetrain drivetrain = new Drivetrain(driverController);
+  private final Pneumatics pneumatics = new Pneumatics();
+  private final GearShifter gearShifter = new GearShifter(pneumatics);
+  private final Indexer indexer = new Indexer();
+  private final Turret turret = new Turret(drivetrain);
+  private final Climber climber = new Climber();
+  // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
+
+  /*   Autonomous Trajectory   */
   private Trajectory trajectory = new Trajectory();
   private String trajectoryJSON = "pathplanner/generatedJSON/Test Path.wpilib.json";
-  
   private AHRS gyro = new AHRS(SPI.Port.kMXP);
-  
-  // private String trajectoryJSON = "paths/MyPath.wpilib.json";
-  private XboxController xboxController = new XboxController(0);
-  private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
-  private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
+  private PIDController rightPID = new PIDController(Constants.Trajectory.kP, 0, 0);
+  private PIDController leftPID = new PIDController(Constants.Trajectory.kP, 0, 0);
   private Field2d m_field = new Field2d();
-  private Pneumatics pneumatics = new Pneumatics();
-  private XboxController driverController = new XboxController(0);
-  private XboxController manipulatorController = new XboxController(1);
-  private GearShifter gearShifter = new GearShifter(pneumatics);
-  //private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   public RobotContainer() {
-    // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
-
-    this.indexer.setDefaultCommand(new RunCommand(
-      () -> {
-        SmartDashboard.putNumber("proximity", indexer.bottomColorSensor.getProximity());
-        SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
-        SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
-        SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
-        SmartDashboard.putNumber("ball number", indexer.ballQueue.size());
-        this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-      }, this.indexer
-    ));
-    
     this.configureButtonBindings();
 
-    // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
-    this.drivetrain.setDefaultCommand(
-      new RunCommand(
-        () -> {
-          this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
-        },
-        drivetrain
-      )
-    );
-
-    //m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
-    
-    //turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
-    //turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
+    // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
+    // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
   }
 
   private void configureButtonBindings() {
@@ -115,7 +85,7 @@ public class RobotContainer {
     // driverController.whenPressed(XboxController.down, new LowGear);
     // driverController.whenPressed(XboxController.RIGHT_BUMPER, new Intake);
 
-    //manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
+    // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
     // manipulatorController.whenPressed(XboxController.RIGHT_BUMPER, new Passthrough In);
@@ -123,55 +93,47 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
     // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
-    //manipulatorController.whenPressed(XboxController.Button.B, new LowRung(climber,Constants.Climber.kLowClimb));
-    //manipulatorController.whenPressed(XboxController.Button.Y, new MidRung(climber,Constants.Climber.kMidClimb));
-    // manipulatorController.whenPressed(XboxController.Button.B, new LowRung(climber,Constants.Climber.kLowClimb));
-    // manipulatorController.whenPressed(XboxController.Button.Y, new MidRung(climber,Constants.Climber.kMidClimb));
+    manipulatorController.whenPressed(XboxController.Button.B, new UpClimber(climber, Constants.Climber.kLowClimb));
+    manipulatorController.whenPressed(XboxController.Button.Y, new UpClimber(climber, Constants.Climber.kMidClimb));
   }
 
   public Command getAutonomousCommand() {
-    //The voltage constraint makes sure the robot doesn't exceed a certain voltage during runtime.
-    var autoVoltageConstraint = 
-      new DifferentialDriveVoltageConstraint(
+    // The voltage constraint makes sure the robot doesn't exceed a certain voltage during runtime.
+    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
         new SimpleMotorFeedforward(
           Constants.Trajectory.ksVolts, 
           Constants.Trajectory.ksVoltSecondsPerMeter,
-          Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
-        Constants.Trajectory.kDriveKinematics, 10);
+          Constants.Trajectory.kaVoltSecondsSquaredPerMeter
+        ),
+        Constants.Trajectory.kDriveKinematics,10
+    );
 
-    //Gives the trajectory the constants determined in characterization.
-    TrajectoryConfig config = 
-      new TrajectoryConfig(
-        Constants.Trajectory.kMaxSpeedMetersPerSecond,
-        Constants.Trajectory.kMaxAccelerationMetersPerSecondSquared)
-        .setKinematics(Constants.Trajectory.kDriveKinematics )
-        .addConstraint(autoVoltageConstraint);    
+    // Gives the trajectory the constants determined in characterization.
+    TrajectoryConfig config = new TrajectoryConfig(
+      Constants.Trajectory.kMaxSpeedMetersPerSecond,
+      Constants.Trajectory.kMaxAccelerationMetersPerSecondSquared
+    ).setKinematics(Constants.Trajectory.kDriveKinematics).addConstraint(autoVoltageConstraint);    
 
-    //Generates the actual path with given points.
-    /*trajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
-            // Pass config
-            config);*/
-    
-    
+    // Generates the actual path with given points.
+    /*
+      trajectory = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(0, 0, new Rotation2d(0)),
+          // Pass through these two interior waypoints, making an 's' curve path
+          List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+          // End 3 meters straight ahead of where we started, facing forward
+          new Pose2d(3, 0, new Rotation2d(0)),
+          // Pass config
+          config);
+    */
+            
     try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON); 
-
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     }
-   
     
-
-
-
-    // Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command
-    // so that it constantly updates and corrects the trajectory auto.
+    // Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command so that it constantly updates and corrects the trajectory auto.
     RamseteCommand ramseteCommand = new RamseteCommand(
       trajectory, 
       drivetrain::getPose, // Gets the translational and rotational position of the robot.

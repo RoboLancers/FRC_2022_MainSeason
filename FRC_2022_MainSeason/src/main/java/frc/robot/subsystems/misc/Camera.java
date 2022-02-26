@@ -4,6 +4,7 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
 public class Camera {
+   // are we using the back camera? 
     private UsbCamera frontLivecam, backLivecam;
 
     public Camera(){

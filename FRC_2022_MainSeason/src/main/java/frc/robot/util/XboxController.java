@@ -214,21 +214,6 @@ public class XboxController extends BaseController {
         joystick.setRumble(GenericHID.RumbleType.kRightRumble, rumble ? 1 : 0);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public XboxController toggleWhenBothPressed(Button button1, Button button2, Command command) {
         if (getState(button1) && getState(button2)) {
             buttons[button1.port].toggleWhenPressed(command);
@@ -291,20 +276,6 @@ public class XboxController extends BaseController {
         }
         return this;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public XboxController whenBothPressed(Button button1, Button button2, Command command) {
         if (getState(button1) && getState(button2)) {

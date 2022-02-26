@@ -1,6 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Color;
+
 
 public final class Constants {
     public static final class Climber {
@@ -10,6 +12,8 @@ public final class Constants {
         public static final double kLowClimb = 48.75;
         public static final double kMidClimb = 60.25;
         public static final double kPower = 1;
+        public static final double kNegativePower = -1;
+        public static final double kNormalHangCurrent = 1;
     }
 
     public static final class Turret {
@@ -91,10 +95,7 @@ public final class Constants {
     }
 
     public static final class Indexer {
-        public static final int kRedThreshold = 1000;
-        public static final int kBlueThreshold = 1000;
         public static final int kProximityLimit = 1600;
-        // Color sensor proximity?????
         public static final int kIndexerPort = 13;
         public static final double kIndexerSpeed = 0.2;
         public static final int ktopSwitch = 1;
@@ -102,6 +103,8 @@ public final class Constants {
         public static final double kStandardIndexerSpeed = 0.1;
         public static final double kShootTime = 0;
         public static final double kIndexerOff = 0;
+        public static final Color kRedTarget = new Color(1, 0, 0);
+        public static final Color kBlueTarget = new Color(0, 0, 1);
     }
 
     public static final class AddressableLEDs {
@@ -115,7 +118,6 @@ public final class Constants {
         public static final double CRIMSON_GOLD_STROBE2 = 0.42;
         public static final double CRIMSON_GOLD_SOLID = 0.49;
         public static final double RAINBOW = -0.99;
-
     }
 
     public static final class Trajectory {
@@ -135,7 +137,6 @@ public final class Constants {
         public static final double kP = 0;
 
         public static final double kDistPerRot = (3.072/100);
-        
     }
     
     public static final double kThrottleFilter = 1.7;

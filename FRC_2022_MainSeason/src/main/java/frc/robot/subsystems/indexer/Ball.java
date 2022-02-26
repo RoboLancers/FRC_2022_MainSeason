@@ -2,6 +2,8 @@ package frc.robot.subsystems.indexer;
 
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Constants;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
 
 public class Ball { // Finn: This class is just a simple utility to hold some information about the ball's indexing state
     public enum BallPosition {
@@ -11,19 +13,26 @@ public class Ball { // Finn: This class is just a simple utility to hold some in
         BallPosition(int posNumber) {
             this.posNumber = posNumber;
         }
-    
     }
+
     private final Color color;
     private BallPosition pos;
+    public ColorMatch colorMatcher;
 
-    public Ball(int redValue, int blueValue, BallPosition pos) {
-
-        if ((redValue >= Constants.Indexer.kRedThreshold) && !(blueValue >= Constants.Indexer.kBlueThreshold)) {
+    public Ball(int redValue, int greenValue, int blueValue, BallPosition pos) {
+        this.colorMatcher = new ColorMatch();
+        colorMatcher.addColorMatch(Constants.Indexer.kRedTarget);
+        colorMatcher.addColorMatch(Constants.Indexer.kBlueTarget);
+        colorMatcher.setConfidenceThreshold(0.75);
+        Color ballColor = new Color(redValue, greenValue, blueValue);
+        ColorMatchResult colorResult = colorMatcher.matchColor(ballColor);
+        // maybe cause for issue?
+        if (colorResult.equals(Constants.Indexer.kRedTarget)) {
             color = Color.kRed;
         }
-        else if ((blueValue >= Constants.Indexer.kBlueThreshold) && !(redValue >= Constants.Indexer.kRedThreshold)) {
+        else if (colorResult.equals(Constants.Indexer.kBlueTarget)) {
             color = Color.kBlue;
-        } 
+        }
         else {
             color = Color.kWhite;
         }
@@ -51,7 +60,6 @@ public class Ball { // Finn: This class is just a simple utility to hold some in
                 break;
             default:
                 break;
-        }
-            
+        }   
     }
 }

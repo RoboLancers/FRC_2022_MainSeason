@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
-public class Intake extends SubsystemBase{
+public class Intake extends SubsystemBase {
     public CANSparkMax intakeMotor; // for roller
     public DoubleSolenoid retractionPiston; // for pistons
     public boolean intakeOn = false;
@@ -21,7 +21,7 @@ public class Intake extends SubsystemBase{
         retractionPiston.set(Value.kReverse);
     }
 
-    public void toggleDeploy() { // toggleDeploy
+    public void toggleDeploy() {
         retractionPiston.toggle();
     }
 
@@ -38,5 +38,4 @@ public class Intake extends SubsystemBase{
     public void setPower(double power) {
         intakeMotor.set(power);
     }
-
 }

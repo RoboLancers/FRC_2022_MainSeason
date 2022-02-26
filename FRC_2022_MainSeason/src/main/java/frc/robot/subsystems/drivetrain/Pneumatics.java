@@ -3,6 +3,7 @@ package frc.robot.subsystems.drivetrain;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.drivetrain.commands.UseCompressor;
 
 public class Pneumatics extends SubsystemBase {
     private PneumaticHub compressor;
@@ -11,10 +12,12 @@ public class Pneumatics extends SubsystemBase {
         compressor = new PneumaticHub(1);
         compressor.clearStickyFaults();
         compressor.enableCompressorDigital();
+
+        initDefaultCommand();
     }
 
-    public void stopCompressor(){
-        compressor.disableCompressor();
+    private void initDefaultCommand(){
+        setDefaultCommand(new UseCompressor(this));
     }
 
     public DoubleSolenoid getDoubleSolenoid(int port1, int port2) {

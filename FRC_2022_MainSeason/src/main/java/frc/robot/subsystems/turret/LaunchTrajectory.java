@@ -138,10 +138,4 @@ public class LaunchTrajectory {
         new InterpolationTable.Entry(12.0, new LaunchTrajectory(0.0, 0.0)),
         new InterpolationTable.Entry(15.0, new LaunchTrajectory(0.0, 0.0))
     );
-
-    /*
-        usage would be:
-
-            LaunchTrajectory newTurretTrajectory = LaunchTrajectory.trajectoryMap.interpolate(givenDistance);
-    */
 }
