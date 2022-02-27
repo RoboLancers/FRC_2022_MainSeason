@@ -51,6 +51,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.yaw.BetterYaw;
 
 public class RobotContainer {
@@ -63,9 +64,10 @@ public class RobotContainer {
   private final Pneumatics pneumatics = new Pneumatics();
   private final GearShifter gearShifter = new GearShifter(pneumatics);
   private final Indexer indexer = new Indexer();
-  private final Turret turret = new Turret(drivetrain);
-  private final Climber climber = new Climber();
-  private final Intake intake = new Intake();
+  private final TurretFlywheel turretFlywheel = new TurretFlywheel();
+  // private final Turret turret = new Turret(drivetrain);
+  // private final Climber climber = new Climber();
+  // private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   /*   Autonomous Trajectory   */
@@ -81,22 +83,22 @@ public class RobotContainer {
 
     // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
     // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
-    this.indexer.setDefaultCommand(new RunCommand(
-      () -> {
-        SmartDashboard.putNumber("proximity", indexer.bottomColorSensor.getProximity());
-        SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
-        SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
-        SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
-        this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-      }, this.indexer));
+    // this.indexer.setDefaultCommand(new RunCommand(
+      // () -> {
+      //   SmartDashboard.putNumber("proximity", indexer.bottomColorSensor.getProximity());
+      //   SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
+      //   SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
+      //   SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
+      //   this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
+      // }, this.indexer)); 
 
   }
 
   private void configureButtonBindings() {
     driverController.whenPressed(XboxController.Button.A, new InstantCommand(gearShifter::toggleGearShifter, gearShifter));
-    driverController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(intake::toggleIntake, intake));
+    // driverController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(intake::toggleIntake, intake));
                     //.whenReleased(XboxController.Button.RIGHT_BUMPER, );
-    driverController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy, intake));
+    // driverController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy, intake));
     // driverController.whenPressed(XboxController.down, new HighGear);
     // driverController.whenPressed(XboxController.down, new LowGear);
 
@@ -104,21 +106,27 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
     // manipulatorController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(
-    //  () -> {
-    //    indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
-    //  }
-    //  );
+    // () -> {
+    // indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
+    // }
+    // );
     // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
     // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
     // manipulatorController.whenPressed(XboxController.ButtonThinggggg, new Instant)
-    manipulatorController.whenPressed(XboxController.Button.B, new SequentialCommandGroup(
-      new ZeroAndDisable(turret),
-      new UpClimber(climber, Constants.Climber.kLowClimb)));
-    manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
-      new ZeroAndDisable(turret),
-      new UpClimber(climber, Constants.Climber.kMidClimb)));
+    // manipulatorController.whenPressed(XboxController.Button.B, new SequentialCommandGroup(
+    //   // new ZeroAndDisable(turret),
+    //   new UpClimber(climber, Constants.Climber.kLowClimb)));
+    // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
+    //   new ZeroAndDisable(turret),
+    //   new UpClimber(climber, Constants.Climber.kMidClimb)));
+    indexer.setDefaultCommand(new RunCommand(() -> {
+      indexer.setPower(driverController.getAxisValue(Axis.LEFT_TRIGGER));
+    }, indexer));
+    turretFlywheel.setDefaultCommand(new RunCommand(() -> {
+      turretFlywheel.setFlywheelSpeed(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
+    }, turretFlywheel));
   }
 
   public Command getAutonomousCommand() {

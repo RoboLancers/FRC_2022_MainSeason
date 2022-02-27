@@ -12,6 +12,8 @@ public class TeleopDrive extends CommandBase {
     public TeleopDrive(Drivetrain driveTrain, XboxController driverController){
         this.driveTrain = driveTrain;
         this.driverController = driverController;
+
+        addRequirements(driveTrain);
     }
 
     @Override
