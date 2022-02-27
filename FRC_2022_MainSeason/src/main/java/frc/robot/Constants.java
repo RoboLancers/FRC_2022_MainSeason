@@ -37,10 +37,9 @@ public final class Constants {
                 public static final double kMaxAbsoluteOutput = 0.0;
                 // logic
                 public static final double kStoppedPosition = 2 * Math.PI / 180; // max absolute difference in radians from 0 where the turret yaw considers itself to be at zero (for resetting turret before climbing)
-                public static final double kErrorThreshold = 2 * Math.PI / 180; // max absolute error in radians where the turret yaw considers itself aligned (for generalized release routine)
-                public static final double kMinSafeAngle = -Math.PI; // min turn angle in radians for the turret yaw
-                public static final double kMaxSafeAngle = Math.PI; // max turn angle in radians for the turret yaw
-                public static final double kSeekAdjustment = 1.0; // magnitude of the velocity (in m/s?) to seek with (when looking for limelight)
+                public static final double kMinSafeAngle = -170 * Math.PI / 180; // min turn angle in radians for the turret yaw
+                public static final double kMaxSafeAngle = 170 * Math.PI / 180; // max turn angle in radians for the turret yaw
+                public static final double kSeekAdjustment = 0.5 * Math.PI / 180; // magnitude of the change of the angle in the turret yaw in radians  (when looking for limelight)
             }
 
             public static final class PitchPID {

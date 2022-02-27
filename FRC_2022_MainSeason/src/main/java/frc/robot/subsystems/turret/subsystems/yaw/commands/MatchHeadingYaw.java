@@ -23,16 +23,10 @@ public class MatchHeadingYaw extends CommandBase {
         }
         if(this.turret.yaw.limelight.hasTarget()){
             double targetYaw = this.turret.yaw.getPosition() + this.turret.yaw.limelight.yawOffset();
-            if(
-                targetYaw < Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle ||
-                targetYaw > Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle
-            ){
-                this.seekDirection = targetYaw < Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle;
-                this.turret.yaw.setVelocitySetpoint(
-                    this.seekDirection ?
-                        Constants.Turret.TunedCoefficients.YawPID.kSeekAdjustment :
-                        -Constants.Turret.TunedCoefficients.YawPID.kSeekAdjustment
-                );
+            if(targetYaw < Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle){
+                this.turret.yaw.setPositionSetpoint(targetYaw - Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle + Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle);
+            } else if(targetYaw > Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle) {
+                this.turret.yaw.setPositionSetpoint(targetYaw + Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle - Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle);
             } else {
                 this.turret.yaw.setPositionSetpoint(targetYaw);
             }
@@ -42,10 +36,16 @@ public class MatchHeadingYaw extends CommandBase {
                 double deltaY = this.turret.yaw.relativeHub.getY() - this.driveTrain.getPose().getY();
                 double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
                 if(distance > Constants.Turret.PhysicsInfo.minLimelightViewableDistance && distance < Constants.Turret.PhysicsInfo.maxLimelightViewableDistance){
-                    this.turret.yaw.setVelocitySetpoint(
-                        this.seekDirection ?
-                            Constants.Turret.TunedCoefficients.YawPID.kSeekAdjustment :
-                            -Constants.Turret.TunedCoefficients.YawPID.kSeekAdjustment
+                    double turretYaw = this.turret.yaw.getPosition();
+                    if(turretYaw < Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle || turretYaw > Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle){
+                        this.seekDirection = turretYaw < Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle;
+                    }
+                    this.turret.yaw.setPositionSetpoint(
+                        turretYaw + (
+                            this.seekDirection ?
+                                Constants.Turret.TunedCoefficients.YawPID.kSeekAdjustment :
+                                -Constants.Turret.TunedCoefficients.YawPID.kSeekAdjustment
+                        )
                     );
                     return;
                 }
