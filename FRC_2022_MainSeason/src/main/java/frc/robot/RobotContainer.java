@@ -113,7 +113,7 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    driverController.whenPressed(XboxController.Button.A, new ToggleGearShifter(gearShifter));
+    driverController.whenPressed(XboxController.Button.A, new InstantCommand(gearShifter::ToggleGearShifter, gearShifter));
     // driverController.whenPressed(XboxController.RIGHT_BUMPER, new Intake);
     // driverController.whenPressed(XboxController.Button.B, new Intake Deploy);
     // driverController.whenPressed(XboxController.UP, new HighGear);
@@ -208,8 +208,6 @@ public class RobotContainer {
     //Are these encoder positions correct?
     SmartDashboard.putNumber("Left Position", Constants.Trajectory.kDistPerRot * drivetrain.getLeftEncoder().getPosition() / 42);
     SmartDashboard.putNumber("Right Position", Constants.Trajectory.kDistPerRot * drivetrain.getRightEncoder().getPosition() / 42);
-    SmartDashboard.putNumber("System pressure", pneumatics.getPressure());
-    SmartDashboard.putBoolean("System pressure switch tripped", pneumatics.pressureSwitchTripped());
     SmartDashboard.putNumber("Left Encoder Ticks", drivetrain.getLeftEncoder().getPosition() * 4096);
     SmartDashboard.putNumber("Right Encoder Ticks", drivetrain.getRightEncoder().getPosition() * 4096);
   }
