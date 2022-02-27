@@ -38,7 +38,11 @@ public class TurretYaw extends SubsystemBase {
         }, this));
 
         this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, CANSparkMax.MotorType.kBrushless);
+
         this.encoder = this.motor.getEncoder();
+        this.encoder.setPositionConversionFactor(2 * Math.PI);
+        // this.encoder.setVelocityConversionFactor(?);
+        // maybe 2πr
 
         this.PIDController = this.motor.getPIDController();
         this.PIDController.setP(Constants.Turret.TunedCoefficients.YawPID.kP);

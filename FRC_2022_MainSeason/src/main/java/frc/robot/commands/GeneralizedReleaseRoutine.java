@@ -28,8 +28,9 @@ public class GeneralizedReleaseRoutine extends CommandBase {
                 new WaitUntilCommand(() -> {
                     return turret.flywheel.getCurrent() < Constants.Turret.TunedCoefficients.FlywheelPID.kCurrentSpikeThreshold;
                 }),
-                // TODO: if we want to make adjustments to rpm uncomment this and add a command after the wait
                 new WaitCommand(Constants.Turret.TunedCoefficients.FlywheelPID.kPostSpikeDelay),
+                // ! - this is potentially not the right logic, we may need to reconsider what to do after this step
+                // maybe if there are no balls left, turn off indexer and return, otherwise start a new generalized release routine
                 new InstantCommand (() -> {
                     indexer.progressBalls();
                     if (indexer.hasOneBall()) {

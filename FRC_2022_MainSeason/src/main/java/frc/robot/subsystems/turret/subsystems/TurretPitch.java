@@ -21,7 +21,9 @@ public class TurretPitch extends SubsystemBase {
 
     public TurretPitch(){
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
+
         this.encoder = this.motor.getEncoder();
+        this.encoder.setPositionConversionFactor(2 * Math.PI);
 
         this.PIDController = this.motor.getPIDController();
 
@@ -55,6 +57,6 @@ public class TurretPitch extends SubsystemBase {
     }
 
     public boolean isAligned(double launchTrajectoryTheta){
-        return Math.abs((this.getPosition() + Constants.Turret.PhysicsInfo.kPitchMountAngle) - launchTrajectoryTheta) < Constants.Turret.TunedCoefficients.PitchPID.kErrorThreshold;
+        return Math.abs(this.getPosition() + Constants.Turret.PhysicsInfo.kPitchMountAngle - launchTrajectoryTheta) < Constants.Turret.TunedCoefficients.PitchPID.kErrorThreshold;
     }
 }

@@ -29,7 +29,16 @@ public class ActiveLaunchTrajectory extends CommandBase {
                 Maths.toRadians(this.turret.yaw.limelight.yawOffset()),
                 Maths.toRadians(this.turret.yaw.limelight.pitchOffset() + Constants.Turret.PhysicsInfo.kPitchMountAngle)
             );
-            this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(distance);
+            // TODO: uncomment once the interpolation table has been tuned
+            // this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(distance);
+            this.turret.launchTrajectory = LaunchTrajectory.usingAlphaImpact(
+                Constants.Turret.PhysicsInfo.kGravity,
+                distance,
+                Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
+                Constants.Turret.PhysicsInfo.kSinAlpha,
+                Constants.Turret.PhysicsInfo.kCosAlpha,
+                Constants.Turret.PhysicsInfo.kTanAlpha
+            );
             this.turret.yaw.hasRelativeHub = true;
             double angle = this.driveTrain.getPose().getRotation().getRadians() + Maths.toRadians(turret.yaw.getPosition());
             Pose2d robotPose = this.driveTrain.getPose();
@@ -39,7 +48,16 @@ public class ActiveLaunchTrajectory extends CommandBase {
             double deltaY = this.turret.yaw.relativeHub.getY() - this.driveTrain.getPose().getY();
             double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
             if(distance < Constants.Turret.PhysicsInfo.minLimelightViewableDistance || distance > Constants.Turret.PhysicsInfo.maxLimelightViewableDistance){
-                this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(distance);
+                // TODO: uncomment once the interpolation table has been tuned
+                // this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(distance);
+                this.turret.launchTrajectory = LaunchTrajectory.usingAlphaImpact(
+                    Constants.Turret.PhysicsInfo.kGravity,
+                    distance,
+                    Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
+                    Constants.Turret.PhysicsInfo.kSinAlpha,
+                    Constants.Turret.PhysicsInfo.kCosAlpha,
+                    Constants.Turret.PhysicsInfo.kTanAlpha
+                );
             }
         }
     }
