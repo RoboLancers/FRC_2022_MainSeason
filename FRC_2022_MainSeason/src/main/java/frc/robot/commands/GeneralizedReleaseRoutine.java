@@ -1,4 +1,4 @@
-/* package frc.robot.commands;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -33,11 +33,10 @@ public class GeneralizedReleaseRoutine extends CommandBase {
                 // maybe if there are no balls left, turn off indexer and return, otherwise start a new generalized release routine
                 new InstantCommand (() -> {
                     indexer.progressBalls();
-                    if (indexer.hasOneBall()) {
-                        indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-                    }
+                    indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
+                    return;
                 })
             );
         }
     }
-} */
+}

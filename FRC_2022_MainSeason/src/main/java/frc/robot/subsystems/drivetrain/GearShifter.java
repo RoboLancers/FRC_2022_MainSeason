@@ -2,6 +2,7 @@ package frc.robot.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.drivetrain.enums.GearShifterState;
 
@@ -17,7 +18,7 @@ public class GearShifter extends SubsystemBase {
     }
     
     private void initDefaultCommand(){
-        // TODO: set default command for gear shifter if needed
+
     }
 
     public void setGearShifter(GearShifterState gearShifterState) {
