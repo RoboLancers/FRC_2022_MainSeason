@@ -21,8 +21,8 @@ public final class Constants {
             // bully electrical to get these
             public static final int kYawMotor = 0;
             public static final int kPitchMotor = 0;
-            public static final int kFlywheelMotorA = 0;
-            public static final int kFlywheelMotorB = 0;
+            public static final int kFlywheelMotorA = 7;
+            public static final int kFlywheelMotorB = 8;
             public static final int kYawLimitSwitch = 0;
             public static final int kPitchLimitSwitch = 0;
         }
@@ -100,8 +100,8 @@ public final class Constants {
     }
 
     public static final class Indexer {
-        public static final int kProximityLimit = 1600;
-        public static final int kIndexerPort = 13;
+        public static final int kProximityLimit = 400;
+        public static final int kIndexerPort = 12;
         public static final double kIndexerSpeed = 0.2;
         public static final int ktopSwitch = 1;
         public static final int kbottomSwitch = 0;
