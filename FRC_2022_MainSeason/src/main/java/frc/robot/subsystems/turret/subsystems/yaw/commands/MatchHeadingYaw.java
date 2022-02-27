@@ -14,6 +14,8 @@ public class MatchHeadingYaw extends CommandBase {
     public MatchHeadingYaw(Turret turret, Drivetrain driveTrain){
         this.turret.yaw = turret.yaw;
         this.driveTrain = driveTrain;
+
+        // does the subsystem need to be required since it is a default command?
     }
 
     @Override

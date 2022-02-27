@@ -16,6 +16,8 @@ public class ActiveLaunchTrajectory extends CommandBase {
     public ActiveLaunchTrajectory(Turret turret, Drivetrain driveTrain){
         this.turret = turret;
         this.driveTrain = driveTrain;
+
+        // does the subsystem need to be required since it is a default command?
     }
 
     @Override
