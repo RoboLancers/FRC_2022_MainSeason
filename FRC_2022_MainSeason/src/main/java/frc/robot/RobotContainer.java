@@ -103,11 +103,13 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
-    manipulatorController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(
-      () -> {
-        indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
-      }
-      );
+   
+    // manipulatorController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(
+    //   () -> {
+    //     indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
+    //   }
+    //   );
+   
     // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
