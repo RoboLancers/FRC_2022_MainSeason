@@ -36,11 +36,13 @@ import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
+import frc.robot.subsystems.turret.commands.ZeroAndDisable;
 import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.NotifierCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.SPI;
@@ -93,8 +95,14 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
     // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
-    manipulatorController.whenPressed(XboxController.Button.B, new UpClimber(climber, Constants.Climber.kLowClimb));
-    manipulatorController.whenPressed(XboxController.Button.Y, new UpClimber(climber, Constants.Climber.kMidClimb));
+    manipulatorController.whenPressed(XboxController.Button.B, new SequentialCommandGroup(
+      new ZeroAndDisable(turret),
+      new UpClimber(climber, Constants.Climber.kLowClimb)
+    ));
+    manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
+      new ZeroAndDisable(turret),
+      new UpClimber(climber, Constants.Climber.kMidClimb))
+    );
   }
 
   public Command getAutonomousCommand() {

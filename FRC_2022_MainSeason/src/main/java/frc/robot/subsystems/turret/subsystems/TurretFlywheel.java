@@ -65,6 +65,10 @@ public class TurretFlywheel extends SubsystemBase {
         this.PIDControllerB.setReference(velocity, CANSparkMax.ControlType.kVelocity);
     }
 
+    public boolean isAtRest(){
+        return this.getVelocity() < Constants.Turret.TunedCoefficients.FlywheelPID.kStoppedVelocity;
+    }
+
     public boolean isUpToSpeed(double launchTrajectorySpeed){
         return Math.abs(this.getVelocity() - launchTrajectorySpeed) < Constants.Turret.TunedCoefficients.FlywheelPID.kErrorThreshold;
     }

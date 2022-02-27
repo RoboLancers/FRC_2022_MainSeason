@@ -36,10 +36,11 @@ public final class Constants {
                 public static final double kFF = 0.0;
                 public static final double kMaxAbsoluteOutput = 0.0;
                 // logic
-                public static final double kErrorThreshold = 0.5;
+                public static final double kStoppedPosition = 0.0;
+                public static final double kErrorThreshold = 0.0;
                 public static final double kMinSafeAngle = -180;
                 public static final double kMaxSafeAngle = 180;
-                public static final double kSeekAdjustment = 0.1;
+                public static final double kSeekAdjustment = 0.0;
             }
 
             public static final class PitchPID {
@@ -50,7 +51,8 @@ public final class Constants {
                 public static final double kFF = 0.0;
                 public static final double kMaxAbsoluteOutput = 0.0;
                 // logic
-                public static final double kErrorThreshold = 0.5;
+                public static final double kStoppedPosition = 0.0;
+                public static final double kErrorThreshold = 0.0;
             }
 
             public static final class FlywheelPID {
@@ -61,24 +63,25 @@ public final class Constants {
                 public static final double kFF = 0.0;
                 public static final double kMaxAbsoluteOutput = 0.0;
                 // logic
-                public static final double kErrorThreshold = 100;
-                public static final double kMaxVelocity = 40;
+                public static final double kStoppedVelocity = 0.0;
+                public static final double kErrorThreshold = 0.0;
+                public static final double kMaxVelocity = 0.0;
                 public static final double kCurrentSpikeThreshold = 0.0;
-                public static final double kPostSpikeDelay = 0.2;
+                public static final double kPostSpikeDelay = 0.0;
             }
         }
 
         public static final class PhysicsInfo {
-            public static final double minLimelightViewableDistance = 2.0;
-            public static final double maxLimelightViewableDistance = 10.0;
+            public static final double minLimelightViewableDistance = 0.0;
+            public static final double maxLimelightViewableDistance = 0.0;
             // Not necessary if we are using interpolation table
             public static final double kGravity = 9.8;
-            public static final double kTurretShotDeltaY = 5.0;
+            public static final double kTurretShotDeltaY = 0.0;
             public static final double kAlpha = 45 * Math.PI / 180;
             public static final double kSinAlpha = Math.sin(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kCosAlpha = Math.cos(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kTanAlpha = Math.tan(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kPitchMountAngle = 55;
+            public static final double kPitchMountAngle = 0.0;
         }
     }
 

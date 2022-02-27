@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.misc.LimeLight;
+import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -27,7 +28,7 @@ public class TurretYaw extends SubsystemBase {
     private RelativeEncoder encoder;
     private SparkMaxPIDController PIDController;
 
-    public TurretYaw(Drivetrain driveTrain){
+    public TurretYaw(Turret turret, Drivetrain driveTrain){
         this.limelight = new LimeLight();
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
@@ -49,11 +50,11 @@ public class TurretYaw extends SubsystemBase {
             Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput
         );
 
-        initDefaultCommand(driveTrain);
+        initDefaultCommand(turret, driveTrain);
     }
 
-    private void initDefaultCommand(Drivetrain driveTrain){
-        setDefaultCommand(new MatchHeadingYaw(this, driveTrain));
+    private void initDefaultCommand(Turret turret, Drivetrain driveTrain){
+        setDefaultCommand(new MatchHeadingYaw(turret, driveTrain));
     }
 
     public double getPosition(){
@@ -66,6 +67,10 @@ public class TurretYaw extends SubsystemBase {
 
     public void setVelocitySetpoint(double velocity){
         this.PIDController.setReference(velocity, CANSparkMax.ControlType.kVelocity);
+    }
+
+    public boolean isAtZero(){
+        return Math.abs(this.getPosition()) < Constants.Turret.TunedCoefficients.YawPID.kStoppedPosition;
     }
 
     public boolean isAligned(){

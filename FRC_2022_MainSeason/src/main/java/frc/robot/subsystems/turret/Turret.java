@@ -9,7 +9,7 @@ import frc.robot.subsystems.turret.subsystems.TurretPitch;
 import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
 
 public class Turret extends SubsystemBase {
-    public boolean readyToHang = false;
+    public boolean inHangMode = false;
 
     public TurretYaw yaw;
     public TurretPitch pitch;
@@ -18,7 +18,7 @@ public class Turret extends SubsystemBase {
     public LaunchTrajectory launchTrajectory;
 
     public Turret(Drivetrain driveTrain){
-        this.yaw = new TurretYaw(driveTrain);
+        this.yaw = new TurretYaw(this, driveTrain);
         this.pitch = new TurretPitch();
         this.flywheel = new TurretFlywheel();
 

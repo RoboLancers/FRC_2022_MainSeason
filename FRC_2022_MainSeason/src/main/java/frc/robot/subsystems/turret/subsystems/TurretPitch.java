@@ -42,12 +42,16 @@ public class TurretPitch extends SubsystemBase {
         }, this));
     }
 
-    public double getPosition(){
+    private double getPosition(){
         return this.encoder.getPosition();
     }
 
     public void setPositionSetpoint(double position){
         this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
+    }
+
+    public boolean isAtZero(){
+        return Math.abs(this.getPosition()) < Constants.Turret.TunedCoefficients.PitchPID.kStoppedPosition;
     }
 
     public boolean isAligned(double launchTrajectoryTheta){
