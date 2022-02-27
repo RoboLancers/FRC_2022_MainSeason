@@ -17,5 +17,5 @@ public class ManualClimber extends CommandBase {
     public void execute(){
         climberController.getAxisValue(XboxController.Axis.LEFT_Y);
 
-    }
+}
 }

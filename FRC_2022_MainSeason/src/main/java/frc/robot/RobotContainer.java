@@ -95,6 +95,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driverController.whenPressed(XboxController.Button.A, new InstantCommand(gearShifter::toggleGearShifter, gearShifter));
     driverController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(intake::toggleIntake, intake));
+                    //.whenReleased(XboxController.Button.RIGHT_BUMPER, );
     driverController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy, intake));
     // driverController.whenPressed(XboxController.down, new HighGear);
     // driverController.whenPressed(XboxController.down, new LowGear);
@@ -102,11 +103,16 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
-    // manipulatorController.whenPressed(XboxController.RIGHT_BUMPER, new Passthrough In);
+    manipulatorController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(
+      () -> {
+        indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
+      }
+      );
     // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
     // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
+    // manipulatorController.whenPressed(XboxController.ButtonThinggggg, new Instant)
     manipulatorController.whenPressed(XboxController.Button.B, new SequentialCommandGroup(
       new ZeroAndDisable(turret),
       new UpClimber(climber, Constants.Climber.kLowClimb)));
