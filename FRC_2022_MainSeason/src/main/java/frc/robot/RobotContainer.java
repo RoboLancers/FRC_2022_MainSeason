@@ -67,7 +67,7 @@ public class RobotContainer {
   private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   // private final Turret turret = new Turret(drivetrain);
   // private final Climber climber = new Climber();
-  // private final Intake intake = new Intake();
+  //private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   /*   Autonomous Trajectory   */
@@ -96,7 +96,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     driverController.whenPressed(XboxController.Button.A, new InstantCommand(gearShifter::toggleGearShifter, gearShifter));
-    // driverController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(intake::toggleIntake, intake));
+    //driverController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(intake::toggleIntake, intake));
                     //.whenReleased(XboxController.Button.RIGHT_BUMPER, );
     // driverController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy, intake));
     // driverController.whenPressed(XboxController.down, new HighGear);
