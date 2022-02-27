@@ -113,4 +113,8 @@ public class Indexer extends SubsystemBase {
             }
         }
     }
+
+    public void setPower(double power) {
+        indexerMotor.set(power);
+    }
 }
