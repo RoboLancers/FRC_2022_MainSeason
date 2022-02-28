@@ -49,6 +49,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
+import frc.robot.subsystems.intake.Intake;
 
 public class RobotContainer {
   /*   Controllers   */
@@ -62,6 +63,7 @@ public class RobotContainer {
   private final Indexer indexer = new Indexer();
   private final Turret turret = new Turret(drivetrain);
   private final Climber climber = new Climber();
+  private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   /*   Autonomous Trajectory   */
@@ -103,6 +105,10 @@ public class RobotContainer {
       new ZeroAndDisable(turret),
       new UpClimber(climber, Constants.Climber.kMidClimb))
     );
+    intake.setDefaultCommand(new RunCommand(() -> {
+      intake.setPower(driverController.getAxisValue(Axis.LEFT_TRIGGER));
+    }, intake));
+    indexer.set
   }
 
   public Command getAutonomousCommand() {
