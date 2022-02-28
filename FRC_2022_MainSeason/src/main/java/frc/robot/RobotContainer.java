@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.subsystems.climber.commands.UpClimber;
 import frc.robot.commands.UpdateLights;
@@ -54,6 +55,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.yaw.BetterYaw;
 import frc.robot.subsytems.intake.Intake;
+import frc.robot.commands.GeneralizedReleaseRoutine;
+import com.revrobotics.ColorSensorV3;
+import frc.robot.subsystems.turret.Turret;
 
 public class RobotContainer {
   /*   Controllers   */
@@ -67,6 +71,7 @@ public class RobotContainer {
   private final Indexer indexer = new Indexer();
   private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   private final Intake intake = new Intake();
+  private final Turret turret = new Turret(drivetrain);
   // private final Turret turret = new Turret(drivetrain);
   // private final Climber climber = new Climber();
   //private final Intake intake = new Intake();
@@ -113,6 +118,13 @@ public class RobotContainer {
     intake.setDefaultCommand(new RunCommand(() -> {
       intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
     }, intake));
+    Trigger threshColorSensor = new Trigger(() -> {
+      // the condition that triggers the command
+      return indexer.bottomColorSensor.getProximity() >= Constants.Indexer.kProximityLimit;
+    });
+  // This is an example of command composition.
+    threshColorSensor.whenActive(new GeneralizedReleaseRoutine(indexer, turret)
+    );
     // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
