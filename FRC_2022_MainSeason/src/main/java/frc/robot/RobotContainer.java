@@ -36,6 +36,7 @@ import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 //import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ZeroAndDisable;
 // import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
@@ -51,8 +52,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
-import frc.robot.subsystems.turret.subsystems.yaw.BetterYaw;
+import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 
 public class RobotContainer {
   /*   Controllers   */
@@ -64,8 +64,7 @@ public class RobotContainer {
   private final Pneumatics pneumatics = new Pneumatics();
   private final GearShifter gearShifter = new GearShifter(pneumatics);
   private final Indexer indexer = new Indexer();
-  private final TurretFlywheel turretFlywheel = new TurretFlywheel();
-  // private final Turret turret = new Turret(drivetrain);
+  private final Turret turret = new Turret(drivetrain);
   // private final Climber climber = new Climber();
   //private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
@@ -81,6 +80,9 @@ public class RobotContainer {
   public RobotContainer() {
     this.configureButtonBindings();
 
+    this.turret.setDefaultCommand(new ActiveLaunchTrajectory(this.turret, drivetrain));
+    this.turret.yaw.setDefaultCommand(new MatchHeadingYaw(this.turret, drivetrain));
+
     // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
     // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
     // this.indexer.setDefaultCommand(new RunCommand(
@@ -91,7 +93,6 @@ public class RobotContainer {
       //   SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
       //   this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
       // }, this.indexer)); 
-
   }
 
   private void configureButtonBindings() {
@@ -121,12 +122,34 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
     //   new ZeroAndDisable(turret),
     //   new UpClimber(climber, Constants.Climber.kMidClimb)));
-    indexer.setDefaultCommand(new RunCommand(() -> {
-      indexer.setPower(driverController.getAxisValue(Axis.LEFT_TRIGGER));
-    }, indexer));
-    turretFlywheel.setDefaultCommand(new RunCommand(() -> {
-      turretFlywheel.setFlywheelSpeed(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
-    }, turretFlywheel));
+
+    // ! - was actually implemented
+    // indexer.setDefaultCommand(new RunCommand(() -> {
+    //   indexer.setPower(driverController.getAxisValue(Axis.LEFT_TRIGGER));
+    // }, indexer));
+
+
+
+    this.turret.setDefaultCommand(new RunCommand(() -> {
+
+      double targetVelocity = 200 * (driverController.getAxisValue(XboxController.Axis.LEFT_Y) + 1);
+
+      SmartDashboard.putNumber("Target Flywheel RPM", targetVelocity);
+      this.turret.flywheel.setVelocitySetpointTesting(targetVelocity);
+
+    }, this.turret.flywheel));
+
+    this.turret.setDefaultCommand(new RunCommand(() -> {
+
+      double targetPosition = 2.5 * (driverController.getAxisValue(XboxController.Axis.LEFT_Y) + 1) * Math.PI / 180;
+
+      SmartDashboard.putNumber("Target Pitch Position", targetPosition);
+      this.turret.pitch.setPositionSetpointTesting(targetPosition);
+
+    }, this.turret.pitch));
+
+
+
   }
 
   public Command getAutonomousCommand() {

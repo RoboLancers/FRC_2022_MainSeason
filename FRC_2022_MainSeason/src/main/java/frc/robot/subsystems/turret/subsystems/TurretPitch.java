@@ -33,7 +33,7 @@ public class TurretPitch extends SubsystemBase {
         this.PIDController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
         this.PIDController.setFF(Constants.Turret.TunedCoefficients.PitchPID.kFF);
         this.PIDController.setOutputRange(
-            -Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput,
+            0,
             Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput
         );
 
@@ -49,6 +49,11 @@ public class TurretPitch extends SubsystemBase {
     }
 
     public void setPositionSetpoint(double position){
+        // ! - wait until turret pitch motor works
+        // this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void setPositionSetpointTesting(double position){
         this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
     }
 
