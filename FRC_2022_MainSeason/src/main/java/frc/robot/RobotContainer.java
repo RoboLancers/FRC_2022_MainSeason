@@ -111,7 +111,7 @@ public class RobotContainer {
       indexer.setPower(driverController.getAxisValue(Axis.LEFT_TRIGGER));
     }, indexer));
     intake.setDefaultCommand(new RunCommand(() -> {
-      intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER))
+      intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
     }, intake));
     // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
