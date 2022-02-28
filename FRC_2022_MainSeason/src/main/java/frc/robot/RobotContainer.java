@@ -80,8 +80,8 @@ public class RobotContainer {
   public RobotContainer() {
     this.configureButtonBindings();
 
-    this.turret.setDefaultCommand(new ActiveLaunchTrajectory(this.turret, drivetrain));
-    this.turret.yaw.setDefaultCommand(new MatchHeadingYaw(this.turret, drivetrain));
+    // this.turret.setDefaultCommand(new ActiveLaunchTrajectory(this.turret, drivetrain));
+    // this.turret.yaw.setDefaultCommand(new MatchHeadingYaw(this.turret, drivetrain));
 
     // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
     // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
@@ -147,9 +147,6 @@ public class RobotContainer {
       this.turret.pitch.setPositionSetpointTesting(targetPosition);
 
     }, this.turret.pitch));
-
-
-
   }
 
   public Command getAutonomousCommand() {
