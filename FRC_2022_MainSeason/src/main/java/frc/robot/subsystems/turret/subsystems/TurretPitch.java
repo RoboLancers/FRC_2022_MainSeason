@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -42,6 +43,37 @@ public class TurretPitch extends SubsystemBase {
         this.homingTrigger.whenActive(new RunCommand(() -> {
             this.encoder.setPosition(0);
         }, this));
+
+        SmartDashboard.putNumber("pitch kP", Constants.Turret.TunedCoefficients.PitchPID.kP);
+        SmartDashboard.putNumber("pitch kI", Constants.Turret.TunedCoefficients.PitchPID.kI);
+        SmartDashboard.putNumber("pitch kD", Constants.Turret.TunedCoefficients.PitchPID.kD);
+        SmartDashboard.putNumber("pitch kFF", Constants.Turret.TunedCoefficients.PitchPID.kFF);
+    }
+
+    // testing
+    @Override
+    public void periodic(){
+        double p = SmartDashboard.getNumber("pitch kP", 0.0);
+        double i = SmartDashboard.getNumber("pitch kI", 0.0);
+        double d = SmartDashboard.getNumber("pitch kD", 0.0);
+        double ff = SmartDashboard.getNumber("pitch kFF", 0.0);
+
+        if(Constants.Turret.TunedCoefficients.PitchPID.kP != p){
+            Constants.Turret.TunedCoefficients.PitchPID.kP = p;
+            this.PIDController.setP(p);
+        }
+        if(Constants.Turret.TunedCoefficients.PitchPID.kI != i){
+            Constants.Turret.TunedCoefficients.PitchPID.kI = i;
+            this.PIDController.setP(i);
+        }
+        if(Constants.Turret.TunedCoefficients.PitchPID.kD != d){
+            Constants.Turret.TunedCoefficients.PitchPID.kD = d;
+            this.PIDController.setP(d);
+        }
+        if(Constants.Turret.TunedCoefficients.PitchPID.kFF != ff){
+            Constants.Turret.TunedCoefficients.PitchPID.kFF = ff;
+            this.PIDController.setP(ff);
+        }
     }
 
     private double getPosition(){

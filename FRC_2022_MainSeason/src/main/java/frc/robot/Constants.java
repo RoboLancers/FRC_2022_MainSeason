@@ -46,10 +46,10 @@ public final class Constants {
 
             public static final class PitchPID {
                 // PID
-                public static final double kP = 0.0;
-                public static final double kI = 0.0;
-                public static final double kD = 0.0;
-                public static final double kFF = 0.0;
+                public static double kP = 0.0;
+                public static double kI = 0.0;
+                public static double kD = 0.0;
+                public static double kFF = 0.0;
                 public static final double kMaxAbsoluteOutput = 1.0;
                 // logic
                 public static final double kStoppedPosition = 2 * Math.PI / 180; // max absolute difference in radians from 0 where the turret pitch considers itself to be at zero (for resetting turret before climbing)
@@ -58,10 +58,10 @@ public final class Constants {
 
             public static final class FlywheelPID {
                 // PID
-                public static final double kP = 0.0;
-                public static final double kI = 0.0;
-                public static final double kD = 0.0;
-                public static final double kFF = 0.12359;
+                public static double kP = 0.0;
+                public static double kI = 0.0;
+                public static double kD = 0.0;
+                public static double kFF = 0.12359;
                 public static final double kMaxAbsoluteOutput = 1.0;
                 // logic
                 public static final double kStoppedVelocity = 0.25; // max absolute difference (in m/s?) from 0 where the turret flywheel considers itself to be at rest (for resetting turret before climbing)
