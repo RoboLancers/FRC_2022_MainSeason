@@ -37,7 +37,7 @@ public class TurretPitch extends SubsystemBase {
             Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput
         );
 
-        this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
+        //this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
         this.homingTrigger = new Trigger(this.homingSwitch::get);
         this.homingTrigger.whenActive(new RunCommand(() -> {
             this.encoder.setPosition(0);

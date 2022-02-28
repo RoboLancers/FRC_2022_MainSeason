@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.Constants;
 // import edu.wpi.first.wpilibj.DoubleSolenoid;
+// import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Intake extends SubsystemBase {
     public CANSparkMax intakeMotor; // for roller
@@ -35,6 +36,10 @@ public class Intake extends SubsystemBase {
             intakeOn = true;
         }
     }
+
+    // public Value isIntakeDown() {
+    //     return (retractionPiston.get());
+    // }
 
     public void setPower(double power) {
         intakeMotor.set(power);
