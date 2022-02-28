@@ -10,6 +10,7 @@ public class DefaultIndex extends CommandBase {
 
     public DefaultIndex(Indexer indexer){
         this.indexer = indexer;
+        addRequirements(indexer);
     }
 
     @Override

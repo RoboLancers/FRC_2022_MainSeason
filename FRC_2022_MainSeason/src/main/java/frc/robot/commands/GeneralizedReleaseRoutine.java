@@ -24,6 +24,7 @@ public class GeneralizedReleaseRoutine extends CommandBase {
             new SequentialCommandGroup(
                 new InstantCommand(() -> {
                     this.indexer.indexerMotor.set(Constants.Indexer.kIndexerSpeed);
+                    this.turret.flywheel.setVelocitySetpoint(0.8);
                 }),
                 new WaitUntilCommand(() -> {
                     return turret.flywheel.getCurrent() < Constants.Turret.TunedCoefficients.FlywheelPID.kCurrentSpikeThreshold;
@@ -33,9 +34,9 @@ public class GeneralizedReleaseRoutine extends CommandBase {
                 // maybe if there are no balls left, turn off indexer and return, otherwise start a new generalized release routine
                 new InstantCommand (() -> {
                     indexer.progressBalls();
-                    if (indexer.hasOneBall()) {
-                        indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-                    }
+                    indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
+                    turret.flywheel.setVelocitySetpoint(0);
+                    return;
                 })
             );
         }
