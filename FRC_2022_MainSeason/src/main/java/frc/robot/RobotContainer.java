@@ -121,12 +121,7 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
     //   new ZeroAndDisable(turret),
     //   new UpClimber(climber, Constants.Climber.kMidClimb)));
-    indexer.setDefaultCommand(new RunCommand(() -> {
-      indexer.setPower(driverController.getAxisValue(Axis.LEFT_TRIGGER));
-    }, indexer));
-    turretFlywheel.setDefaultCommand(new RunCommand(() -> {
-      turretFlywheel.setFlywheelSpeed(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
-    }, turretFlywheel));
+    
   }
 
   public Command getAutonomousCommand() {
