@@ -118,13 +118,13 @@ public class RobotContainer {
     intake.setDefaultCommand(new RunCommand(() -> {
       intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
     }, intake));
-    Trigger threshColorSensor = new Trigger(() -> {
+    // Trigger threshColorSensor = new Trigger(() -> {
       // the condition that triggers the command
-      return indexer.bottomColorSensor.getProximity() >= Constants.Indexer.kProximityLimit;
-    });
+      // return indexer.bottomColorSensor.getProximity() >= Constants.Indexer.kProximityLimit;
+    // });
   // This is an example of command composition.
-    threshColorSensor.whenActive(new GeneralizedReleaseRoutine(indexer, turret)
-    );
+    // threshColorSensor.whenActive(new GeneralizedReleaseRoutine(indexer, turret)
+    // );
     // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
