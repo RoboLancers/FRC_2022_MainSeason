@@ -24,9 +24,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
-import frc.robot.subsystems.climber.commands.UpClimber;
+// import frc.robot.subsystems.climber.commands.UpClimber;
 import frc.robot.commands.UpdateLights;
 import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.commands.ManualClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
@@ -53,6 +54,7 @@ import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.yaw.BetterYaw;
+import frc.robot.subsystems.climber.commands.ManualClimber;
 
 public class RobotContainer {
   /*   Controllers   */
@@ -63,10 +65,10 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain(driverController);
   private final Pneumatics pneumatics = new Pneumatics();
   private final GearShifter gearShifter = new GearShifter(pneumatics);
-  private final Indexer indexer = new Indexer();
-  private final TurretFlywheel turretFlywheel = new TurretFlywheel();
+  // private final Indexer indexer = new Indexer();
+  // private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   // private final Turret turret = new Turret(drivetrain);
-  // private final Climber climber = new Climber();
+  private final Climber climber = new Climber();
   //private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
@@ -110,7 +112,7 @@ public class RobotContainer {
     // indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
     // }
     // );
-    // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
+    // manipulatorController.whenPressed(XboxController.Axis.LEFT_Y, new manualClimber());
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
     // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
@@ -121,7 +123,7 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
     //   new ZeroAndDisable(turret),
     //   new UpClimber(climber, Constants.Climber.kMidClimb)));
-    
+    climber.setDefaultCommand(new ManualClimber(driverController, climber));
   }
 
   public Command getAutonomousCommand() {
