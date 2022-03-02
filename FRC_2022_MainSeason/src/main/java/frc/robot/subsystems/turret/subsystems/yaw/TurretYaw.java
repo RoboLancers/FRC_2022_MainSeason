@@ -1,70 +1,85 @@
-package frc.robot.subsystems.turret.subsystems.yaw;
+// package frc.robot.subsystems.turret.subsystems.yaw;
 
-import edu.wpi.first.wpilibj2.command.PerpetualCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.misc.LimeLight;
-import frc.robot.subsystems.turret.LaunchTrajectory;
-import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
-import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
+// import edu.wpi.first.wpilibj2.command.RunCommand;
+// import edu.wpi.first.wpilibj2.command.SubsystemBase;
+// import frc.robot.Constants;
+// import frc.robot.subsystems.drivetrain.Drivetrain;
+// import frc.robot.subsystems.misc.LimeLight;
+// import frc.robot.subsystems.turret.Turret;
+// import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
+// import edu.wpi.first.math.geometry.Pose2d;
+// import edu.wpi.first.wpilibj.DigitalInput;
 
-import java.util.function.Consumer;
+// import com.revrobotics.CANSparkMax;
+// import com.revrobotics.RelativeEncoder;
+// import com.revrobotics.SparkMaxPIDController;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+// public class TurretYaw extends SubsystemBase {
+//     public boolean hasRelativeHub = false;
+//     public Pose2d relativeHub;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+//     public LimeLight limelight;
 
-public class TurretYaw extends SubsystemBase {
-    private Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate;
+//     private DigitalInput homingSwitch;
+//     private Trigger homingTrigger;
 
-    public LimeLight limelight;
+//     private CANSparkMax motor;
+//     private RelativeEncoder encoder;
+//     private SparkMaxPIDController PIDController;
 
-    private CANSparkMax motor;
-    private RelativeEncoder encoder;
+//     public TurretYaw(Turret turret, Drivetrain driveTrain){
+//         this.limelight = new LimeLight();
 
-    private DigitalInput homingSwitch;
+//         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
+//         this.homingTrigger = new Trigger(this.homingSwitch::get);
+//         this.homingTrigger.whenActive(new RunCommand(() -> {
+//             this.encoder.setPosition(0);
+//         }, this));
 
-    public TurretYaw(Consumer<LaunchTrajectory> onLaunchTrajectoryUpdate){
-        this.onLaunchTrajectoryUpdate = onLaunchTrajectoryUpdate;
+//         this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, CANSparkMax.MotorType.kBrushless);
 
-        this.limelight = new LimeLight();
+//         this.encoder = this.motor.getEncoder();
+//         this.encoder.setPositionConversionFactor(2 * Math.PI);
+//         // this.encoder.setVelocityConversionFactor(?);
+//         // maybe 2πr
 
-        this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, MotorType.kBrushless);
-        this.encoder = this.motor.getEncoder();
+//         this.PIDController = this.motor.getPIDController();
+//         this.PIDController.setP(Constants.Turret.TunedCoefficients.YawPID.kP);
+//         this.PIDController.setI(Constants.Turret.TunedCoefficients.YawPID.kI);
+//         this.PIDController.setD(Constants.Turret.TunedCoefficients.YawPID.kD);
+//         this.PIDController.setFF(Constants.Turret.TunedCoefficients.YawPID.kFF);
+//         this.PIDController.setOutputRange(
+//             -Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput,
+//             Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput
+//         );
 
-        this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
+//         initDefaultCommand(turret, driveTrain);
+//     }
 
-        // TODO: use default commands or at least find a way to make it end after shooting phase of the game
-        //new PerpetualCommand(new ActiveLaunchTrajectory(this));
-        new PerpetualCommand(new MatchHeadingYaw(this));
-    }
+//     private void initDefaultCommand(Turret turret, Drivetrain driveTrain){
+//         setDefaultCommand(new MatchHeadingYaw(turret, driveTrain));
+//     }
 
-    public void updateLaunchTrajectory(LaunchTrajectory newLaunchTrajectory){
-        this.onLaunchTrajectoryUpdate.accept(newLaunchTrajectory);
-    }
+//     public double getPosition(){
+//         return this.encoder.getPosition();
+//     }
 
-    public double getVelocity(){
-        // TODO
-        return 0.0;
-    }
+//     public void setPositionSetpoint(double position){
+//         this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
+//     }
 
-    public double getPosition(){
-        // TODO
-        return 0.0;
-    }
+//     public void setVelocitySetpoint(double velocity){
+//         this.PIDController.setReference(velocity, CANSparkMax.ControlType.kVelocity);
+//     }
 
-    public void setPower(double power){
-        // TODO
-    }
+//     public boolean isAtZero(){
+//         return Math.abs(this.getPosition()) < Constants.Turret.TunedCoefficients.YawPID.kStoppedPosition;
+//     }
 
-    public boolean isAligned(){
-        return (
-            this.limelight.hasTarget() &&
-            Math.abs(this.limelight.yawOffset()) < Constants.Turret.TunedCoefficients.YawPID.kErrorThreshold
-        );
-    }
-}
+//     public boolean isAligned(){
+//         return (
+//             this.limelight.hasTarget() &&
+//             Math.abs(this.limelight.yawOffset()) < Constants.Turret.TunedCoefficients.YawPID.kErrorThreshold
+//         );
+//     }
+// }

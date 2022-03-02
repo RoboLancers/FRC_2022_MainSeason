@@ -19,7 +19,6 @@ public class TeleopDrive extends CommandBase {
     public void execute(){
         this.driveTrain.arcadeDrive(
             driverController.getAxisValue(XboxController.Axis.LEFT_Y),
-            driverController.getAxisValue(XboxController.Axis.RIGHT_X)
-        );
+            driverController.getAxisValue(XboxController.Axis.RIGHT_X));
     }
 }
