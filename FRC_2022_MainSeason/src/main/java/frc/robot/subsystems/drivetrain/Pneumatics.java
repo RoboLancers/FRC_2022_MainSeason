@@ -1,10 +1,9 @@
 package frc.robot.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticHub;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.drivetrain.commands.UseCompressor;
 
 public class Pneumatics extends SubsystemBase {
     private PneumaticHub compressor;
@@ -13,34 +12,12 @@ public class Pneumatics extends SubsystemBase {
         compressor = new PneumaticHub(1);
         compressor.clearStickyFaults();
         compressor.enableCompressorDigital();
+
+        initDefaultCommand();
     }
 
-    /**
-     * Regulates the compressor
-     */
-    public void regulateCompressor(){
-        // if(!compressor.getPressureSwitchValue() && !compressor.enabled()
-        //         && isCompressorSafeToUse()){
-        //     compressor.enableDigital();
-        // }else if(compressor.getPressureSwitchValue() && compressor.enabled()
-        //         || !isCompressorSafeToUse()){
-        //     compressor.disable();
-        // }
-        // compressor.set
-        return;
-
-    }
-
-    /**
-     * Checks if compressor is safe to use
-     * @return whether or not the compressor is safe to use
-     */
-    private boolean isCompressorSafeToUse(){
-        return true;
-    }
-
-    public void stopCompressor(){
-        compressor.disableCompressor();
+    private void initDefaultCommand(){
+        setDefaultCommand(new UseCompressor(this));
     }
 
     public DoubleSolenoid getDoubleSolenoid(int port1, int port2) {

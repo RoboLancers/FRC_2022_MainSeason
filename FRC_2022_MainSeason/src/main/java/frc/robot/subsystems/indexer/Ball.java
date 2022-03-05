@@ -13,8 +13,8 @@ public class Ball { // Finn: This class is just a simple utility to hold some in
         BallPosition(int posNumber) {
             this.posNumber = posNumber;
         }
-    
     }
+
     private final Color color;
     private BallPosition pos;
     public ColorMatch colorMatcher;
@@ -26,10 +26,11 @@ public class Ball { // Finn: This class is just a simple utility to hold some in
         colorMatcher.setConfidenceThreshold(0.75);
         Color ballColor = new Color(redValue, greenValue, blueValue);
         ColorMatchResult colorResult = colorMatcher.matchColor(ballColor);
+        // maybe cause for issue?
         if (colorResult.equals(Constants.Indexer.kRedTarget)) {
             color = Color.kRed;
         }
-        else if (colorResult.equals(Constants.Indexer.kBlueTarget)) {
+        else if (colorResult.color.equals(Constants.Indexer.kBlueTarget)) {
             color = Color.kBlue;
         }
         else {
@@ -59,7 +60,6 @@ public class Ball { // Finn: This class is just a simple utility to hold some in
                 break;
             default:
                 break;
-        }
-            
+        }   
     }
 }

@@ -15,8 +15,6 @@ public class ToggleGearShifter extends InstantCommand {
 
     @Override
     public void initialize() {
-        //this.gearShifter.setGearShifter(gearShifter.getState() == GearShifterState.HIGHGEAR ? GearShifterState.LOWGEAR : GearShifterState.HIGHGEAR);
+        // this.gearShifter.setGearShifter(gearShifter.getState() == GearShifterState.HIGHGEAR ? GearShifterState.LOWGEAR : GearShifterState.HIGHGEAR);
     }
-
-  
 }

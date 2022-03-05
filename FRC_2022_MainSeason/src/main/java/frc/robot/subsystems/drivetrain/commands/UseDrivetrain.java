@@ -23,9 +23,9 @@ public class UseDrivetrain extends CommandBase {
         this.throttleFilter = throttleFilter;
         this.turnFilter = turnFilter;
     }
+    
     @Override 
     public void execute () {
-        
         maxPower = 0.75;
         
         throttle = throttleFilter.calculate(xboxController.getLeftY());
@@ -33,10 +33,10 @@ public class UseDrivetrain extends CommandBase {
         turn = turnFilter.calculate(xboxController.getRightX());
 
         drivetrain.arcadeDrive(throttle, turn);
-
-        }
+    }
         
     @Override
     public boolean isFinished(){
-        return false;    }
+        return false;
+    }
 }

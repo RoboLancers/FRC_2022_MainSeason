@@ -16,14 +16,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import frc.robot.Constants;
 import frc.robot.subsystems.indexer.Ball.BallPosition;
+import frc.robot.subsystems.indexer.commands.DefaultIndex;
 
 public class Indexer extends SubsystemBase {
-
     /*
-    Finn: I would suggest instead doing something like this to track the shots.
-     - Make a new class called Ball that has a color and a position as shown below
+        Finn: I would suggest instead doing something like this to track the shots.
+        - Make a new class called Ball that has a color and a position as shown below
     */
-    public final ColorSensorV3 bottomColorSensor = new ColorSensorV3(I2C.Port.kMXP); // not sure what this error is, but you should fix it
+    public final ColorSensorV3 bottomColorSensor = new ColorSensorV3(I2C.Port.kMXP);
 
     // Maintains the touch sensor closest to the turret
     DigitalInput topLimitSwitch = new DigitalInput(0);
@@ -33,17 +33,22 @@ public class Indexer extends SubsystemBase {
     public CANSparkMax indexerMotor = new CANSparkMax(Constants.Indexer.kIndexerPort, MotorType.kBrushless);
 
     public Indexer(){
-        Trigger threshColorSensor = new Trigger() { // trigger is a class that'll let you run a command when the trigger is activated
-        @Override
-        public boolean get() { // this is the condition to run our command (i.e. the ball is close enough, run the command)
+        // trigger is a class that'll let you run a command when the trigger is activated
+        Trigger threshColorSensor = new Trigger(() -> {
+            // the condition that triggers the command
             return bottomColorSensor.getProximity() >= Constants.Indexer.kProximityLimit;
-            }
-        };
+        });
         // This is an example of command composition.
-        threshColorSensor.whenActive((new RunCommand(this::processBall)) // This runs the processBall() function once the color sensor is activated
-        .withInterrupt(this::indexFinished) // Stop this command when the highest ball in the indexer reaches the next color sensor up
-        .andThen(() -> indexerMotor.set(0) // After the command is stopped (i.e. the ball reaches the next sensor) stop the indexer motor
+        threshColorSensor.whenActive(new RunCommand(this::processBall) // This runs the processBall() function once the color sensor is activated
+            .withInterrupt(this::indexFinished) // Stop this command when the highest ball in the indexer reaches the next color sensor up
+            .andThen(() -> indexerMotor.set(0) // After the command is stopped (i.e. the ball reaches the next sensor) stop the indexer motor
         ));
+
+        initDefaultCommand();
+    }
+
+    private void initDefaultCommand(){
+        setDefaultCommand(new DefaultIndex(this));
     }
 
     public void processBall() {
@@ -86,6 +91,10 @@ public class Indexer extends SubsystemBase {
         return (ballQueue.size() >= 3);
     }
 
+    public boolean hasFewBalls() {
+        return (ballQueue.size() < 3);
+    }
+
     public void progressBalls() {
         if (ballQueue.size() == 1) {
             if (ballQueue.peek().getPos() == BallPosition.TOP) {
@@ -99,8 +108,14 @@ public class Indexer extends SubsystemBase {
             ballArray[1].progressPos();
         }
         else if (ballQueue.size() > 2) {
-            // TODO: What do i do?
+            Ball[] ballArray = ((Ball[]) ballQueue.toArray());
+            for (int i = 0; i < ballArray.length; i++) {
+                ballArray[i].progressPos();
+            }
         }
     }
 
+    public void setPower(double power) {
+        indexerMotor.set(power);
+    }
 }

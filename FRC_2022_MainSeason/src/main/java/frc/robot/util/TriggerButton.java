@@ -8,7 +8,7 @@ public class TriggerButton extends Trigger {
     private int port;
     private boolean negative;
 
-    private static final double DEADZONE = 0.5;
+    private static final double kDeadzone = 0.5;
 
     TriggerButton(Joystick joystick, int port, boolean negative){
         this.joystick = joystick;
@@ -18,6 +18,6 @@ public class TriggerButton extends Trigger {
 
     @Override
     public boolean get() {
-        return negative ? (Utilities.applyDeadband(joystick.getRawAxis(port), DEADZONE) < 0) : (Utilities.applyDeadband(joystick.getRawAxis(port), DEADZONE) > 0);
+        return negative ? (Utilities.applyDeadband(joystick.getRawAxis(port), kDeadzone) < 0) : (Utilities.applyDeadband(joystick.getRawAxis(port), kDeadzone) > 0);
     }
 }
