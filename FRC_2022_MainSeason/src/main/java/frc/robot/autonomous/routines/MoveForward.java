@@ -14,10 +14,11 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.misc.LimeLight;
  
 public class MoveForward extends SequentialCommandGroup {
-    public MoveForward(Drivetrain drivetrain, Gyro gyro, Intake intake, LimeLight limelight, XboxController xboxController) {
-        addCommands(commands);
-        addCommands(new WaitCommand(1.0));
+    public MoveForward(Drivetrain drivetrain, Intake intake, LimeLight limelight, XboxController xboxController) {
         addCommands(new RunCommand(() -> drivetrain.tankDriveVolts(Constants.Intake.kLeftVolts, Constants.Intake.kRightVolts), drivetrain));
+        addCommands(new WaitCommand(2.0));
+        addCommands(new RunCommand(() -> drivetrain.tankDriveVolts(0, 0), drivetrain));
+
     }
 }
 
