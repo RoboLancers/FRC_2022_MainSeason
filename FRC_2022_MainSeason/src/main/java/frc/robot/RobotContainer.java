@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
+import frc.robot.commands.TaxiAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.commands.UpdateLights;
 import frc.robot.subsystems.climber.Climber;
@@ -41,6 +42,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.NotifierCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.SPI;
@@ -194,7 +196,8 @@ public class RobotContainer {
     );
 
     drivetrain.resetOdometry(trajectory.getInitialPose());
-    return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
+    return (new TaxiAuto(drivetrain)).raceWith(new WaitCommand(2));
+    //return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
   }
 
   public void doSendables(){
