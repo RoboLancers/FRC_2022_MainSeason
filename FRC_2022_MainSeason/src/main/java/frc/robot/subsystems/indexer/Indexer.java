@@ -115,16 +115,16 @@ public class Indexer extends SubsystemBase {
         }
     }
 
-    public void getRedConversion(CIEColor color) {
-        return (color.getX * Constants.RGBConversion.a + color.getY * Constants.RGBConversion.b + color.getZ * Constants.RGBConversion.c);
+    public double getRedConversion(CIEColor color) {
+        return (color.getX() * Constants.RGBConversion.a + color.getY() * Constants.RGBConversion.b + color.getZ() * Constants.RGBConversion.c);
     }
 
-    public void getGreenConversion(CIEColor color) {
-        return (color.getX * Constants.RGBConversion.g + color.getY * Constants.RGBConversion.h + color.getZ * Constants.RGBConversion.i);
+    public double getGreenConversion(CIEColor color) {
+        return (color.getX() * Constants.RGBConversion.g + color.getY() * Constants.RGBConversion.h + color.getZ() * Constants.RGBConversion.i);
     }
 
-    public void getBlueConversion(CIEColor color) {
-        return (color.getX * Constants.RGBConversion.d + color.getY * Constants.RGBConversion.e + color.getZ * Constants.RGBConversion.f);
+    public double getBlueConversion(CIEColor color) {
+        return (color.getX() * Constants.RGBConversion.d + color.getY() * Constants.RGBConversion.e + color.getZ() * Constants.RGBConversion.f);
     }
 
     public void setPower(double power) {

@@ -68,7 +68,7 @@ public class RobotContainer {
   private final Pneumatics pneumatics = new Pneumatics();
   private final GearShifter gearShifter = new GearShifter(pneumatics);
   private final Indexer indexer = new Indexer();
-  private final TurretFlywheel turretFlywheel = new TurretFlywheel();
+  // private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   private final Intake intake = new Intake();
   private final Turret turret = new Turret(drivetrain);
   // private final Turret turret = new Turret(drivetrain);
