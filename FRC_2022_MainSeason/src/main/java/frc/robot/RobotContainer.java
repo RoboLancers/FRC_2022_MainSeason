@@ -36,6 +36,7 @@ import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.commands.ManualShoot;
 //import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ZeroAndDisable;
 // import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
@@ -64,8 +65,7 @@ public class RobotContainer {
   private final Pneumatics pneumatics = new Pneumatics();
   private final GearShifter gearShifter = new GearShifter(pneumatics);
   private final Indexer indexer = new Indexer();
-  private final TurretFlywheel turretFlywheel = new TurretFlywheel();
-  // private final Turret turret = new Turret(drivetrain);
+  private final Turret turret = new Turret(drivetrain);
   // private final Climber climber = new Climber();
   //private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
@@ -96,8 +96,8 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     driverController.whenPressed(XboxController.Button.A, new InstantCommand(gearShifter::toggleGearShifter, gearShifter));
-    //driverController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(intake::toggleIntake, intake));
-                    //.whenReleased(XboxController.Button.RIGHT_BUMPER, );
+    driverController.whenPressed(XboxController.Button.B, new ManualShoot(turret));
+    //.whenReleased(XboxController.Button.RIGHT_BUMPER, );
     // driverController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy, intake));
     // driverController.whenPressed(XboxController.down, new HighGear);
     // driverController.whenPressed(XboxController.down, new LowGear);
