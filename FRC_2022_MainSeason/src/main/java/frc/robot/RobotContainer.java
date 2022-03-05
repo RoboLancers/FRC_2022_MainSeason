@@ -51,7 +51,19 @@ import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 
 public class RobotContainer {
-  private final Drivetrain drivetrain = new Drivetrain();
+  // private String trajectoryJSON = "paths/MyPath.wpilib.json";
+  private RobotContainer m_robotContainer;
+  private XboxController xboxController = new XboxController(0);
+  private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
+  private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
+  private Field2d m_field = new Field2d();
+  private Pneumatics pneumatics = new Pneumatics();
+  private XboxController driverController = new XboxController(0);
+  private XboxController manipulatorController = new XboxController(1);
+  private GearShifter gearShifter = new GearShifter(pneumatics);
+  private final Drivetrain drivetrain = new Drivetrain(driverController);
+  
+  
   private final Indexer indexer = new Indexer();
   // private final Turret turret = new Turret();
   // private final Climber climber = new Climber();
@@ -64,16 +76,7 @@ public class RobotContainer {
   
   
   
-  // private String trajectoryJSON = "paths/MyPath.wpilib.json";
-  private RobotContainer m_robotContainer;
-  private XboxController xboxController = new XboxController(0);
-  private PIDController rightPID= new PIDController(Constants.Trajectory.kP, 0, 0);
-  private PIDController leftPID= new PIDController(Constants.Trajectory.kP, 0, 0);
-  private Field2d m_field = new Field2d();
-  private Pneumatics pneumatics = new Pneumatics();
-  private XboxController driverController = new XboxController(0);
-  private XboxController manipulatorController = new XboxController(1);
-  private GearShifter gearShifter = new GearShifter(pneumatics);
+  
   //private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   public RobotContainer() {
