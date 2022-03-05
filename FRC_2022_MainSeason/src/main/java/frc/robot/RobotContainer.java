@@ -84,14 +84,6 @@ public class RobotContainer {
     SmartDashboard.putNumber("TargetPitch", 0.0);
     SmartDashboard.putNumber("TargetSpeed", 0.0);
 
-    new RunCommand(() -> {
-      double perceivedDistance = LaunchTrajectory.estimateDistance(
-        Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
-        turret.yaw.limelight.yawOffset(),
-        turret.yaw.limelight.pitchOffset()
-      );
-      SmartDashboard.putNumber("Perceived Distance", perceivedDistance);
-    });
   }
 
   private void configureButtonBindings() {
@@ -160,6 +152,12 @@ public class RobotContainer {
   }
 
   public void doSendables(){
+    double perceivedDistance = LaunchTrajectory.estimateDistance(
+        Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
+        turret.yaw.limelight.yawOffset(),
+        turret.yaw.limelight.pitchOffset() + Constants.Turret.PhysicsInfo.kPitchMountAngle
+      );
+      SmartDashboard.putNumber("Perceived Distance (inches)", perceivedDistance);
     SmartDashboard.putNumber("Encoder", drivetrain.getAverageEncoderDistance());
     SmartDashboard.putString("Gearshifter",gearShifter.getState().toString());
     // SmartDashboard.putNumber("Yaw", gyro.getYaw());

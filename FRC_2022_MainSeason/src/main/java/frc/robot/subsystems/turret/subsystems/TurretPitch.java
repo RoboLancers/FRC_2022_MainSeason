@@ -40,7 +40,7 @@ public class TurretPitch extends SubsystemBase {
         );
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kPitchLimitSwitch);
-        this.homingTrigger = new Trigger(this.homingSwitch::get);
+        this.homingTrigger = new Trigger(this::triggerTriggered);
         this.homingTrigger.whenActive(new RunCommand(() -> {
             this.encoder.setPosition(0);
         }, this));
@@ -51,9 +51,15 @@ public class TurretPitch extends SubsystemBase {
         SmartDashboard.putNumber("pitch kFF", Constants.Turret.TunedCoefficients.PitchPID.kFF);
     }
 
+    private boolean triggerTriggered() {
+        return !homingSwitch.get();
+    }
+
     // testing
     @Override
     public void periodic(){
+
+        SmartDashboard.putNumber("pitch value", this.getPosition());
         SmartDashboard.putBoolean("PitchSwitch", this.homingSwitch.get());
 
         double p = SmartDashboard.getNumber("pitch kP", 0.0);

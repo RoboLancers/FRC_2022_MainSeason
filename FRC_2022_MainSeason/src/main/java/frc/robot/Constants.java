@@ -46,12 +46,12 @@ public final class Constants {
 
             public static final class PitchPID {
                 // 12m * 1 * 222 / 18
-                public static final double ratio = (12 * 222) / (18 * 360);
+                public static final double ratio = (12 * 464) / (18 * 360);
                 // PID
                 public static double kP = 0.0;
                 public static double kI = 0.0;
                 public static double kD = 0.0;
-                public static double kFF = 0.0;
+                public static double kFF = 0.028617;
                 public static final double kMaxAbsoluteOutput = 1.0;
                 // logic
                 public static final double kStoppedPosition = 2 * Math.PI / 180; // max absolute difference in radians from 0 where the turret pitch considers itself to be at zero (for resetting turret before climbing)
@@ -85,7 +85,7 @@ public final class Constants {
             public static final double kSinAlpha = Math.sin(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kCosAlpha = Math.cos(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kTanAlpha = Math.tan(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kPitchMountAngle = 42 * Math.PI / 180; // ! check this with mechanical
+            public static final double kPitchMountAngle = 42; // ! check this with mechanical
         }
     }
 
