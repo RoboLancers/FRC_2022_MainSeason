@@ -112,6 +112,18 @@ public final class Constants {
         public static final Color kBlueTarget = new Color(0, 0, 1);
     }
 
+    public static final class RGBConversion {
+        public static final double a = 3.2404542;
+        public static final double b = -1.5371385;
+        public static final double c = -0.4985314;
+        public static final double d = -0.9692660;
+        public static final double e = 1.8760108;
+        public static final double f = 0.0415560;
+        public static final double g = 0.0556434;
+        public static final double h = -0.2040259;
+        public static final double i = 1.0572252;
+    }
+
     public static final class AddressableLEDs {
         public static final int BlinkinPort = 0;
         public static final double YELLOW = 0.69;
