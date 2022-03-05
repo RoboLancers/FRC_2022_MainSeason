@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Climber;
+package frc.robot.subsystems.climber;
 
 import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;

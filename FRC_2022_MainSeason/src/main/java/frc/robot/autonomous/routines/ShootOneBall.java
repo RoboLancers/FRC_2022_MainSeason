@@ -14,14 +14,10 @@ public class ShootOneBall extends SequentialCommandGroup {
     public ShootOneBall (Drivetrain drivetrain) {
 
         //TODO: add commands to shoot 
-        addCommands(new RunCommand(()-> drivetrain.setDrivePower(0.5)));
+        //addCommands(new RunCommand(()-> drivetrain.setDrivePower(0.5)));
         addCommands(new WaitCommand(1.0));
-        addCommands(new RunCommand(()-> drivetrain.setDrivePower(0.0)));
+        //addCommands(new RunCommand(()-> drivetrain.setDrivePower(0.0)));
 
         //shoot, wait, taxi
-
-
-
     }
-    
 }

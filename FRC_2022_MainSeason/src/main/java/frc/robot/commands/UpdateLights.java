@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber.Climber;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.turret.Turret;
