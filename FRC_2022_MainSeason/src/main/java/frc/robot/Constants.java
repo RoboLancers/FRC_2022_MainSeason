@@ -78,14 +78,14 @@ public final class Constants {
             public static final double minLimelightViewableDistance = 0.0;
             public static final double maxLimelightViewableDistance = 0.0;
             // Not necessary if we are using interpolation table
-            public static final double kGravity = 9.8;
-            public static final double kTurretShotDeltaY = 2.64 - 0.864; // ! - subtract the height of the turret off the ground
-            public static final double kUpperHubRadius = 0.61;
+            public static final double kGravity = -386;
+            public static final double kTurretShotDeltaY = 104 - 34; // ! - subtract the height of the turret off the ground
+            public static final double kUpperHubRadius = 24;
             public static final double kAlpha = 45 * Math.PI / 180;
             public static final double kSinAlpha = Math.sin(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kCosAlpha = Math.cos(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kTanAlpha = Math.tan(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kPitchMountAngle = 50 * Math.PI / 180; // ! check this with mechanical
+            public static final double kPitchMountAngle = 42 * Math.PI / 180; // ! check this with mechanical
         }
     }
 
@@ -148,5 +148,4 @@ public final class Constants {
     
     public static final double kThrottleFilter = 1.7;
     public static final double kTurnFilter = 1.5;
-
 }
