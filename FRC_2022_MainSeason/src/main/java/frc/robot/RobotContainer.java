@@ -4,6 +4,9 @@ import java.nio.file.Path;
 import java.util.List;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -96,20 +99,22 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     driverController.whenPressed(XboxController.Button.A, new InstantCommand(gearShifter::toggleGearShifter, gearShifter));
-    //driverController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(intake::toggleIntake, intake));
-                    //.whenReleased(XboxController.Button.RIGHT_BUMPER, );
+    //driverController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(intake::toggleIntake, intake))
+                    //.whenReleased(XboxController.Button.RIGHT_BUMPER, new RunCommand(intake::toggleIntake, intake));
     // driverController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy, intake));
-    // driverController.whenPressed(XboxController.down, new HighGear);
-    // driverController.whenPressed(XboxController.down, new LowGear);
+    //driverController.whenPressed(XboxController.POV.DOWN, new InstantCommand(gearShifter::setGearShifter(HIGHGEAR)), gearShifter);
+    //driverController.whenPressed(XboxController.POV.UP, new InstantCommand(gearShifter::setGearShifter(LOWGEAR)), gearShifter);
 
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
+
     // manipulatorController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(
     // () -> {
     // indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
     // }
     // );
+
     // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
@@ -127,6 +132,10 @@ public class RobotContainer {
     turretFlywheel.setDefaultCommand(new RunCommand(() -> {
       turretFlywheel.setFlywheelSpeed(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
     }, turretFlywheel));
+    drivetrain.setDefaultCommand(new RunCommand(() -> {
+      drivetrain.arcadeDrive(driverController.getAxisValue(Axis.LEFT_Y), driverController.getAxisValue(Axis.RIGHT_X));
+    }, drivetrain));
+
   }
 
   public Command getAutonomousCommand() {
