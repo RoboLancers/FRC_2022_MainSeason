@@ -24,7 +24,8 @@ public class TurretPitch extends SubsystemBase {
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
 
         this.encoder = this.motor.getEncoder();
-        this.encoder.setPositionConversionFactor(2 * Math.PI);
+        this.encoder.setPositionConversionFactor(Constants.Turret.TunedCoefficients.PitchPID.ratio);
+        this.encoder.setPosition(0.0);
 
         this.PIDController = this.motor.getPIDController();
 
@@ -38,7 +39,7 @@ public class TurretPitch extends SubsystemBase {
             Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput
         );
 
-        //this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
+        this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kPitchLimitSwitch);
         this.homingTrigger = new Trigger(this.homingSwitch::get);
         this.homingTrigger.whenActive(new RunCommand(() -> {
             this.encoder.setPosition(0);
@@ -53,6 +54,9 @@ public class TurretPitch extends SubsystemBase {
     // testing
     @Override
     public void periodic(){
+
+        SmartDashboard.putBoolean("PitchSwitch", this.homingSwitch.get());
+
         double p = SmartDashboard.getNumber("pitch kP", 0.0);
         double i = SmartDashboard.getNumber("pitch kI", 0.0);
         double d = SmartDashboard.getNumber("pitch kD", 0.0);

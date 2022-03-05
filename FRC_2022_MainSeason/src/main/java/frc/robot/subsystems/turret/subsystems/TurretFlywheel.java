@@ -24,9 +24,11 @@ public class TurretFlywheel extends SubsystemBase {
         this.encoderA = this.motorA.getEncoder();
         this.encoderB = this.motorB.getEncoder();
 
-        // this.encoderA.setVelocityConversionFactor(?)
-        // this.encoderB.setVelocityConversionFactor(?)
-        // maybe 2πr
+        this.encoderA.setPosition(0.0);
+        this.encoderB.setPosition(0.0);
+
+        this.encoderA.setVelocityConversionFactor(2 * Math.PI);
+        this.encoderB.setVelocityConversionFactor(2 * Math.PI);
 
         this.PIDControllerA = this.motorA.getPIDController();
         this.PIDControllerB = this.motorB.getPIDController();

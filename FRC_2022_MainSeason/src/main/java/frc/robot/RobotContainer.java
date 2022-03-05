@@ -35,6 +35,7 @@ import frc.robot.subsystems.drivetrain.enums.GearShifterState;
 import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 //import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
@@ -79,20 +80,6 @@ public class RobotContainer {
 
   public RobotContainer() {
     this.configureButtonBindings();
-
-    // this.turret.setDefaultCommand(new ActiveLaunchTrajectory(this.turret, drivetrain));
-    // this.turret.yaw.setDefaultCommand(new MatchHeadingYaw(this.turret, drivetrain));
-
-    // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
-    // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
-    // this.indexer.setDefaultCommand(new RunCommand(
-      // () -> {
-      //   SmartDashboard.putNumber("proximity", indexer.bottomColorSensor.getProximity());
-      //   SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
-      //   SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
-      //   SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
-      //   this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-      // }, this.indexer)); 
   }
 
   private void configureButtonBindings() {
@@ -131,23 +118,36 @@ public class RobotContainer {
 
 
 
-    this.turret.setDefaultCommand(new RunCommand(() -> {
+    new RunCommand(() -> {
+      double perceivedDistance = LaunchTrajectory.estimateDistance(
+        Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
+        turret.yaw.limelight.yawOffset(),
+        turret.yaw.limelight.pitchOffset()
+      );
+      SmartDashboard.putNumber("Perceived Distance", perceivedDistance);
+    });
 
-      double targetVelocity = 200 * (driverController.getAxisValue(XboxController.Axis.LEFT_Y) + 1);
+    new RunCommand(() -> {
+      double targetVelocity = 0;
 
       SmartDashboard.putNumber("Target Flywheel RPM", targetVelocity);
-      this.turret.flywheel.setVelocitySetpointTesting(targetVelocity);
 
-    }, this.turret.flywheel));
+      if(SmartDashboard.getNumber("Target Flywheel RPM", 0) != targetVelocity){
+        targetVelocity = SmartDashboard.getNumber(("Target Flywheel RPM"), 0);
+        this.turret.flywheel.setVelocitySetpointTesting(targetVelocity);
+      }
+    });
 
-    this.turret.setDefaultCommand(new RunCommand(() -> {
+    // new RunCommand(() -> {
+    //   double targetPosition = 0;
 
-      double targetPosition = 2.5 * (driverController.getAxisValue(XboxController.Axis.LEFT_Y) + 1) * Math.PI / 180;
+    //   SmartDashboard.putNumber("Target Pitch Position", targetPosition);
 
-      SmartDashboard.putNumber("Target Pitch Position", targetPosition);
-      this.turret.pitch.setPositionSetpointTesting(targetPosition);
-
-    }, this.turret.pitch));
+    //   if(SmartDashboard.getNumber("Target Pitch Position", 0) != targetPosition){
+    //     targetPosition = SmartDashboard.getNumber("Target Pitch Position", 0);
+    //     this.turret.pitch.setPositionSetpointTesting(targetPosition);
+    //   }
+    // });
   }
 
   public Command getAutonomousCommand() {

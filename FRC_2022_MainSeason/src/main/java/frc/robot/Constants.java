@@ -19,12 +19,12 @@ public final class Constants {
     public static final class Turret {
         public static final class Ports {
             // bully electrical to get these
-            public static final int kYawMotor = 0;
-            public static final int kPitchMotor = 0;
+            public static final int kYawMotor = 13;
+            public static final int kPitchMotor = 9;
             public static final int kFlywheelMotorA = 7;
             public static final int kFlywheelMotorB = 8;
-            public static final int kYawLimitSwitch = 0;
-            public static final int kPitchLimitSwitch = 0;
+            public static final int kYawLimitSwitch = 3;
+            public static final int kPitchLimitSwitch = 2;
         }
 
         public static final class TunedCoefficients {
@@ -45,6 +45,8 @@ public final class Constants {
             }
 
             public static final class PitchPID {
+                // 12m * 1 * 222 / 18
+                public static final double ratio = (12 * 222) / (18 * 360);
                 // PID
                 public static double kP = 0.0;
                 public static double kI = 0.0;
@@ -77,7 +79,7 @@ public final class Constants {
             public static final double maxLimelightViewableDistance = 0.0;
             // Not necessary if we are using interpolation table
             public static final double kGravity = 9.8;
-            public static final double kTurretShotDeltaY = 2.64 - (0.0); // ! - subtract the height of the turret off the ground
+            public static final double kTurretShotDeltaY = 2.64 - 0.864; // ! - subtract the height of the turret off the ground
             public static final double kUpperHubRadius = 0.61;
             public static final double kAlpha = 45 * Math.PI / 180;
             public static final double kSinAlpha = Math.sin(Constants.Turret.PhysicsInfo.kAlpha);

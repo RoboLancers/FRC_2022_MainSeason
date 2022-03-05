@@ -64,7 +64,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     private void initDefaultCommand(XboxController driverController){
-        setDefaultCommand(new TeleopDrive(this, driverController), this);
+        setDefaultCommand(new TeleopDrive(this, driverController));
     }
 
     // Constantly updates the odometry of the robot with the rotation and the distance traveled.

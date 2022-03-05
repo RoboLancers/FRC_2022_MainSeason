@@ -10,6 +10,7 @@ import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -40,8 +41,8 @@ public class TurretYaw extends SubsystemBase {
         this.motor = new CANSparkMax(Constants.Turret.Ports.kYawMotor, CANSparkMax.MotorType.kBrushless);
 
         this.encoder = this.motor.getEncoder();
+        this.encoder.setPosition(0.0);
         this.encoder.setPositionConversionFactor(2 * Math.PI);
-        // maybe 2πr
 
         this.PIDController = this.motor.getPIDController();
         this.PIDController.setP(Constants.Turret.TunedCoefficients.YawPID.kP);
@@ -52,6 +53,12 @@ public class TurretYaw extends SubsystemBase {
             -Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput,
             Constants.Turret.TunedCoefficients.YawPID.kMaxAbsoluteOutput
         );
+    }
+
+    // testing
+    @Override
+    public void periodic(){
+        SmartDashboard.putBoolean("YawSwitch", this.homingSwitch.get());
     }
 
     public double getPosition(){
