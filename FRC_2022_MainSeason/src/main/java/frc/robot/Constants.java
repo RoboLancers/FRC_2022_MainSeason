@@ -136,7 +136,7 @@ public final class Constants {
         
     }
     
-    public static final double kThrottleFilter = 1.7;
-    public static final double kTurnFilter = 1.5;
+    public static final double kThrottleFilter = 1.25;
+    public static final double kTurnFilter = 2;
 
 }

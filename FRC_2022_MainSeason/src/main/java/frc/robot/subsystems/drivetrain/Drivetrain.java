@@ -98,7 +98,7 @@ public class Drivetrain extends SubsystemBase{
 
     // Drives the robot with arcade controls.
     public void arcadeDrive(double throttle, double turn) {
-        difDrive.arcadeDrive(throttleFilter.calculate(throttle), turn*0.6, false);
+        difDrive.curvatureDrive(throttleFilter.calculate(throttle), turnFilter.calculate(turn), throttle < 0.05);
         // if (throttle == 0 && turn == 0) {
         //     tankDriveVolts(0, 0);
         // }
