@@ -155,4 +155,8 @@ public class Drivetrain extends SubsystemBase{
     public double getTurnRate() {
        return -gyro.getRate();
     }
+
+    public void SetDrivetrainPower(double power) {
+        
+    }
 }
