@@ -19,12 +19,12 @@ public final class Constants {
     public static final class Turret {
         public static final class Ports {
             // bully electrical to get these
-            public static final int kYawMotor = 0;
-            public static final int kPitchMotor = 0;
+            public static final int kYawMotor = 13;
+            public static final int kPitchMotor = 9;
             public static final int kFlywheelMotorA = 7;
             public static final int kFlywheelMotorB = 8;
-            public static final int kYawLimitSwitch = 0;
-            public static final int kPitchLimitSwitch = 0;
+            public static final int kYawLimitSwitch = 3;
+            public static final int kPitchLimitSwitch = 2;
         }
 
         public static final class TunedCoefficients {
@@ -34,7 +34,7 @@ public final class Constants {
                 public static final double kI = 0.0;
                 public static final double kD = 0.0;
                 public static final double kFF = 0.0;
-                public static final double kMaxAbsoluteOutput = 0.0;
+                public static final double kMaxAbsoluteOutput = 1.0;
                 // logic
                 public static final double kStoppedPosition = 2 * Math.PI / 180; // max absolute difference in radians from 0 where the turret yaw considers itself to be at zero (for resetting turret before climbing)
                 public static final double kErrorThreshold = 2 * Math.PI / 180; // max absolute error in radians where the turret yaw considers itself aligned (for generalized release routine)
@@ -45,12 +45,14 @@ public final class Constants {
             }
 
             public static final class PitchPID {
+                // 12m * 1 * 222 / 18
+                public static final double ratio = (12 * 222) / (18 * 360);
                 // PID
-                public static final double kP = 0.0;
-                public static final double kI = 0.0;
-                public static final double kD = 0.0;
-                public static final double kFF = 0.0;
-                public static final double kMaxAbsoluteOutput = 0.0;
+                public static double kP = 0.0;
+                public static double kI = 0.0;
+                public static double kD = 0.0;
+                public static double kFF = 0.0;
+                public static final double kMaxAbsoluteOutput = 1.0;
                 // logic
                 public static final double kStoppedPosition = 2 * Math.PI / 180; // max absolute difference in radians from 0 where the turret pitch considers itself to be at zero (for resetting turret before climbing)
                 public static final double kErrorThreshold = 2 * Math.PI / 180; // max absolute error in radians where the turret pitch considers itself to be aligned (for generalized release routine)
@@ -58,11 +60,11 @@ public final class Constants {
 
             public static final class FlywheelPID {
                 // PID
-                public static final double kP = 0.0;
-                public static final double kI = 0.0;
-                public static final double kD = 0.0;
-                public static final double kFF = 0.0;
-                public static final double kMaxAbsoluteOutput = 0.0;
+                public static double kP = 0.0;
+                public static double kI = 0.0;
+                public static double kD = 0.0;
+                public static double kFF = 0.12359;
+                public static final double kMaxAbsoluteOutput = 1.0;
                 // logic
                 public static final double kStoppedVelocity = 0.25; // max absolute difference (in m/s?) from 0 where the turret flywheel considers itself to be at rest (for resetting turret before climbing)
                 public static final double kErrorThreshold = 0.25; // max absolute error (in m/s?) where the turret flywheel considers itself to be up to speed (for generalized release routine)
@@ -76,14 +78,14 @@ public final class Constants {
             public static final double minLimelightViewableDistance = 0.0;
             public static final double maxLimelightViewableDistance = 0.0;
             // Not necessary if we are using interpolation table
-            public static final double kGravity = 9.8;
-            public static final double kTurretShotDeltaY = 2.64 - (0.0); // ! - subtract the height of the turret off the ground
-            public static final double kUpperHubRadius = 0.61;
+            public static final double kGravity = -386;
+            public static final double kTurretShotDeltaY = 104 - 34; // ! - subtract the height of the turret off the ground
+            public static final double kUpperHubRadius = 24;
             public static final double kAlpha = 45 * Math.PI / 180;
             public static final double kSinAlpha = Math.sin(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kCosAlpha = Math.cos(Constants.Turret.PhysicsInfo.kAlpha);
             public static final double kTanAlpha = Math.tan(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kPitchMountAngle = 50 * Math.PI / 180; // ! check this with mechanical
+            public static final double kPitchMountAngle = 42 * Math.PI / 180; // ! check this with mechanical
         }
     }
 
@@ -158,5 +160,4 @@ public final class Constants {
     
     public static final double kThrottleFilter = 1.7;
     public static final double kTurnFilter = 1.5;
-
 }

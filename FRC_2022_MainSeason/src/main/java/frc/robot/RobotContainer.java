@@ -36,7 +36,9 @@ import frc.robot.subsystems.drivetrain.enums.GearShifterState;
 import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 //import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ZeroAndDisable;
 // import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
@@ -52,11 +54,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
-import frc.robot.subsystems.turret.subsystems.yaw.BetterYaw;
-import frc.robot.commands.GeneralizedReleaseRoutine;
-import com.revrobotics.ColorSensorV3;
-import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 
 public class RobotContainer {
   /*   Controllers   */
@@ -87,17 +85,17 @@ public class RobotContainer {
   public RobotContainer() {
     this.configureButtonBindings();
 
-    // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
-    // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
-    // this.indexer.setDefaultCommand(new RunCommand(
-      // () -> {
-      //   SmartDashboard.putNumber("proximity", indexer.bottomColorSensor.getProximity());
-      //   SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
-      //   SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
-      //   SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
-      //   this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-      // }, this.indexer));
+    SmartDashboard.putNumber("TargetPitch", 0.0);
+    SmartDashboard.putNumber("TargetSpeed", 0.0);
 
+    new RunCommand(() -> {
+      double perceivedDistance = LaunchTrajectory.estimateDistance(
+        Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
+        turret.yaw.limelight.yawOffset(),
+        turret.yaw.limelight.pitchOffset()
+      );
+      SmartDashboard.putNumber("Perceived Distance", perceivedDistance);
+    });
   }
 
   private void configureButtonBindings() {
@@ -136,6 +134,13 @@ public class RobotContainer {
     //   new ZeroAndDisable(turret),
     //   new UpClimber(climber, Constants.Climber.kMidClimb)));
     
+    driverController
+      .whenPressed(XboxController.Button.A, new InstantCommand(() -> {
+        this.turret.pitch.setPositionSetpointTesting(SmartDashboard.getNumber("TargetPitch", 0.0));
+      }))
+      .whenPressed(XboxController.Button.B, new InstantCommand(() -> {
+        this.turret.flywheel.setVelocitySetpointTesting(SmartDashboard.getNumber("TargetSpeed", 0.0));
+      }));
   }
 
   public Command getAutonomousCommand() {
