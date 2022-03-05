@@ -54,7 +54,6 @@ public class TurretPitch extends SubsystemBase {
     // testing
     @Override
     public void periodic(){
-
         SmartDashboard.putBoolean("PitchSwitch", this.homingSwitch.get());
 
         double p = SmartDashboard.getNumber("pitch kP", 0.0);

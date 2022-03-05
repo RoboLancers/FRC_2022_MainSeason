@@ -80,43 +80,9 @@ public class RobotContainer {
 
   public RobotContainer() {
     this.configureButtonBindings();
-  }
 
-  private void configureButtonBindings() {
-    driverController.whenPressed(XboxController.Button.A, new InstantCommand(gearShifter::toggleGearShifter, gearShifter));
-    //driverController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(intake::toggleIntake, intake));
-                    //.whenReleased(XboxController.Button.RIGHT_BUMPER, );
-    // driverController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy, intake));
-    // driverController.whenPressed(XboxController.down, new HighGear);
-    // driverController.whenPressed(XboxController.down, new LowGear);
-
-    // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
-    // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
-    // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
-    // manipulatorController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(
-    // () -> {
-    // indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
-    // }
-    // );
-    // manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
-    // manipulatorController.whenPressed(XboxController.Up, new REzero);
-    // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
-    // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
-    // manipulatorController.whenPressed(XboxController.ButtonThinggggg, new Instant)
-    // manipulatorController.whenPressed(XboxController.Button.B, new SequentialCommandGroup(
-    //   // new ZeroAndDisable(turret),
-    //   new UpClimber(climber, Constants.Climber.kLowClimb)));
-    // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
-    //   new ZeroAndDisable(turret),
-    //   new UpClimber(climber, Constants.Climber.kMidClimb)));
-
-    // ! - was actually implemented
-    // indexer.setDefaultCommand(new RunCommand(() -> {
-    //   indexer.setPower(driverController.getAxisValue(Axis.LEFT_TRIGGER));
-    // }, indexer));
-
-
-
+    SmartDashboard.putNumber("TargetPitch", 0.0);
+    SmartDashboard.putNumber("TargetSpeed", 0.0);
 
     new RunCommand(() -> {
       double perceivedDistance = LaunchTrajectory.estimateDistance(
@@ -126,28 +92,16 @@ public class RobotContainer {
       );
       SmartDashboard.putNumber("Perceived Distance", perceivedDistance);
     });
+  }
 
-    new RunCommand(() -> {
-      double targetVelocity = 0;
-
-      SmartDashboard.putNumber("Target Flywheel RPM", targetVelocity);
-
-      if(SmartDashboard.getNumber("Target Flywheel RPM", 0) != targetVelocity){
-        targetVelocity = SmartDashboard.getNumber(("Target Flywheel RPM"), 0);
-        this.turret.flywheel.setVelocitySetpointTesting(targetVelocity);
-      }
-    });
-
-    // new RunCommand(() -> {
-    //   double targetPosition = 0;
-
-    //   SmartDashboard.putNumber("Target Pitch Position", targetPosition);
-
-    //   if(SmartDashboard.getNumber("Target Pitch Position", 0) != targetPosition){
-    //     targetPosition = SmartDashboard.getNumber("Target Pitch Position", 0);
-    //     this.turret.pitch.setPositionSetpointTesting(targetPosition);
-    //   }
-    // });
+  private void configureButtonBindings() {
+    driverController
+      .whenPressed(XboxController.Button.A, new InstantCommand(() -> {
+        this.turret.pitch.setPositionSetpointTesting(SmartDashboard.getNumber("TargetPitch", 0.0));
+      }))
+      .whenPressed(XboxController.Button.B, new InstantCommand(() -> {
+        this.turret.flywheel.setVelocitySetpointTesting(SmartDashboard.getNumber("TargetSpeed", 0.0));
+      }));
   }
 
   public Command getAutonomousCommand() {
