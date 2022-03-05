@@ -54,7 +54,6 @@ import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.yaw.BetterYaw;
-import frc.robot.subsytems.intake.Intake;
 import frc.robot.commands.GeneralizedReleaseRoutine;
 import com.revrobotics.ColorSensorV3;
 import frc.robot.subsystems.turret.Turret;
