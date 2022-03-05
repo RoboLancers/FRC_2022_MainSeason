@@ -14,7 +14,11 @@ public class Climber extends SubsystemBase{
     public boolean isEnabled;
 
     public Climber(){
+<<<<<<< Updated upstream
         climberMotor1 = new CANSparkMax(Constants.Climber.CLIMBER_PORT, CANSparkMax.MotorType.kBrushless);
+=======
+        climberMotor1 = new CANSparkMax(Constants.Climber.CLIMBER_PORT1, CANSparkMax.MotorType.kBrushless);
+>>>>>>> Stashed changes
         climberMotor2 = new CANSparkMax(Constants.Climber.CLIMBER_PORT2, CANSparkMax.MotorType.kBrushless);
         climbEncoder1 = climberMotor1.getEncoder();
         climbEncoder2 = climberMotor2.getEncoder();

@@ -82,6 +82,8 @@ public class RobotContainer {
 
   public RobotContainer() {
     this.configureButtonBindings();
+    // camera.initializeFrontCamera();
+    climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
 
     // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
     // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
@@ -112,18 +114,18 @@ public class RobotContainer {
     // indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
     // }
     // );
-    // manipulatorController.whenPressed(XboxController.Axis.LEFT_Y, new manualClimber());
+    // manipulatorController.whenPressed(XboxController.Axis.LEFT_Y, new ManualClimber(driverController, climber));
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
     // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
     // manipulatorController.whenPressed(XboxController.ButtonThinggggg, new Instant)
     // manipulatorController.whenPressed(XboxController.Button.B, new SequentialCommandGroup(
-    //   // new ZeroAndDisable(turret),
+    //   new ZeroAndDisable(turret),
     //   new UpClimber(climber, Constants.Climber.kLowClimb)));
     // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
     //   new ZeroAndDisable(turret),
     //   new UpClimber(climber, Constants.Climber.kMidClimb)));
-    climber.setDefaultCommand(new ManualClimber(driverController, climber));
+      
   }
 
   public Command getAutonomousCommand() {
