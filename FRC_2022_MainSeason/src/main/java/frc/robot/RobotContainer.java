@@ -33,6 +33,7 @@ import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
 import frc.robot.subsystems.drivetrain.enums.GearShifterState;
 import frc.robot.subsystems.misc.AddressableLEDs;
+import frc.robot.subsystems.misc.Camera;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.turret.Turret;
@@ -65,6 +66,7 @@ public class RobotContainer {
   private final GearShifter gearShifter = new GearShifter(pneumatics);
   private final Indexer indexer = new Indexer();
   private final TurretFlywheel turretFlywheel = new TurretFlywheel();
+  private final Camera camera = new Camera();
   // private final Turret turret = new Turret(drivetrain);
   // private final Climber climber = new Climber();
   //private final Intake intake = new Intake();
@@ -80,6 +82,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     this.configureButtonBindings();
+    camera.initializeFrontCamera();
 
     // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
     // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
