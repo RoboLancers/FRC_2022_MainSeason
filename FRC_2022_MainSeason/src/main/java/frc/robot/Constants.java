@@ -97,6 +97,8 @@ public final class Constants {
         public static final double kIntakePower = 0.6;
         public static final double kErrorMargin = 20;
         public static final double kIRollerOff = 0;
+        public static final double kLeftVolts = 0;
+        public static final double kRightVolts = 0;
     }
 
     public static final class Indexer {
