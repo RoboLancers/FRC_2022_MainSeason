@@ -38,10 +38,10 @@ public class TurretPitch extends SubsystemBase {
         );
 
         //this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
-        this.homingTrigger = new Trigger(this.homingSwitch::get);
+        /* this.homingTrigger = new Trigger(this.homingSwitch::get);
         this.homingTrigger.whenActive(new RunCommand(() -> {
             this.encoder.setPosition(0);
-        }, this));
+        }, this)); */
     }
 
     private double getPosition(){

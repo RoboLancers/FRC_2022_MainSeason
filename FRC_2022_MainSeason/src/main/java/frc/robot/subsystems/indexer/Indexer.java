@@ -64,7 +64,7 @@ public class Indexer extends SubsystemBase {
     }
 
     public boolean indexFinished() {
-        if (ballQueue.peek().getPos() == BallPosition.MIDDLE && topLimitSwitch.get()) { // if the indexer is running until a ball reaches the top
+        if (ballQueue.peek().getPos() == BallPosition.MIDDLE && topLimitSwitch.get() && ballQueue.size() > 1) { // if the indexer is running until a ball reaches the top
             ((Ball[]) ballQueue.toArray())[1].setPos(BallPosition.MIDDLE);; // move both balls up
             ballQueue.peek().setPos(BallPosition.TOP);
             return true;
