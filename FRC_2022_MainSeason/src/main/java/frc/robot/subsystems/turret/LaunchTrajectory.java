@@ -14,7 +14,7 @@ public class LaunchTrajectory {
         this.speed = speed;
     }
 
-    public static double estimateDistance(double deltaY, double thetaX, double thetaY){
+    public static double estimateDistance(double deltaY, double thetaY){
         return deltaY / Math.tan(thetaY * Math.PI / 180);
     }
 
@@ -130,7 +130,6 @@ public class LaunchTrajectory {
 
     // Calculate the trajectory by interpolating between known shot trajectories with respect to distance
     public static final InterpolationTable trajectoryMap = new InterpolationTable(
-        // TODO: tune this very much
         new InterpolationTable.Entry(20.0, new LaunchTrajectory(1.456772434255917, 238.7279658503414)),
         new InterpolationTable.Entry(30.0, new LaunchTrajectory(1.4157690134529552, 244.41128988117396)),
         new InterpolationTable.Entry(40.0, new LaunchTrajectory(1.3819443233211721, 250.8153444196927)),

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.turret.subsystems.yaw.commands;
+package frc.robot.subsystems.turret.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;

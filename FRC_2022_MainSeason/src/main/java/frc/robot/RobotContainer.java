@@ -38,6 +38,7 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
+import frc.robot.subsystems.turret.commands.MatchHeadingYaw;
 //import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ZeroAndDisable;
 // import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
@@ -53,7 +54,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 
 public class RobotContainer {
   /*   Controllers   */
@@ -81,18 +81,17 @@ public class RobotContainer {
   public RobotContainer() {
     this.configureButtonBindings();
 
-    SmartDashboard.putNumber("TargetPitch", 0.0);
-    SmartDashboard.putNumber("TargetSpeed", 0.0);
-
+    SmartDashboard.putNumber("Target Pitch", 0.0);
+    SmartDashboard.putNumber("Target Speed", 0.0);
   }
 
   private void configureButtonBindings() {
     driverController
       .whenPressed(XboxController.Button.A, new InstantCommand(() -> {
-        this.turret.pitch.setPositionSetpointTesting(SmartDashboard.getNumber("TargetPitch", 0.0));
+        this.turret.pitch.setPositionSetpoint(SmartDashboard.getNumber("Target Pitch", 0.0));
       }))
       .whenPressed(XboxController.Button.B, new InstantCommand(() -> {
-        this.turret.flywheel.setVelocitySetpointTesting(SmartDashboard.getNumber("TargetSpeed", 0.0));
+        this.turret.flywheel.setVelocitySetpoint(SmartDashboard.getNumber("Target Speed", 0.0));
       }));
   }
 
@@ -152,25 +151,19 @@ public class RobotContainer {
   }
 
   public void doSendables(){
-    double perceivedDistance = LaunchTrajectory.estimateDistance(
-        Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
-        turret.yaw.limelight.yawOffset(),
-        turret.yaw.limelight.pitchOffset() + Constants.Turret.PhysicsInfo.kPitchMountAngle
-      );
-      SmartDashboard.putNumber("Perceived Distance (inches)", perceivedDistance);
-    SmartDashboard.putNumber("Encoder", drivetrain.getAverageEncoderDistance());
-    SmartDashboard.putString("Gearshifter",gearShifter.getState().toString());
-    // SmartDashboard.putNumber("Yaw", gyro.getYaw());
-    SmartDashboard.putNumber("Altitude", gyro.getAltitude());
-    SmartDashboard.putNumber("Joystick Value", driverController.getAxisValue(Axis.LEFT_Y));
-    SmartDashboard.putNumber("Left voltage", drivetrain.getLeftVoltage());
-    SmartDashboard.putNumber("Right voltage", drivetrain.getRightVoltage());
-    //Are these encoder positions correct?
-    SmartDashboard.putNumber("Left Position", Constants.Trajectory.kDistPerRot * drivetrain.getLeftEncoder().getPosition() / 42);
-    SmartDashboard.putNumber("Right Position", Constants.Trajectory.kDistPerRot * drivetrain.getRightEncoder().getPosition() / 42);
-    SmartDashboard.putNumber("System pressure", pneumatics.getPressure());
-    SmartDashboard.putBoolean("System pressure switch tripped", pneumatics.pressureSwitchTripped());
-    SmartDashboard.putNumber("Left Encoder Ticks", drivetrain.getLeftEncoder().getPosition() * 4096);
-    SmartDashboard.putNumber("Right Encoder Ticks", drivetrain.getRightEncoder().getPosition() * 4096);
+    SmartDashboard.putNumber("Limelight Yaw", turret.yaw.limelight.yawOffset());
+    SmartDashboard.putNumber("Limelight Pitch", turret.yaw.limelight.pitchOffset());
+
+    SmartDashboard.putNumber("Turret Yaw Position", turret.yaw.getPosition());
+    SmartDashboard.putNumber("Turret Pitch Position", turret.pitch.getPosition());
+    SmartDashboard.putNumber("Turret Flywheel Speed", turret.flywheel.getVelocity());
+
+    SmartDashboard.putBoolean("Turret Yaw Switch", turret.yaw.homingSwitch.get());
+    SmartDashboard.putBoolean("Turret Pitch Switch", turret.pitch.homingSwitch.get());
+
+    SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(
+      Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
+      turret.yaw.limelight.pitchOffset() + Constants.Turret.PhysicsInfo.kPitchMountAngle
+    ));
   }
 }

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.turret.subsystems.yaw;
+package frc.robot.subsystems.turret.subsystems;
 
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -7,7 +7,6 @@ import frc.robot.Constants;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.misc.LimeLight;
 import frc.robot.subsystems.turret.Turret;
-import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,7 +21,7 @@ public class TurretYaw extends SubsystemBase {
 
     public LimeLight limelight;
 
-    private DigitalInput homingSwitch;
+    public DigitalInput homingSwitch;
     private Trigger homingTrigger;
 
     private CANSparkMax motor;
@@ -55,19 +54,12 @@ public class TurretYaw extends SubsystemBase {
         );
     }
 
-    // testing
-    @Override
-    public void periodic(){
-        SmartDashboard.putBoolean("YawSwitch", this.homingSwitch.get());
-    }
-
     public double getPosition(){
         return this.encoder.getPosition();
     }
 
     public void setPositionSetpoint(double position){
-        // ! - wait until turret yaw motor works
-        // this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
+        this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
     }
 
     public boolean isAtZero(){

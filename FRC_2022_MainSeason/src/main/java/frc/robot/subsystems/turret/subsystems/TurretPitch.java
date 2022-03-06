@@ -17,7 +17,7 @@ public class TurretPitch extends SubsystemBase {
     private RelativeEncoder encoder;
     private SparkMaxPIDController PIDController;
 
-    private DigitalInput homingSwitch;
+    public DigitalInput homingSwitch;
     private Trigger homingTrigger;
 
     public TurretPitch(){
@@ -40,61 +40,17 @@ public class TurretPitch extends SubsystemBase {
         );
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kPitchLimitSwitch);
-        this.homingTrigger = new Trigger(this::triggerTriggered);
+        this.homingTrigger = new Trigger(() -> { return !homingSwitch.get(); });
         this.homingTrigger.whenActive(new RunCommand(() -> {
             this.encoder.setPosition(0);
         }, this));
-
-        SmartDashboard.putNumber("pitch kP", Constants.Turret.TunedCoefficients.PitchPID.kP);
-        SmartDashboard.putNumber("pitch kI", Constants.Turret.TunedCoefficients.PitchPID.kI);
-        SmartDashboard.putNumber("pitch kD", Constants.Turret.TunedCoefficients.PitchPID.kD);
-        SmartDashboard.putNumber("pitch kFF", Constants.Turret.TunedCoefficients.PitchPID.kFF);
     }
 
-    private boolean triggerTriggered() {
-        return !homingSwitch.get();
-    }
-
-    // testing
-    @Override
-    public void periodic(){
-
-        SmartDashboard.putNumber("pitch value", this.getPosition());
-        SmartDashboard.putBoolean("PitchSwitch", this.homingSwitch.get());
-
-        double p = SmartDashboard.getNumber("pitch kP", 0.0);
-        double i = SmartDashboard.getNumber("pitch kI", 0.0);
-        double d = SmartDashboard.getNumber("pitch kD", 0.0);
-        double ff = SmartDashboard.getNumber("pitch kFF", 0.0);
-
-        if(Constants.Turret.TunedCoefficients.PitchPID.kP != p){
-            Constants.Turret.TunedCoefficients.PitchPID.kP = p;
-            this.PIDController.setP(p);
-        }
-        if(Constants.Turret.TunedCoefficients.PitchPID.kI != i){
-            Constants.Turret.TunedCoefficients.PitchPID.kI = i;
-            this.PIDController.setP(i);
-        }
-        if(Constants.Turret.TunedCoefficients.PitchPID.kD != d){
-            Constants.Turret.TunedCoefficients.PitchPID.kD = d;
-            this.PIDController.setP(d);
-        }
-        if(Constants.Turret.TunedCoefficients.PitchPID.kFF != ff){
-            Constants.Turret.TunedCoefficients.PitchPID.kFF = ff;
-            this.PIDController.setP(ff);
-        }
-    }
-
-    private double getPosition(){
+    public double getPosition(){
         return this.encoder.getPosition();
     }
 
     public void setPositionSetpoint(double position){
-        // ! - wait until turret pitch motor works
-        // this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
-    }
-
-    public void setPositionSetpointTesting(double position){
         this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
     }
 
