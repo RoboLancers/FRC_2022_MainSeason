@@ -253,7 +253,7 @@ public class RobotContainer {
     //SmartDashboard.putBoolean("System pressure switch tripped", pneumatics.pressureSwitchTripped());
     SmartDashboard.putNumber("Left Encoder Ticks", drivetrain.getLeftEncoder().getPosition() * 4096);
     SmartDashboard.putNumber("Right Encoder Ticks", drivetrain.getRightEncoder().getPosition() * 4096);
-    SmartDashboard.putNumber("Climber Encoder", Climber.climbEncoder1.getPosition() * Constants.Climber.kRotationToInch);
+    SmartDashboard.putNumber("Climber Encoder", climber.climbEncoder1.getPosition());
   }
 }
 
