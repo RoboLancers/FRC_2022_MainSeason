@@ -81,19 +81,13 @@ public class RobotContainer {
   public RobotContainer() {
     this.configureButtonBindings();
 
-    SmartDashboard.putNumber("Target Pitch", 0.0);
     SmartDashboard.putNumber("Target Speed", 0.0);
   }
 
   private void configureButtonBindings() {
     driverController
       .whenPressed(XboxController.Button.A, new InstantCommand(() -> {
-        SmartDashboard.putNumber("Target Speed", 0);
-        this.turret.flywheel.velocitySetpoint = 0;
-      }))
-      .whenPressed(XboxController.Button.B, new InstantCommand(() -> {
-        this.turret.flywheel.velocitySetpoint = 5500;
-        SmartDashboard.putNumber("Target Speed", 5500);
+        this.turret.flywheel.velocitySetpoint = SmartDashboard.getNumber("Target Speed", 0.0);
       }));
   }
 
