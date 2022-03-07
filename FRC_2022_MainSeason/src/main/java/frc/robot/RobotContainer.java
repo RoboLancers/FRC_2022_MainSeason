@@ -40,7 +40,8 @@ import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.drivetrain.enums.GearShifterState;
 import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.misc.Camera;
-
+import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.Intake;
 
 //import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
@@ -83,6 +84,7 @@ public class RobotContainer {
   private final Indexer indexer = new Indexer();
   private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   private final Camera camera = new Camera();
+  private final Intake intake = new Intake();
   // private final Turret turret = new Turret(drivetrain);
   // private final Climber climber = new Climber();
   //private final Intake intake = new Intake();
@@ -110,8 +112,16 @@ public class RobotContainer {
         SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
         SmartDashboard.putNumber("ball number", indexer.ballQueue.size());
         this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-      }, this.indexer
-    ));
+      }, this.indexer));
+      indexer.setDefaultCommand(new RunCommand(() -> {
+        indexer.setPower(driverController.getAxisValue(Axis.LEFT_TRIGGER));
+      }, indexer));
+      intake.setDefaultCommand(new RunCommand(() -> {
+        intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
+      }, intake));
+      driverController.whenPressed(XboxController.Button.X, (new RunCommand(() -> {
+        intake.toggleIntake();;
+      }, intake)));
     
     this.configureButtonBindings();
 
