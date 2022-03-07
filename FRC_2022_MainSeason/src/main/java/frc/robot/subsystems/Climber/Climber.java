@@ -12,7 +12,7 @@ public class Climber extends SubsystemBase{
     public static RelativeEncoder climbEncoder1;
     public RelativeEncoder climbEncoder2;
     public boolean isEnabled;
-
+    
     public Climber(){
         climberMotor1 = new CANSparkMax(Constants.Climber.CLIMBER_PORT1, CANSparkMax.MotorType.kBrushless);
         climberMotor2 = new CANSparkMax(Constants.Climber.CLIMBER_PORT2, CANSparkMax.MotorType.kBrushless);
