@@ -6,13 +6,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 public class TurretPitch extends SubsystemBase {
+    public double positionSetpoint = 0;
+
     private CANSparkMax motor;
     private RelativeEncoder encoder;
     private SparkMaxPIDController PIDController;
@@ -24,7 +25,7 @@ public class TurretPitch extends SubsystemBase {
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
 
         this.encoder = this.motor.getEncoder();
-        this.encoder.setPositionConversionFactor(Constants.Turret.TunedCoefficients.PitchPID.ratio);
+        this.encoder.setPositionConversionFactor(Constants.Turret.TunedCoefficients.PitchPID.kGearRatio);
         this.encoder.setPosition(0.0);
 
         this.PIDController = this.motor.getPIDController();
@@ -46,12 +47,13 @@ public class TurretPitch extends SubsystemBase {
         }, this));
     }
 
-    public double getPosition(){
-        return this.encoder.getPosition();
+    @Override
+    public void periodic(){
+        this.PIDController.setReference(this.positionSetpoint, CANSparkMax.ControlType.kPosition);
     }
 
-    public void setPositionSetpoint(double position){
-        this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
+    public double getPosition(){
+        return this.encoder.getPosition();
     }
 
     public boolean isAtZero(){

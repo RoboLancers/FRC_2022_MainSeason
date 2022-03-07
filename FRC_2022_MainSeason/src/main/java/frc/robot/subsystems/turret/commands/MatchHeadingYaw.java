@@ -26,11 +26,11 @@ public class MatchHeadingYaw extends CommandBase {
         if(this.turret.yaw.limelight.hasTarget()){
             double targetYaw = this.turret.yaw.getPosition() + this.turret.yaw.limelight.yawOffset();
             if(targetYaw < Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle){
-                this.turret.yaw.setPositionSetpoint(targetYaw - Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle + Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle);
+                this.turret.yaw.positionSetpoint = targetYaw - Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle + Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle;
             } else if(targetYaw > Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle) {
-                this.turret.yaw.setPositionSetpoint(targetYaw + Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle - Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle);
+                this.turret.yaw.positionSetpoint = targetYaw + Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle - Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle;
             } else {
-                this.turret.yaw.setPositionSetpoint(targetYaw);
+                this.turret.yaw.positionSetpoint = targetYaw;
             }
         } else {
             if(this.turret.yaw.hasRelativeHub){
@@ -42,20 +42,18 @@ public class MatchHeadingYaw extends CommandBase {
                     if(turretYaw < Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle || turretYaw > Constants.Turret.TunedCoefficients.YawPID.kMaxSafeAngle){
                         this.seekDirection = turretYaw < Constants.Turret.TunedCoefficients.YawPID.kMinSafeAngle;
                     }
-                    this.turret.yaw.setPositionSetpoint(
-                        turretYaw + (
-                            this.seekDirection ?
-                                Constants.Turret.TunedCoefficients.YawPID.kSeekAdjustment :
-                                -Constants.Turret.TunedCoefficients.YawPID.kSeekAdjustment
-                        )
+                    this.turret.yaw.positionSetpoint = turretYaw + (
+                        this.seekDirection ?
+                            Constants.Turret.TunedCoefficients.YawPID.kSeekAdjustment :
+                            -Constants.Turret.TunedCoefficients.YawPID.kSeekAdjustment
                     );
                     return;
                 }
             }
-            this.turret.yaw.setPositionSetpoint(Math.atan2(
+            this.turret.yaw.positionSetpoint = Math.atan2(
                 this.turret.yaw.relativeHub.getY() - this.driveTrain.getPose().getY(),
                 this.turret.yaw.relativeHub.getX() - this.driveTrain.getPose().getX()
-            ));
+            );
         }
     }
 

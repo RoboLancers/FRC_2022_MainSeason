@@ -9,9 +9,9 @@ public class ZeroAndDisable extends CommandBase {
     public ZeroAndDisable(Turret turret){
         this.turret = turret;
 
-        this.turret.yaw.setPositionSetpoint(0);
-        this.turret.pitch.setPositionSetpoint(0);
-        this.turret.flywheel.setVelocitySetpoint(0);
+        this.turret.yaw.positionSetpoint = 0;
+        this.turret.pitch.positionSetpoint = 0;
+        this.turret.flywheel.velocitySetpoint = 0;
 
         addRequirements(this.turret);
     };

@@ -1,6 +1,5 @@
 package frc.robot.subsystems.turret.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -9,6 +8,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 public class TurretFlywheel extends SubsystemBase {
+    public double velocitySetpoint = 0;
+
     private CANSparkMax motorA;
     private CANSparkMax motorB;
     
@@ -54,6 +55,12 @@ public class TurretFlywheel extends SubsystemBase {
         );
     }
 
+    @Override
+    public void periodic(){
+        this.PIDControllerA.setReference(this.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
+        this.PIDControllerB.setReference(this.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
+    }
+
     public double getVelocity(){
         double speedA = this.encoderA.getVelocity();
         double speedB = this.encoderB.getVelocity();
@@ -64,11 +71,6 @@ public class TurretFlywheel extends SubsystemBase {
         double currentA = this.motorA.getOutputCurrent();
         double currentB = this.motorB.getOutputCurrent();
         return 0.5 * (currentA + currentB);
-    }
-
-    public void setVelocitySetpoint(double velocity){
-        this.PIDControllerA.setReference(velocity, CANSparkMax.ControlType.kVelocity);
-        this.PIDControllerB.setReference(velocity, CANSparkMax.ControlType.kVelocity);
     }
 
     public boolean isAtRest(){

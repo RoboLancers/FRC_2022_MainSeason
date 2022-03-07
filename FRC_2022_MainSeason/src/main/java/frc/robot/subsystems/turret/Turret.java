@@ -23,8 +23,8 @@ public class Turret extends SubsystemBase {
     }
 
     public void adjust(){
-        this.pitch.setPositionSetpoint(this.launchTrajectory.theta);
-        this.flywheel.setVelocitySetpoint(this.launchTrajectory.speed);
+        // this.pitch.positionSetpoint = this.launchTrajectory.theta;
+        // this.flywheel.velocitySetpoint = this.launchTrajectory.speed;
     }
 
     public boolean inShootingRange()

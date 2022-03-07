@@ -9,13 +9,14 @@ import frc.robot.subsystems.misc.LimeLight;
 import frc.robot.subsystems.turret.Turret;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 public class TurretYaw extends SubsystemBase {
+    public double positionSetpoint = 0;
+
     public boolean hasRelativeHub = false;
     public Pose2d relativeHub;
 
@@ -54,12 +55,14 @@ public class TurretYaw extends SubsystemBase {
         );
     }
 
-    public double getPosition(){
-        return this.encoder.getPosition();
+    @Override
+    public void periodic(){
+        // yaw motor doesn't work
+        // this.PIDController.setReference(this.positionSetpoint, CANSparkMax.ControlType.kPosition);
     }
 
-    public void setPositionSetpoint(double position){
-        this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
+    public double getPosition(){
+        return this.encoder.getPosition();
     }
 
     public boolean isAtZero(){
