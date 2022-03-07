@@ -56,6 +56,11 @@ import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
+import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
+import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
+import frc.robot.commands.GeneralizedReleaseRoutine;
+import com.revrobotics.ColorSensorV3;
+import frc.robot.subsystems.turret.Turret;
 
 public class RobotContainer {
   /*   Controllers   */
@@ -67,14 +72,12 @@ public class RobotContainer {
   private final Pneumatics pneumatics = new Pneumatics();
   private final GearShifter gearShifter = new GearShifter(pneumatics);
   private final Indexer indexer = new Indexer();
-<<<<<<< HEAD
+   
   // private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   private final Intake intake = new Intake();
   private final Turret turret = new Turret(drivetrain);
-=======
   private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   private final Camera camera = new Camera();
->>>>>>> 533d47403fb64825b5be359fd58fb830abef28e5
   // private final Turret turret = new Turret(drivetrain);
   // private final Climber climber = new Climber();
   //private final Intake intake = new Intake();
@@ -95,14 +98,24 @@ public class RobotContainer {
     SmartDashboard.putNumber("TargetPitch", 0.0);
     SmartDashboard.putNumber("TargetSpeed", 0.0);
 
-    new RunCommand(() -> {
-      double perceivedDistance = LaunchTrajectory.estimateDistance(
-        Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
-        turret.yaw.limelight.yawOffset(),
-        turret.yaw.limelight.pitchOffset()
-      );
-      SmartDashboard.putNumber("Perceived Distance", perceivedDistance);
-    });
+    // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
+    // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
+    // this.indexer.setDefaultCommand(new RunCommand(
+      // () -> {
+      //   SmartDashboard.putNumber("proximity", indexer.bottomColorSensor.getProximity());
+      //   SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
+      //   SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
+      //   SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
+      //   this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
+      // }, this.indexer));
+      new RunCommand(() -> {
+        double perceivedDistance = LaunchTrajectory.estimateDistance(
+          Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
+          turret.yaw.limelight.yawOffset(),
+          turret.yaw.limelight.pitchOffset()
+        );
+        SmartDashboard.putNumber("Perceived Distance", perceivedDistance);
+      });
   }
 
   private void configureButtonBindings() {
@@ -122,6 +135,9 @@ public class RobotContainer {
     intake.setDefaultCommand(new RunCommand(() -> {
       intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
     }, intake));
+    driverController.whenPressed(XboxController.Button.X, (new RunCommand(() -> {
+      intake.toggleIntake();;
+    }, intake)));
     // Trigger threshColorSensor = new Trigger(() -> {
       // the condition that triggers the command
       // return indexer.bottomColorSensor.getProximity() >= Constants.Indexer.kProximityLimit;
@@ -140,7 +156,7 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
     //   new ZeroAndDisable(turret),
     //   new UpClimber(climber, Constants.Climber.kMidClimb)));
-    
+
     driverController
       .whenPressed(XboxController.Button.A, new InstantCommand(() -> {
         this.turret.pitch.setPositionSetpointTesting(SmartDashboard.getNumber("TargetPitch", 0.0));
