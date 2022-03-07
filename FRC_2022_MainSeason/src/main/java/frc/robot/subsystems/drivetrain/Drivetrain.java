@@ -20,14 +20,14 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase{
     private final CANSparkMax leftMotor1 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final MotorControllerGroup leftMotors = new MotorControllerGroup(
+    public final MotorControllerGroup leftMotors = new MotorControllerGroup(
         leftMotor1,
         new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless), 
         new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless)
     );
 
     private final CANSparkMax rightMotor1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final MotorControllerGroup rightMotors = new MotorControllerGroup(
+    public final MotorControllerGroup rightMotors = new MotorControllerGroup(
         rightMotor1,
         new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless),
         new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless)

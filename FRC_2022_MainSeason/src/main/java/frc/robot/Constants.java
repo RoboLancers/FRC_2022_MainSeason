@@ -5,6 +5,13 @@ import edu.wpi.first.wpilibj.util.Color;
 
 
 public final class Constants {
+    public static final class Drivetrain {
+        public static final double kP = 0.0003;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0005;
+        public static final double kMaxAbsoluteError = 0.5;
+    }
+
     public static final class Climber {
         public static final int CLIMBER_PORT = 0;
         public static final double kSpoolRadius = 1.375;
