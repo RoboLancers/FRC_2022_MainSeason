@@ -4,6 +4,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -20,17 +21,19 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase{
     private final CANSparkMax leftMotor1 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax leftMotor2 = new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax leftMotor3 = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
+
     private final MotorControllerGroup leftMotors = new MotorControllerGroup(
-        leftMotor1,
-        new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless), 
-        new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless)
+        leftMotor1, leftMotor2, leftMotor3
     );
 
     private final CANSparkMax rightMotor1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax rightMotor2 = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax rightMotor3 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+
     private final MotorControllerGroup rightMotors = new MotorControllerGroup(
-        rightMotor1,
-        new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless),
-        new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless)
+        rightMotor1, rightMotor2, rightMotor3
     );
 
     private final DifferentialDrive difDrive = new DifferentialDrive(leftMotors, rightMotors);
@@ -49,8 +52,21 @@ public class Drivetrain extends SubsystemBase{
     private final SlewRateLimiter turnFilter = new SlewRateLimiter(Constants.kTurnFilter);
     
     public Drivetrain(XboxController driverController){
-        // Reverses the right motors.
-        rightMotors.setInverted(false);
+        rightMotor1.setInverted(true);
+        rightMotor2.setInverted(true);
+        rightMotor3.setInverted(true);
+
+        leftMotor1.setInverted(false);
+        leftMotor2.setInverted(false);
+        leftMotor3.setInverted(false);
+
+        leftMotor1.setIdleMode(IdleMode.kBrake);
+        leftMotor2.setIdleMode(IdleMode.kBrake);
+        leftMotor3.setIdleMode(IdleMode.kBrake);
+
+        rightMotor1.setIdleMode(IdleMode.kBrake);
+        rightMotor2.setIdleMode(IdleMode.kBrake);
+        rightMotor3.setIdleMode(IdleMode.kBrake);
 
         // Sets the distance per pulse to the pre-defined constant we calculated for both encoders.
         rightEncoder.setPositionConversionFactor(Constants.Trajectory.kDistPerRot);
