@@ -66,10 +66,10 @@ public final class Constants {
 
             public static final class FlywheelPID {
                 // PID
-                public static double kP = 0.005;
+                public static double kP = 0.000;
                 public static double kI = 0.0;
-                public static double kD = 0.001;
-                public static double kFF = 0.12359;
+                public static double kD = 0.000;
+                public static double kFF = 0.00005;
                 public static final double kMaxAbsoluteOutput = 1.0;
                 // logic
                 public static final double kStoppedVelocity = 100; // max absolute difference (in rpm?) from 0 where the turret flywheel considers itself to be at rest (for resetting turret before climbing)

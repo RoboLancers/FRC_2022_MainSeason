@@ -88,10 +88,12 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driverController
       .whenPressed(XboxController.Button.A, new InstantCommand(() -> {
-        this.turret.pitch.positionSetpoint = SmartDashboard.getNumber("Target Pitch", 0.0);
+        SmartDashboard.putNumber("Target Speed", 0);
+        this.turret.flywheel.velocitySetpoint = 0;
       }))
       .whenPressed(XboxController.Button.B, new InstantCommand(() -> {
-        this.turret.flywheel.velocitySetpoint = SmartDashboard.getNumber("Target Speed", 0.0);
+        this.turret.flywheel.velocitySetpoint = 5500;
+        SmartDashboard.putNumber("Target Speed", 5500);
       }));
   }
 
@@ -156,6 +158,7 @@ public class RobotContainer {
 
     SmartDashboard.putNumber("Turret Yaw Position", turret.yaw.getPosition());
     SmartDashboard.putNumber("Turret Pitch Position", turret.pitch.getPosition());
+
     SmartDashboard.putNumber("Turret Flywheel Speed", turret.flywheel.getVelocity());
 
     SmartDashboard.putBoolean("Turret Yaw Switch", turret.yaw.homingSwitch.get());
