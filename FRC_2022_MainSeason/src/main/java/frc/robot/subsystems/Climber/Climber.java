@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Climber extends SubsystemBase{
     public CANSparkMax climberMotor1;
     public CANSparkMax climberMotor2;
-    public RelativeEncoder climbEncoder1;
+    public static RelativeEncoder climbEncoder1;
     public RelativeEncoder climbEncoder2;
     public boolean isEnabled;
 

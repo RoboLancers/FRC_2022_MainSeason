@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import frc.robot.subsystems.climber.Climber;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -26,7 +27,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 // import frc.robot.subsystems.climber.commands.UpClimber;
 import frc.robot.commands.UpdateLights;
-import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.climber.commands.ManualClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
@@ -200,5 +200,8 @@ public class RobotContainer {
     SmartDashboard.putBoolean("System pressure switch tripped", pneumatics.pressureSwitchTripped());
     SmartDashboard.putNumber("Left Encoder Ticks", drivetrain.getLeftEncoder().getPosition() * 4096);
     SmartDashboard.putNumber("Right Encoder Ticks", drivetrain.getRightEncoder().getPosition() * 4096);
+    SmartDashboard.putNumber("Climber Encoder", Climber.climbEncoder1.getPosition() * Constants.Climber.kRotationToInch);
   }
 }
+
+
