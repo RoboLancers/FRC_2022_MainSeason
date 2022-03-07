@@ -33,7 +33,7 @@
 //                 Maths.toRadians(this.turret.yaw.limelight.yawOffset()),
 //                 Maths.toRadians(this.turret.yaw.limelight.pitchOffset() + Constants.Turret.PhysicsInfo.kPitchMountAngle)
 //             );
-//             TODO: uncomment once the interpolation table has been tuned
+//             TODO uncomment once the interpolation table has been tuned
 //             this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(distance);
 //             this.turret.launchTrajectory = LaunchTrajectory.usingAlphaImpact(
 //                 Constants.Turret.PhysicsInfo.kGravity,
@@ -52,7 +52,7 @@
 //             double deltaY = this.turret.yaw.relativeHub.getY() - this.driveTrain.getPose().getY();
 //             double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 //             if(distance < Constants.Turret.PhysicsInfo.minLimelightViewableDistance || distance > Constants.Turret.PhysicsInfo.maxLimelightViewableDistance){
-//                 TODO: uncomment once the interpolation table has been tuned
+//                 TODO uncomment once the interpolation table has been tuned
 //                 this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(distance);
 //                 this.turret.launchTrajectory = LaunchTrajectory.usingAlphaImpact(
 //                     Constants.Turret.PhysicsInfo.kGravity,

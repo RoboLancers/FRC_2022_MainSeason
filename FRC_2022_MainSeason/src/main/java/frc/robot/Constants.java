@@ -142,9 +142,29 @@ public final class Constants {
         public static final double kP = 0;
 
         public static final double kDistPerRot = (3.072/100);
+        
     }
     
-    public static final double kThrottleFilter = 1.7;
-    public static final double kTurnFilter = 1.5;
+    public static final double kThrottleFilter = 1.25;
+    public static final double kTurnFilter = 3;
 
+    public static class Drivetrain {
+        public static final int kGyroPort = 1;
+        public static final double kDistPerRot = (3.072/100);            
+        public static final double kThrottleFilter = 1.5;
+        public static final double kTurnFilter = 1.5;
+        public static final double kMaxPower = 0.75;
+
+        public static class LeftMotors {
+            public static final int kLeftMotor1_Port = 0;
+            public static final int kLeftMotor2_Port = 1;
+            public static final int kLeftMotor3_Port = 2;
+        }
+        public static class RightMotors {
+            public static final int kRightMotor1_Port = 3;
+            public static final int kRightMotor2_Port = 4;
+            public static final int kRightMotor3_Port = 5;
+        }
+
+    }
 }
