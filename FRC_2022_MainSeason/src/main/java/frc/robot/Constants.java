@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public final class Constants {
     public static final class Climber {
-        public static final int CLIMBER_PORT = 0;
+        public static final int CLIMBER_PORT1 = 14;
+        public static final int CLIMBER_PORT2 = 15;
         public static final double kSpoolRadius = 1.375;
         public static final double kRotationToInch = Math.PI * kSpoolRadius/15;
         public static final double kLowClimb = 48.75;
@@ -91,7 +92,7 @@ public final class Constants {
         public static final int kRollerPort = 0;
         public static final int kRetractorChannelOne = 0;
         public static final int kRetractorChannelTwo = 0;
-        public static final int kIndexerPort = 14;
+        public static final int kIndexerPort = 12;
         public static final int kPistonDeploy = 0;
         public static final int kPistonRetract = 0;
         public static final double kIntakePower = 0.6;
@@ -101,7 +102,7 @@ public final class Constants {
 
     public static final class Indexer {
         public static final int kProximityLimit = 400;
-        public static final int kIndexerPort = 14;
+        public static final int kIndexerPort = 12;
         public static final double kIndexerSpeed = 0.2;
         public static final int ktopSwitch = 1;
         public static final int kbottomSwitch = 0;

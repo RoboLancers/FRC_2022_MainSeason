@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import frc.robot.subsystems.climber.Climber;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -26,9 +27,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.commands.TaxiAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
-import frc.robot.subsystems.climber.commands.UpClimber;
 import frc.robot.commands.UpdateLights;
-import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.commands.ManualClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
@@ -61,6 +61,7 @@ import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.yaw.BetterYaw;
+import frc.robot.subsystems.climber.commands.ManualClimber;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -84,7 +85,7 @@ public class RobotContainer {
   private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   private final Camera camera = new Camera();
   // private final Turret turret = new Turret(drivetrain);
-  // private final Climber climber = new Climber();
+  private final Climber climber = new Climber();
   //private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
@@ -135,7 +136,8 @@ public class RobotContainer {
     // turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
 
     this.configureButtonBindings();
-    camera.initializeFrontCamera();
+    // camera.initializeFrontCamera();
+    climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
 
     // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
     // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
@@ -165,17 +167,19 @@ public class RobotContainer {
     // indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
     // }
     // );
-  }
-
-// manipulatorController.whenPressed(XboxController.LEFT_JOYSTICK_BUTTON, new ManualControlClimber);
+    // manipulatorController.whenPressed(XboxController.Axis.LEFT_Y, new ManualClimber(driverController, climber));
     // manipulatorController.whenPressed(XboxController.Up, new REzero);
     // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
     // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
-    //manipulatorController.whenPressed(XboxController.Button.B, new LowRung(climber,Constants.Climber.kLowClimb));
-    //manipulatorController.whenPressed(XboxController.Button.Y, new MidRung(climber,Constants.Climber.kMidClimb));
-    // manipulatorController.whenPressed(XboxController.Button.B, new LowRung(climber,Constants.Climber.kLowClimb));
-    // manipulatorController.whenPressed(XboxController.Button.Y, new MidRung(climber,Constants.Climber.kMidClimb));
-
+    // manipulatorController.whenPressed(XboxController.ButtonThinggggg, new Instant)
+    // manipulatorController.whenPressed(XboxController.Button.B, new SequentialCommandGroup(
+    //   new ZeroAndDisable(turret),
+    //   new UpClimber(climber, Constants.Climber.kLowClimb)));
+    // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
+    //   new ZeroAndDisable(turret),
+    //   new UpClimber(climber, Constants.Climber.kMidClimb)));
+      
+  }
 
   public Command getAutonomousCommand() {
     // The voltage constraint makes sure the robot doesn't exceed a certain voltage during runtime.
@@ -249,5 +253,7 @@ public class RobotContainer {
     //SmartDashboard.putBoolean("System pressure switch tripped", pneumatics.pressureSwitchTripped());
     SmartDashboard.putNumber("Left Encoder Ticks", drivetrain.getLeftEncoder().getPosition() * 4096);
     SmartDashboard.putNumber("Right Encoder Ticks", drivetrain.getRightEncoder().getPosition() * 4096);
+    SmartDashboard.putNumber("Climber Encoder", climber.climbEncoder1.getPosition());
   }
 }
+

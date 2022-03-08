@@ -76,7 +76,7 @@ public class Drivetrain extends SubsystemBase{
         
         odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
 
-        initDefaultCommand(driverController);
+        //initDefaultCommand(driverController);
     }
 
     private void initDefaultCommand(XboxController driverController){
