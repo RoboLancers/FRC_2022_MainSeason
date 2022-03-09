@@ -113,15 +113,12 @@ public class RobotContainer {
         SmartDashboard.putNumber("ball number", indexer.ballQueue.size());
         this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
       }, this.indexer));
-      indexer.setDefaultCommand(new RunCommand(() -> {
-        indexer.setPower(driverController.getAxisValue(Axis.LEFT_TRIGGER));
-      }, indexer));
-      intake.setDefaultCommand(new RunCommand(() -> {
+      /* intake.setDefaultCommand(new RunCommand(() -> {
         intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
       }, intake));
       driverController.whenPressed(XboxController.Button.X, (new RunCommand(() -> {
         intake.toggleIntake();;
-      }, intake)));
+      }, intake))); */
     
     this.configureButtonBindings();
 
