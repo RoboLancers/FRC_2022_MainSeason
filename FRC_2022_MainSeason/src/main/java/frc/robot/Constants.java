@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public final class Constants {
     public static final class Climber {
-        public static final int CLIMBER_PORT = 0;
+        public static final int CLIMBER_PORT1 = 14;
+        public static final int CLIMBER_PORT2 = 15;
         public static final double kSpoolRadius = 1.375;
         public static final double kRotationToInch = Math.PI * kSpoolRadius/15;
         public static final double kLowClimb = 48.75;

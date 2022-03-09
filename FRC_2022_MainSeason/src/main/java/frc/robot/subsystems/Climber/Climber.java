@@ -9,12 +9,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Climber extends SubsystemBase{
     public CANSparkMax climberMotor1;
     public CANSparkMax climberMotor2;
-    public RelativeEncoder climbEncoder1;
+    public static RelativeEncoder climbEncoder1;
     public RelativeEncoder climbEncoder2;
     public boolean isEnabled;
-
+    
     public Climber(){
-        climberMotor1 = new CANSparkMax(Constants.Climber.CLIMBER_PORT, CANSparkMax.MotorType.kBrushless);
+        climberMotor1 = new CANSparkMax(Constants.Climber.CLIMBER_PORT1, CANSparkMax.MotorType.kBrushless);
+        climberMotor2 = new CANSparkMax(Constants.Climber.CLIMBER_PORT2, CANSparkMax.MotorType.kBrushless);
         climbEncoder1 = climberMotor1.getEncoder();
         climbEncoder2 = climberMotor2.getEncoder();
         climbEncoder1.setPositionConversionFactor(Constants.Climber.kRotationToInch);
