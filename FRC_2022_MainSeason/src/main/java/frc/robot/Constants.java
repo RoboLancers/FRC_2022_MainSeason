@@ -5,15 +5,10 @@ import edu.wpi.first.wpilibj.util.Color;
 
 
 public final class Constants {
-    public static final class Drivetrain {
-        public static final double kP = 0.0003;
-        public static final double kI = 0.0;
-        public static final double kD = 0.0005;
-        public static final double kMaxAbsoluteError = 0.5;
-    }
 
     public static final class Climber {
-        public static final int CLIMBER_PORT = 0;
+        public static final int CLIMBER_PORT1 = 14;
+        public static final int CLIMBER_PORT2 = 15;
         public static final double kSpoolRadius = 1.375;
         public static final double kRotationToInch = Math.PI * kSpoolRadius/15;
         public static final double kLowClimb = 48.75;
@@ -65,12 +60,11 @@ public final class Constants {
             }
 
             public static final class FlywheelPID {
-                public static final double kVelocityConversion = 4 * Math.PI;
                 // PID
-                public static final double kP = 0.0;
-                public static final double kI = 0.0;
-                public static final double kD = 0.0;
-                public static final double kFF = 0.00005;
+                public static double kP = 0.000;
+                public static double kI = 0.0;
+                public static double kD = 0.000;
+                public static double kFF = 0.00005;
                 public static final double kMaxAbsoluteOutput = 1.0;
                 // logic
                 public static final double kStoppedVelocity = 100; // max absolute difference (in rpm?) from 0 where the turret flywheel considers itself to be at rest (for resetting turret before climbing)
@@ -101,7 +95,7 @@ public final class Constants {
         public static final int kRollerPort = 0;
         public static final int kRetractorChannelOne = 0;
         public static final int kRetractorChannelTwo = 0;
-        public static final int kIndexerPort = 14;
+        public static final int kIndexerPort = 12;
         public static final int kPistonDeploy = 0;
         public static final int kPistonRetract = 0;
         public static final double kIntakePower = 0.6;
@@ -111,7 +105,7 @@ public final class Constants {
 
     public static final class Indexer {
         public static final int kProximityLimit = 400;
-        public static final int kIndexerPort = 14;
+        public static final int kIndexerPort = 12;
         public static final double kIndexerSpeed = 0.2;
         public static final int ktopSwitch = 1;
         public static final int kbottomSwitch = 0;
@@ -152,8 +146,32 @@ public final class Constants {
         public static final double kP = 0;
 
         public static final double kDistPerRot = (3.072/100);
+        
     }
     
-    public static final double kThrottleFilter = 1.7;
-    public static final double kTurnFilter = 1.5;
+    public static final double kThrottleFilter = 1.25;
+    public static final double kTurnFilter = 3;
+
+    public static final class Drivetrain {
+        public static final int kGyroPort = 1;
+        public static final double kDistPerRot = (3.072/100);            
+        public static final double kThrottleFilter = 1.5;
+        public static final double kTurnFilter = 1.5;
+        public static final double kMaxPower = 0.75;
+        public static final double kP = 0.0003;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0005;
+        public static final double kMaxAbsoluteError = 0.5;
+        public static class LeftMotors {
+            public static final int kLeftMotor1_Port = 0;
+            public static final int kLeftMotor2_Port = 1;
+            public static final int kLeftMotor3_Port = 2;
+        }
+        public static class RightMotors {
+            public static final int kRightMotor1_Port = 3;
+            public static final int kRightMotor2_Port = 4;
+            public static final int kRightMotor3_Port = 5;
+        }
+
+    }
 }

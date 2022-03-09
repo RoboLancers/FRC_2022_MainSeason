@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import frc.robot.subsystems.climber.Climber;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -24,21 +25,28 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
-import frc.robot.subsystems.climber.commands.UpClimber;
+import frc.robot.commands.TaxiAuto;
+// import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.commands.UpdateLights;
-import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.commands.ManualClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
+//import frc.robot.subsystems.misc.AddressableLEDs;
+import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.turret.Turret;
+//import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.drivetrain.enums.GearShifterState;
 import frc.robot.subsystems.misc.AddressableLEDs;
-import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.misc.Camera;
+
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.MatchHeadingYaw;
+
 //import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ZeroAndDisable;
 // import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
@@ -46,6 +54,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.NotifierCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -54,8 +63,18 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
+import frc.robot.subsystems.climber.commands.ManualClimber;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.util.XboxController;
+import frc.robot.util.XboxController.Axis;
 
 public class RobotContainer {
+  // private String trajectoryJSON = "paths/MyPath.wpilib.json";
+  private RobotContainer m_robotContainer;
+  private XboxController xboxController = new XboxController(0);
+
   /*   Controllers   */
   private final XboxController driverController = new XboxController(0);
   private final XboxController manipulatorController = new XboxController(1);
@@ -65,8 +84,10 @@ public class RobotContainer {
   private final Pneumatics pneumatics = new Pneumatics();
   private final GearShifter gearShifter = new GearShifter(pneumatics);
   private final Indexer indexer = new Indexer();
+  private final TurretFlywheel turretFlywheel = new TurretFlywheel();
+  private final Camera camera = new Camera();
   private final Turret turret = new Turret(drivetrain);
-  // private final Climber climber = new Climber();
+  private final Climber climber = new Climber();
   //private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
@@ -77,9 +98,48 @@ public class RobotContainer {
   private PIDController rightPID = new PIDController(Constants.Trajectory.kP, 0, 0);
   private PIDController leftPID = new PIDController(Constants.Trajectory.kP, 0, 0);
   private Field2d m_field = new Field2d();
+  
+
+  //private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   public RobotContainer() {
+    // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
+
+    this.indexer.setDefaultCommand(new RunCommand(
+      () -> {
+        SmartDashboard.putNumber("proximity", indexer.bottomColorSensor.getProximity());
+        SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
+        SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
+        SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
+        SmartDashboard.putNumber("ball number", indexer.ballQueue.size());
+        this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
+      }, this.indexer
+    ));
+    
     this.configureButtonBindings();
+
+    // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
+    this.drivetrain.setDefaultCommand(
+      new RunCommand(
+        () -> {
+          this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
+        },
+        drivetrain
+      )
+    );
+
+    //m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
+    
+    //turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
+    //turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
+    // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
+    
+    // turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
+    // turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
+
+    this.configureButtonBindings();
+    // camera.initializeFrontCamera();
+    climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
 
     SmartDashboard.putNumber("Target Speed", 0.0);
     // SmartDashboard.putNumber("Target Pitch", 0.0);
@@ -88,11 +148,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driverController
       .whenPressed(XboxController.Button.A, new InstantCommand(() -> {
-        this.turret.pitch.positionSetpoint = 0;
+        turret.pitch.positionSetpoint = 0;
         SmartDashboard.putNumber("Target Speed", 0);
       }))
       .whenPressed(XboxController.Button.B, new InstantCommand(() -> {
-        this.turret.flywheel.velocitySetpoint = 40;
+        turret.flywheel.velocitySetpoint = 40;
         SmartDashboard.putNumber("Target Speed", 40);
       }));
       // .whenPressed(XboxController.Button.X, new InstantCommand(() -> {
@@ -139,8 +199,9 @@ public class RobotContainer {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     }
 
-    
-    // Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command so that it constantly updates and corrects the trajectory auto.
+
+    // Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command
+    // so that it constantly updates and corrects the trajectory auto.
     RamseteCommand ramseteCommand = new RamseteCommand(
       trajectory, 
       drivetrain::getPose, // Gets the translational and rotational position of the robot.
@@ -169,3 +230,4 @@ public class RobotContainer {
     ));
   }
 }
+

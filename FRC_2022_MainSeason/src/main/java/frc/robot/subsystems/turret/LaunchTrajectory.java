@@ -15,7 +15,7 @@ public class LaunchTrajectory {
     }
 
     public static double estimateDistance(double deltaY, double thetaY){
-        return deltaY / Math.tan(thetaY * Math.PI / 180);
+        return 2 * deltaY / Math.tan(thetaY * Math.PI / 180);
     }
 
     // Calculate the trajectory to hit the target at a given angle alpha
