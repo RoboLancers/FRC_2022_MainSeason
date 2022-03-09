@@ -84,7 +84,6 @@ public class RobotContainer {
   private final Pneumatics pneumatics = new Pneumatics();
   private final GearShifter gearShifter = new GearShifter(pneumatics);
   private final Indexer indexer = new Indexer();
-  private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   private final Camera camera = new Camera();
   private final Turret turret = new Turret(drivetrain);
   private final Climber climber = new Climber();
@@ -148,12 +147,12 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driverController
       .whenPressed(XboxController.Button.A, new InstantCommand(() -> {
-        turret.pitch.positionSetpoint = 0;
+        turret.flywheel.velocitySetpoint = 0;
         SmartDashboard.putNumber("Target Speed", 0);
       }))
       .whenPressed(XboxController.Button.B, new InstantCommand(() -> {
-        turret.flywheel.velocitySetpoint = 40;
-        SmartDashboard.putNumber("Target Speed", 40);
+        turret.flywheel.velocitySetpoint = 4500;
+        SmartDashboard.putNumber("Target Speed", 4500);
       }));
       // .whenPressed(XboxController.Button.X, new InstantCommand(() -> {
       //   this.turret.pitch.positionSetpoint = 0;
@@ -222,7 +221,7 @@ public class RobotContainer {
   }
 
   public void doSendables(){
-    SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
+    SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity()); 
 
     SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(
       Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
