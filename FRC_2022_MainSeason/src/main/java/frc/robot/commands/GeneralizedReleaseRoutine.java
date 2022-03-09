@@ -24,7 +24,7 @@ public class GeneralizedReleaseRoutine extends CommandBase {
             new SequentialCommandGroup(
                 new InstantCommand(() -> {
                     this.indexer.indexerMotor.set(Constants.Indexer.kIndexerSpeed);
-                    this.turret.flywheel.setVelocitySetpoint(0.8);
+                    this.turret.flywheel.velocitySetpoint = 0.8;
                 }),
                 new WaitUntilCommand(() -> {
                     return turret.flywheel.getCurrent() < Constants.Turret.TunedCoefficients.FlywheelPID.kCurrentSpikeThreshold;
@@ -35,7 +35,7 @@ public class GeneralizedReleaseRoutine extends CommandBase {
                 new InstantCommand (() -> {
                     indexer.progressBalls();
                     indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-                    turret.flywheel.setVelocitySetpoint(0);
+                    turret.flywheel.velocitySetpoint = 0;
                     return;
                 })
             );

@@ -26,7 +26,7 @@ public class ActiveLaunchTrajectory extends CommandBase {
         if(this.turret.inHangMode){
             return;
         }
-        if(this.turret.yaw.isAligned()){
+        if(this.turret.yaw.limelight.hasTarget()){
             double distance = LaunchTrajectory.estimateDistance(
                 Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
                 Maths.toRadians(this.turret.yaw.limelight.pitchOffset() + Constants.Turret.PhysicsInfo.kPitchMountAngle)

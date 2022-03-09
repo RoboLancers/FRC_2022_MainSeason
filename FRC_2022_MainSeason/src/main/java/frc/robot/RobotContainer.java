@@ -81,18 +81,28 @@ public class RobotContainer {
   public RobotContainer() {
     this.configureButtonBindings();
 
-    SmartDashboard.putNumber("Target Pitch", 0.0);
     SmartDashboard.putNumber("Target Speed", 0.0);
+    // SmartDashboard.putNumber("Target Pitch", 0.0);
   }
 
   private void configureButtonBindings() {
     driverController
       .whenPressed(XboxController.Button.A, new InstantCommand(() -> {
-        this.turret.pitch.positionSetpoint = SmartDashboard.getNumber("Target Pitch", 0.0);
+        this.turret.pitch.positionSetpoint = 0;
+        SmartDashboard.putNumber("Target Speed", 0);
       }))
       .whenPressed(XboxController.Button.B, new InstantCommand(() -> {
-        this.turret.flywheel.velocitySetpoint = SmartDashboard.getNumber("Target Speed", 0.0);
+        this.turret.flywheel.velocitySetpoint = 40;
+        SmartDashboard.putNumber("Target Speed", 40);
       }));
+      // .whenPressed(XboxController.Button.X, new InstantCommand(() -> {
+      //   this.turret.pitch.positionSetpoint = 0;
+      //   SmartDashboard.putNumber("Target Pitch", 0);
+      // }))
+      // .whenPressed(XboxController.Button.Y, new InstantCommand(() -> {
+      //   this.turret.pitch.positionSetpoint = 5;
+      //   SmartDashboard.putNumber("Target Pitch", 5);
+      // }));
   }
 
   public Command getAutonomousCommand() {
@@ -151,15 +161,7 @@ public class RobotContainer {
   }
 
   public void doSendables(){
-    SmartDashboard.putNumber("Limelight Yaw", turret.yaw.limelight.yawOffset());
-    SmartDashboard.putNumber("Limelight Pitch", turret.yaw.limelight.pitchOffset());
-
-    SmartDashboard.putNumber("Turret Yaw Position", turret.yaw.getPosition());
-    SmartDashboard.putNumber("Turret Pitch Position", turret.pitch.getPosition());
-    SmartDashboard.putNumber("Turret Flywheel Speed", turret.flywheel.getVelocity());
-
-    SmartDashboard.putBoolean("Turret Yaw Switch", turret.yaw.homingSwitch.get());
-    SmartDashboard.putBoolean("Turret Pitch Switch", turret.pitch.homingSwitch.get());
+    SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
 
     SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(
       Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
