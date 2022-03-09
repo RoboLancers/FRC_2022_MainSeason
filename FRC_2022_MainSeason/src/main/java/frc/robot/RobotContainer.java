@@ -41,8 +41,7 @@ import frc.robot.subsystems.drivetrain.enums.GearShifterState;
 import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.misc.Camera;
 import frc.robot.subsystems.indexer.Indexer;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.intake.Intake;
+// import frc.robot.subsystems.intake.Intake;
 
 //import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ZeroAndDisable;
@@ -84,10 +83,9 @@ public class RobotContainer {
   private final Indexer indexer = new Indexer();
   private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   private final Camera camera = new Camera();
-  private final Intake intake = new Intake();
+  // private final Intake intake = new Intake();
   // private final Turret turret = new Turret(drivetrain);
   // private final Climber climber = new Climber();
-  //private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   /*   Autonomous Trajectory   */
@@ -113,12 +111,12 @@ public class RobotContainer {
         SmartDashboard.putNumber("ball number", indexer.ballQueue.size());
         this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
       }, this.indexer));
-      /* intake.setDefaultCommand(new RunCommand(() -> {
-        intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
-      }, intake));
-      driverController.whenPressed(XboxController.Button.X, (new RunCommand(() -> {
-        intake.toggleIntake();;
-      }, intake))); */
+      // intake.setDefaultCommand(new RunCommand(() -> {
+      //   intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
+      // }, intake));
+      // driverController.whenPressed(XboxController.Button.X, (new RunCommand(() -> {
+      //   intake.toggleIntake();;
+      // }, intake)));
     
     this.configureButtonBindings();
 
@@ -171,9 +169,9 @@ public class RobotContainer {
       indexer.setPower(manipulatorController.getAxisValue(Axis.RIGHT_Y));
     }, indexer));
     
-    /* intake.setDefaultCommand(new RunCommand(() -> {
-      intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
-    }, intake)); */
+    // intake.setDefaultCommand(new RunCommand(() -> {
+    //   intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
+    // }, intake));
     // Trigger threshColorSensor = new Trigger(() -> {
       // the condition that triggers the command
       // return indexer.bottomColorSensor.getProximity() >= Constants.Indexer.kProximityLimit;
