@@ -170,7 +170,6 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
-<<<<<<< HEAD
     indexer.setDefaultCommand(new RunCommand(() -> {
       indexer.setPower(manipulatorController.getAxisValue(Axis.RIGHT_Y));
     }, indexer));
@@ -184,12 +183,10 @@ public class RobotContainer {
     // });
   // This is an example of command composition.
     // threshColorSensor.whenActive(new GeneralizedReleaseRoutine(indexer, turret)
-=======
     // manipulatorController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(
     // () -> {
     // indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
     // }
->>>>>>> 75c70fd5e29fe6e52bfb3674e67faa4bc74d5ebe
     // );
   }
 

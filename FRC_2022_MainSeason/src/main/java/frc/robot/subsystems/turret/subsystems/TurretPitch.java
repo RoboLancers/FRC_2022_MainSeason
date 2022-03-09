@@ -39,13 +39,6 @@ public class TurretPitch extends SubsystemBase {
             Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput
         );
 
-<<<<<<< HEAD
-        //this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
-        /* this.homingTrigger = new Trigger(this.homingSwitch::get);
-        this.homingTrigger.whenActive(new RunCommand(() -> {
-            this.encoder.setPosition(0);
-        }, this)); */
-=======
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kPitchLimitSwitch);
         this.homingTrigger = new Trigger(this.homingSwitch::get);
         this.homingTrigger.whenActive(new RunCommand(() -> {
@@ -84,7 +77,6 @@ public class TurretPitch extends SubsystemBase {
             Constants.Turret.TunedCoefficients.PitchPID.kFF = ff;
             this.PIDController.setP(ff);
         }
->>>>>>> 75c70fd5e29fe6e52bfb3674e67faa4bc74d5ebe
     }
 
     private double getPosition(){
