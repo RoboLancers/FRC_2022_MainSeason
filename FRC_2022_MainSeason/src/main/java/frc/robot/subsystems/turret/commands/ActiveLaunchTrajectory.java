@@ -1,26 +1,25 @@
-// package frc.robot.subsystems.turret.commands;
+package frc.robot.subsystems.turret.commands;
 
-// import edu.wpi.first.math.geometry.Pose2d;
-// import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.wpilibj2.command.CommandBase;
-// import frc.robot.Constants;
-// import frc.robot.subsystems.drivetrain.Drivetrain;
-// import frc.robot.subsystems.turret.LaunchTrajectory;
-// import frc.robot.subsystems.turret.Turret;
-// import frc.robot.util.Maths;
-// import frc.robot.subystems.yaw.BetterYaw;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.turret.LaunchTrajectory;
+import frc.robot.subsystems.turret.Turret;
+import frc.robot.util.Maths;
 
-// public class ActiveLaunchTrajectory extends CommandBase {
-//     private Turret turret;
-//     private Drivetrain driveTrain;
-//     private BetterYaw bestYaw;
+public class ActiveLaunchTrajectory extends CommandBase {
+    private Turret turret;
+    private Drivetrain driveTrain;
 
-//     public ActiveLaunchTrajectory(Turret turret, Drivetrain driveTrain, BetterYaw bestYaw){
-//         this.turret = turret;
-//         this.driveTrain = driveTrain;
-//         this.bestYaw = bestYaw;
-//         does the subsystem need to be required since it is a default command?
-//     }
+    public ActiveLaunchTrajectory(Turret turret, Drivetrain driveTrain){
+        this.turret = turret;
+        this.driveTrain = driveTrain;
+        
+        this.addRequirements(this.turret);
+    }
 
 //     @Override
 //     public void execute(){
@@ -33,7 +32,7 @@
 //                 Maths.toRadians(this.turret.yaw.limelight.yawOffset()),
 //                 Maths.toRadians(this.turret.yaw.limelight.pitchOffset() + Constants.Turret.PhysicsInfo.kPitchMountAngle)
 //             );
-//             TODO: uncomment once the interpolation table has been tuned
+//             TODO uncomment once the interpolation table has been tuned
 //             this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(distance);
 //             this.turret.launchTrajectory = LaunchTrajectory.usingAlphaImpact(
 //                 Constants.Turret.PhysicsInfo.kGravity,
@@ -52,7 +51,7 @@
 //             double deltaY = this.turret.yaw.relativeHub.getY() - this.driveTrain.getPose().getY();
 //             double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 //             if(distance < Constants.Turret.PhysicsInfo.minLimelightViewableDistance || distance > Constants.Turret.PhysicsInfo.maxLimelightViewableDistance){
-//                 TODO: uncomment once the interpolation table has been tuned
+//                 TODO uncomment once the interpolation table has been tuned
 //                 this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(distance);
 //                 this.turret.launchTrajectory = LaunchTrajectory.usingAlphaImpact(
 //                     Constants.Turret.PhysicsInfo.kGravity,
@@ -66,8 +65,8 @@
 //         }
 //     }
 
-//     @Override
-//     public boolean isFinished(){
-//         return false;
-//     }
-// }
+    @Override
+    public boolean isFinished(){
+        return false;
+    }
+}

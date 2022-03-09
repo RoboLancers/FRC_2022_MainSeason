@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -23,7 +24,8 @@ public class TurretPitch extends SubsystemBase {
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
 
         this.encoder = this.motor.getEncoder();
-        this.encoder.setPositionConversionFactor(2 * Math.PI);
+        this.encoder.setPositionConversionFactor(Constants.Turret.TunedCoefficients.PitchPID.ratio);
+        this.encoder.setPosition(0.0);
 
         this.PIDController = this.motor.getPIDController();
 
@@ -33,15 +35,56 @@ public class TurretPitch extends SubsystemBase {
         this.PIDController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
         this.PIDController.setFF(Constants.Turret.TunedCoefficients.PitchPID.kFF);
         this.PIDController.setOutputRange(
-            -Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput,
+            0,
             Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput
         );
 
+<<<<<<< HEAD
         //this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kYawLimitSwitch);
         /* this.homingTrigger = new Trigger(this.homingSwitch::get);
         this.homingTrigger.whenActive(new RunCommand(() -> {
             this.encoder.setPosition(0);
         }, this)); */
+=======
+        this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kPitchLimitSwitch);
+        this.homingTrigger = new Trigger(this.homingSwitch::get);
+        this.homingTrigger.whenActive(new RunCommand(() -> {
+            this.encoder.setPosition(0);
+        }, this));
+
+        SmartDashboard.putNumber("pitch kP", Constants.Turret.TunedCoefficients.PitchPID.kP);
+        SmartDashboard.putNumber("pitch kI", Constants.Turret.TunedCoefficients.PitchPID.kI);
+        SmartDashboard.putNumber("pitch kD", Constants.Turret.TunedCoefficients.PitchPID.kD);
+        SmartDashboard.putNumber("pitch kFF", Constants.Turret.TunedCoefficients.PitchPID.kFF);
+    }
+
+    // testing
+    @Override
+    public void periodic(){
+        SmartDashboard.putBoolean("PitchSwitch", this.homingSwitch.get());
+
+        double p = SmartDashboard.getNumber("pitch kP", 0.0);
+        double i = SmartDashboard.getNumber("pitch kI", 0.0);
+        double d = SmartDashboard.getNumber("pitch kD", 0.0);
+        double ff = SmartDashboard.getNumber("pitch kFF", 0.0);
+
+        if(Constants.Turret.TunedCoefficients.PitchPID.kP != p){
+            Constants.Turret.TunedCoefficients.PitchPID.kP = p;
+            this.PIDController.setP(p);
+        }
+        if(Constants.Turret.TunedCoefficients.PitchPID.kI != i){
+            Constants.Turret.TunedCoefficients.PitchPID.kI = i;
+            this.PIDController.setP(i);
+        }
+        if(Constants.Turret.TunedCoefficients.PitchPID.kD != d){
+            Constants.Turret.TunedCoefficients.PitchPID.kD = d;
+            this.PIDController.setP(d);
+        }
+        if(Constants.Turret.TunedCoefficients.PitchPID.kFF != ff){
+            Constants.Turret.TunedCoefficients.PitchPID.kFF = ff;
+            this.PIDController.setP(ff);
+        }
+>>>>>>> 75c70fd5e29fe6e52bfb3674e67faa4bc74d5ebe
     }
 
     private double getPosition(){
@@ -49,6 +92,11 @@ public class TurretPitch extends SubsystemBase {
     }
 
     public void setPositionSetpoint(double position){
+        // ! - wait until turret pitch motor works
+        // this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void setPositionSetpointTesting(double position){
         this.PIDController.setReference(position, CANSparkMax.ControlType.kPosition);
     }
 

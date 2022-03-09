@@ -24,14 +24,6 @@ public class Pneumatics extends SubsystemBase {
         return compressor.makeDoubleSolenoid(port1, port2);
     }
 
-    public double getPressure() {
-        return compressor.getPressure(1);
-    }
-
-    public boolean pressureSwitchTripped() {
-        return compressor.getPressureSwitch();
-    }
-
     public void compressorOff() {
         compressor.disableCompressor();
     }

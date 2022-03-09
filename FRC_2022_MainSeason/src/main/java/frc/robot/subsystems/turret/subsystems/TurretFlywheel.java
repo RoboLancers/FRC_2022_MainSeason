@@ -1,5 +1,6 @@
 package frc.robot.subsystems.turret.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,32 +24,69 @@ public class TurretFlywheel extends SubsystemBase {
         this.encoderA = this.motorA.getEncoder();
         this.encoderB = this.motorB.getEncoder();
 
-        // this.encoderA.setVelocityConversionFactor(?)
-        // this.encoderB.setVelocityConversionFactor(?)
-        // maybe 2πr
+        this.encoderA.setPosition(0.0);
+        this.encoderB.setPosition(0.0);
 
-        // this.PIDControllerA = this.motorA.getPIDController();
-        // this.PIDControllerB = this.motorB.getPIDController();
+        this.encoderA.setVelocityConversionFactor(2 * Math.PI);
+        this.encoderB.setVelocityConversionFactor(2 * Math.PI);
 
-        // this.PIDControllerA.setP(Constants.Turret.TunedCoefficients.FlywheelPID.kP);
-        // this.PIDControllerA.setI(Constants.Turret.TunedCoefficients.FlywheelPID.kI);
-        // this.PIDControllerA.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
-        // this.PIDControllerA.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
-        // this.PIDControllerA.setFF(Constants.Turret.TunedCoefficients.FlywheelPID.kFF);
-        // this.PIDControllerA.setOutputRange(
-        //     -Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput,
-        //     Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput
-        // );
+        this.PIDControllerA = this.motorA.getPIDController();
+        this.PIDControllerB = this.motorB.getPIDController();
 
-        // this.PIDControllerB.setP(Constants.Turret.TunedCoefficients.FlywheelPID.kP);
-        // this.PIDControllerB.setI(Constants.Turret.TunedCoefficients.FlywheelPID.kI);
-        // this.PIDControllerB.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
-        // this.PIDControllerB.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
-        // this.PIDControllerB.setFF(Constants.Turret.TunedCoefficients.FlywheelPID.kFF);
-        // this.PIDControllerB.setOutputRange(
-        //     -Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput,
-        //     Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput
-        // );
+        this.PIDControllerA.setP(Constants.Turret.TunedCoefficients.FlywheelPID.kP);
+        this.PIDControllerA.setI(Constants.Turret.TunedCoefficients.FlywheelPID.kI);
+        this.PIDControllerA.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
+        this.PIDControllerA.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
+        this.PIDControllerA.setFF(Constants.Turret.TunedCoefficients.FlywheelPID.kFF);
+        this.PIDControllerA.setOutputRange(
+            -Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput,
+            Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput
+        );
+
+        this.PIDControllerB.setP(Constants.Turret.TunedCoefficients.FlywheelPID.kP);
+        this.PIDControllerB.setI(Constants.Turret.TunedCoefficients.FlywheelPID.kI);
+        this.PIDControllerB.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
+        this.PIDControllerB.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
+        this.PIDControllerB.setFF(Constants.Turret.TunedCoefficients.FlywheelPID.kFF);
+        this.PIDControllerB.setOutputRange(
+            -Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput,
+            Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput
+        );
+
+        SmartDashboard.putNumber("flywheel kP", Constants.Turret.TunedCoefficients.FlywheelPID.kP);
+        SmartDashboard.putNumber("flywheel kI", Constants.Turret.TunedCoefficients.FlywheelPID.kI);
+        SmartDashboard.putNumber("flywheel kD", Constants.Turret.TunedCoefficients.FlywheelPID.kD);
+        SmartDashboard.putNumber("flywheel kFF", Constants.Turret.TunedCoefficients.FlywheelPID.kFF);
+    }
+
+    // testing
+    @Override
+    public void periodic(){
+        double p = SmartDashboard.getNumber("flywheel kP", 0.0);
+        double i = SmartDashboard.getNumber("flywheel kI", 0.0);
+        double d = SmartDashboard.getNumber("flywheel kD", 0.0);
+        double ff = SmartDashboard.getNumber("flywheel kFF", 0.0);
+
+        if(Constants.Turret.TunedCoefficients.FlywheelPID.kP != p){
+            Constants.Turret.TunedCoefficients.FlywheelPID.kP = p;
+            this.PIDControllerA.setP(p);
+            this.PIDControllerB.setP(p);
+        }
+        if(Constants.Turret.TunedCoefficients.FlywheelPID.kI != i){
+            Constants.Turret.TunedCoefficients.FlywheelPID.kI = i;
+            this.PIDControllerA.setP(i);
+            this.PIDControllerB.setP(i);
+        }
+        if(Constants.Turret.TunedCoefficients.FlywheelPID.kD != d){
+            Constants.Turret.TunedCoefficients.FlywheelPID.kD = d;
+            this.PIDControllerA.setP(d);
+            this.PIDControllerB.setP(d);
+        }
+        if(Constants.Turret.TunedCoefficients.FlywheelPID.kFF != ff){
+            Constants.Turret.TunedCoefficients.FlywheelPID.kFF = ff;
+            this.PIDControllerA.setP(ff);
+            this.PIDControllerB.setP(ff);
+        }
     }
 
     public double getVelocity(){
@@ -64,6 +102,12 @@ public class TurretFlywheel extends SubsystemBase {
     }
 
     public void setVelocitySetpoint(double velocity){
+        // ! - wait until turret flywheel motor works
+        // this.PIDControllerA.setReference(velocity, CANSparkMax.ControlType.kVelocity);
+        // this.PIDControllerB.setReference(velocity, CANSparkMax.ControlType.kVelocity);
+    }
+
+    public void setVelocitySetpointTesting(double velocity){
         this.PIDControllerA.setReference(velocity, CANSparkMax.ControlType.kVelocity);
         this.PIDControllerB.setReference(velocity, CANSparkMax.ControlType.kVelocity);
     }
