@@ -18,7 +18,7 @@ public class Intake extends SubsystemBase {
         this.intakeMotor = new CANSparkMax(Constants.Intake.kIntakePort, MotorType.kBrushless); //intake motor for roller
         intakeMotor.setIdleMode(IdleMode.kCoast); // This means that the motor running the intake will not brake
         this.retractionPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.Intake.kPistonDeploy, Constants.Intake.kPistonRetract);
-        retractionPiston.set(Value.kReverse);
+        retractionPiston.set(Value.kForward);
     }
 
     public void toggleDeploy() {

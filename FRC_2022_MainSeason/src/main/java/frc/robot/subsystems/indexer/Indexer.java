@@ -40,10 +40,10 @@ public class Indexer extends SubsystemBase {
             return bottomColorSensor.getProximity() >= Constants.Indexer.kProximityLimit;
         });
         // This is an example of command composition.
-        threshColorSensor.whenActive(new RunCommand(this::processBall) // This runs the processBall() function once the color sensor is activated
-            .withInterrupt(this::indexFinished) // Stop this command when the highest ball in the indexer reaches the next color sensor up
-            .andThen(() -> indexerMotor.set(0) // After the command is stopped (i.e. the ball reaches the next sensor) stop the indexer motor
-        ));
+        // threshColorSensor.whenActive(new RunCommand(this::processBall) // This runs the processBall() function once the color sensor is activated
+        //     .withInterrupt(this::indexFinished) // Stop this command when the highest ball in the indexer reaches the next color sensor up
+        //     .andThen(() -> indexerMotor.set(0) // After the command is stopped (i.e. the ball reaches the next sensor) stop the indexer motor
+        // ));
 
         initDefaultCommand();
     }
