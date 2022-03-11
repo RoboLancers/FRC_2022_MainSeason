@@ -45,7 +45,7 @@ public final class Constants {
         public static final class Flywheel {
             public static final double kP = 0.0005;
             public static final double kI = 0.0;
-            public static final double kD = 0.1;
+            public static final double kD = 0.15;
             public static final double kFF = 0.000179;
             public static final double kMaxAbsoluteVoltage = 1.0;
 
@@ -70,7 +70,7 @@ public final class Constants {
         public static final int kRollerPort = 0;
         public static final int kRetractorChannelOne = 0;
         public static final int kRetractorChannelTwo = 0;
-        public static final int kIndexerPort = 12;
+        public static final int kIndexerPort = 11;
         public static final int kPistonDeploy = 0;
         public static final int kPistonRetract = 0;
         public static final double kIntakePower = 0.6;
@@ -89,6 +89,18 @@ public final class Constants {
         public static final double kIndexerOff = 0;
         public static final Color kRedTarget = new Color(1, 0, 0);
         public static final Color kBlueTarget = new Color(0, 0, 1);
+    }
+
+    public static final class RGBConversion {
+        public static final double a = 3.2404542;
+        public static final double b = -1.5371385;
+        public static final double c = -0.4985314;
+        public static final double d = -0.9692660;
+        public static final double e = 1.8760108;
+        public static final double f = 0.0415560;
+        public static final double g = 0.0556434;
+        public static final double h = -0.2040259;
+        public static final double i = 1.0572252;
     }
 
     public static final class AddressableLEDs {

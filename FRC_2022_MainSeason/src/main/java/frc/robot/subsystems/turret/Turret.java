@@ -2,7 +2,6 @@ package frc.robot.subsystems.turret;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.misc.LimeLight;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.TurretPitch;
@@ -37,8 +36,8 @@ public class Turret extends SubsystemBase {
     }
 
     public void setLaunchTrajectory(LaunchTrajectory newLaunchTrajectory){
-        this.launchTrajectory.theta = 90.0 - newLaunchTrajectory.theta;
-        this.launchTrajectory.speed = newLaunchTrajectory.speed * Constants.Turret.Flywheel.kInchesPerSecondToRPM;
+        this.launchTrajectory.theta = newLaunchTrajectory.theta;
+        this.launchTrajectory.speed = newLaunchTrajectory.speed;
     }
 
     public boolean inShootingRange(){

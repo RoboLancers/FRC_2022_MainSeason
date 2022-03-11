@@ -7,8 +7,10 @@ import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 public class TurretFlywheel extends SubsystemBase {
+    public boolean overrideSetpoint = false;
     public double velocitySetpoint = 0;
 
     private CANSparkMax motorA;
@@ -25,6 +27,9 @@ public class TurretFlywheel extends SubsystemBase {
         this.motorB = new CANSparkMax(Constants.Turret.Ports.kFlywheelMotorB, CANSparkMax.MotorType.kBrushless);
         this.encoderA = this.motorA.getEncoder();
         this.encoderB = this.motorB.getEncoder();
+
+        this.motorA.setIdleMode(IdleMode.kCoast);
+        this.motorB.setIdleMode(IdleMode.kCoast);
 
         this.encoderA.setPosition(0.0);
         this.encoderB.setPosition(0.0);
@@ -58,7 +63,9 @@ public class TurretFlywheel extends SubsystemBase {
 
     @Override
     public void periodic(){
-        if(SmartDashboard.getBoolean("Manual Entry", true)){
+        if(this.overrideSetpoint){
+            this.velocitySetpoint = 0;
+        } else if(SmartDashboard.getBoolean("Manual Entry", true)){
             this.velocitySetpoint = SmartDashboard.getNumber("Target Speed", 0);
         }
 

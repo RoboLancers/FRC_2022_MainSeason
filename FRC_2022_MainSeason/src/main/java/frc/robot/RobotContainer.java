@@ -46,7 +46,6 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
-import frc.robot.subsystems.turret.commands.MatchHeadingYaw;
 
 //import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ZeroAndDisable;
@@ -88,7 +87,7 @@ public class RobotContainer {
   private final Camera camera = new Camera();
   private final Turret turret = new Turret();
   private final Climber climber = new Climber();
-  //private final Intake intake = new Intake();
+  // private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   /*   Autonomous Trajectory   */
@@ -105,16 +104,9 @@ public class RobotContainer {
   public RobotContainer() {
     // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
 
-    this.indexer.setDefaultCommand(new RunCommand(
-      () -> {
-        SmartDashboard.putNumber("proximity", indexer.bottomColorSensor.getProximity());
-        SmartDashboard.putNumber("red", indexer.bottomColorSensor.getRed());
-        SmartDashboard.putNumber("blue", indexer.bottomColorSensor.getBlue());
-        SmartDashboard.putNumber("green", indexer.bottomColorSensor.getGreen());
-        SmartDashboard.putNumber("ball number", indexer.ballQueue.size());
-        this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-      }, this.indexer
-    ));
+    indexer.setDefaultCommand(new RunCommand(() -> {
+      indexer.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
+    }, indexer));
 
     // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
     this.drivetrain.setDefaultCommand(
@@ -151,7 +143,11 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings(){
-    driverController.whenPressed(XboxController.Button.A, new TurnToAngle(drivetrain, () -> {
+    driverController.whenPressed(XboxController.Button.A, new InstantCommand(() -> {
+      turret.flywheel.overrideSetpoint = !turret.flywheel.overrideSetpoint;
+    }));
+
+    driverController.whenPressed(XboxController.Button.X, new TurnToAngle(drivetrain, () -> {
       if(SmartDashboard.getBoolean("Manual Entry", true)){
         return drivetrain.getHeading();
       } else {
