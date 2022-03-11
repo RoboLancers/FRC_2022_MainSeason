@@ -93,7 +93,7 @@ public final class Constants {
     public static final class Intake {
         public static final int kRetractorChannelOne = 0;
         public static final int kRetractorChannelTwo = 0;
-        public static final int kIntakePort = 12;
+        public static final int kIntakePort = 11;
         public static final int kPistonDeploy = 6;
         public static final int kPistonRetract = 7;
         public static final double kIntakePower = 0.6;
@@ -103,7 +103,7 @@ public final class Constants {
 
     public static final class Indexer {
         public static final int kProximityLimit = 400;
-        public static final int kIndexerPort = 11;
+        public static final int kIndexerPort = 12;
         public static final double kIndexerSpeed = 0.2;
         public static final int ktopSwitch = 1;
         public static final int kbottomSwitch = 0;

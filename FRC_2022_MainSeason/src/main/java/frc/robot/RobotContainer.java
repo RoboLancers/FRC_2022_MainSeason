@@ -161,11 +161,11 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
     indexer.setDefaultCommand(new RunCommand(() -> {
-      indexer.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
+      indexer.setPower(manipulatorController.getAxisValue(Axis.RIGHT_Y));
     }, indexer));
     
     intake.setDefaultCommand(new RunCommand(() -> {
-      intake.setPower(driverController.getAxisValue(Axis.RIGHT_Y));
+      intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
     }, intake));
     driverController.whenPressed(XboxController.Button.X, (new InstantCommand(() -> {
         intake.toggleDeploy();
