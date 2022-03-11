@@ -9,9 +9,7 @@ public class ZeroAndDisable extends CommandBase {
     public ZeroAndDisable(Turret turret){
         this.turret = turret;
 
-        this.turret.yaw.positionSetpoint = 0;
-        this.turret.pitch.positionSetpoint = 0;
-        this.turret.flywheel.velocitySetpoint = 0;
+        this.turret.resetLaunchTrajectory();
 
         addRequirements(this.turret);
     };
@@ -24,7 +22,6 @@ public class ZeroAndDisable extends CommandBase {
     @Override
     public boolean isFinished(){
         return (
-            this.turret.yaw.isAtZero() &&
             this.turret.pitch.isAtZero() &&
             this.turret.flywheel.isAtRest()
         );

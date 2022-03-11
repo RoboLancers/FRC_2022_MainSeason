@@ -32,6 +32,7 @@ import frc.robot.subsystems.climber.commands.ManualClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
+import frc.robot.subsystems.drivetrain.commands.TurnToAngle;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
 //import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.indexer.Indexer;
@@ -84,9 +85,8 @@ public class RobotContainer {
   private final Pneumatics pneumatics = new Pneumatics();
   private final GearShifter gearShifter = new GearShifter(pneumatics);
   private final Indexer indexer = new Indexer();
-  private final TurretFlywheel turretFlywheel = new TurretFlywheel();
   private final Camera camera = new Camera();
-  private final Turret turret = new Turret(drivetrain);
+  private final Turret turret = new Turret();
   private final Climber climber = new Climber();
   //private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
@@ -141,28 +141,30 @@ public class RobotContainer {
     // camera.initializeFrontCamera();
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
 
+
+    // For tuning
+
+    turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
+
+    SmartDashboard.putBoolean("Manual Entry", SmartDashboard.getBoolean("Manual Entry", true));
+
     SmartDashboard.putNumber("Target Speed", 0.0);
-    // SmartDashboard.putNumber("Target Pitch", 0.0);
+    SmartDashboard.putNumber("Target Pitch", 0.0);
   }
 
-  private void configureButtonBindings() {
-    driverController
-      .whenPressed(XboxController.Button.A, new InstantCommand(() -> {
-        turret.pitch.positionSetpoint = 0;
-        SmartDashboard.putNumber("Target Speed", 0);
-      }))
-      .whenPressed(XboxController.Button.B, new InstantCommand(() -> {
-        turret.flywheel.velocitySetpoint = 40;
-        SmartDashboard.putNumber("Target Speed", 40);
-      }));
-      // .whenPressed(XboxController.Button.X, new InstantCommand(() -> {
-      //   this.turret.pitch.positionSetpoint = 0;
-      //   SmartDashboard.putNumber("Target Pitch", 0);
-      // }))
-      // .whenPressed(XboxController.Button.Y, new InstantCommand(() -> {
-      //   this.turret.pitch.positionSetpoint = 5;
-      //   SmartDashboard.putNumber("Target Pitch", 5);
-      // }));
+  private void configureButtonBindings(){
+    driverController.whenPressed(XboxController.Button.A, new TurnToAngle(drivetrain, () -> {
+      if(SmartDashboard.getBoolean("Manual Entry", true)){
+        return drivetrain.getHeading();
+      } else {
+        if(turret.limelight.hasTarget()){
+          return drivetrain.getHeading() + turret.limelight.yawOffset();
+        } else {
+          // TODO: make a constant for seek adjustment
+          return drivetrain.getHeading() + 2;
+        }
+      }
+    }));
   }
 
   public Command getAutonomousCommand() {
@@ -223,10 +225,11 @@ public class RobotContainer {
 
   public void doSendables(){
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
+    SmartDashboard.putNumber("Actual Pitch", turret.pitch.getPosition());
 
     SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(
-      Constants.Turret.PhysicsInfo.kTurretShotDeltaY,
-      turret.yaw.limelight.pitchOffset() + Constants.Turret.PhysicsInfo.kPitchMountAngle
+      Constants.Turret.PhysicsInfo.kDeltaY,
+      turret.limelight.pitchOffset() + Constants.Turret.PhysicsInfo.kMountAngle
     ));
   }
 }

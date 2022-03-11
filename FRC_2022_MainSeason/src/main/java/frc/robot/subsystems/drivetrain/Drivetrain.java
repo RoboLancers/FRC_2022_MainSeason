@@ -24,7 +24,7 @@ public class Drivetrain extends SubsystemBase{
     private final CANSparkMax leftMotor2 = new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax leftMotor3 = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    private final MotorControllerGroup leftMotors = new MotorControllerGroup(
+    public final MotorControllerGroup leftMotors = new MotorControllerGroup(
         leftMotor1, leftMotor2, leftMotor3
     );
 
@@ -32,7 +32,7 @@ public class Drivetrain extends SubsystemBase{
     private final CANSparkMax rightMotor2 = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax rightMotor3 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    private final MotorControllerGroup rightMotors = new MotorControllerGroup(
+    public final MotorControllerGroup rightMotors = new MotorControllerGroup(
         rightMotor1, rightMotor2, rightMotor3
     );
 

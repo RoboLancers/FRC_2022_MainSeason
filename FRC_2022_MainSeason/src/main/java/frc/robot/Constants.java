@@ -20,7 +20,6 @@ public final class Constants {
 
     public static final class Turret {
         public static final class Ports {
-            // bully electrical to get these
             public static final int kYawMotor = 13;
             public static final int kPitchMotor = 9;
             public static final int kFlywheelMotorA = 7;
@@ -29,65 +28,41 @@ public final class Constants {
             public static final int kPitchLimitSwitch = 2;
         }
 
-        public static final class TunedCoefficients {
-            public static final class YawPID {
-                // PID
-                public static final double kP = 0.0;
-                public static final double kI = 0.0;
-                public static final double kD = 0.0;
-                public static final double kFF = 0.0;
-                public static final double kMaxAbsoluteOutput = 1.0;
-                // logic
-                public static final double kStoppedPosition = 1; // max absolute difference in degrees from 0 where the turret yaw considers itself to be at zero (for resetting turret before climbing)
-                public static final double kErrorThreshold = 1; // max absolute error in degrees where the turret yaw considers itself aligned (for generalized release routine)
-                // being extra careful about not overturning
-                public static final double kMinSafeAngle = -170; // min turn angle in degrees for the turret yaw
-                public static final double kMaxSafeAngle = 170; // max turn angle in degrees for the turret yaw
-                public static final double kSeekAdjustment = 0.5; // magnitude of the change of the angle in the turret yaw in degrees (when looking for limelight)
-            }
+        public static final class Pitch {
+            public static final double kP = 0.75;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final double kFF = 0.0;
+            public static final double kMaxAbsoluteVoltage = 0.25;
 
-            public static final class PitchPID {
-                public static final double kGearRatio = (12 * 464) / (18 * 360);
-                // PID
-                public static final double kP = 0.005;
-                public static final double kI = 0.0;
-                public static final double kD = 0.001;
-                public static final double kFF = 0.028617;
-                public static final double kMaxAbsoluteOutput = 1.0;
-                // logic
-                public static final double kStoppedPosition = 0.5; // max absolute difference in degrees from 0 where the turret pitch considers itself to be at zero (for resetting turret before climbing)
-                public static final double kErrorThreshold = 0.5; // max absolute error in degrees where the turret pitch considers itself to be aligned (for generalized release routine)
-            }
+            public static final double kGearRatio = (12 * 464) / (18 * 360);
 
-            public static final class FlywheelPID {
-                // PID
-                public static double kP = 0.000;
-                public static double kI = 0.0;
-                public static double kD = 0.000;
-                public static double kFF = 0.00005;
-                public static final double kMaxAbsoluteOutput = 1.0;
-                // logic
-                public static final double kStoppedVelocity = 100; // max absolute difference (in rpm?) from 0 where the turret flywheel considers itself to be at rest (for resetting turret before climbing)
-                public static final double kErrorThreshold = 100; // max absolute error (in rpm?) where the turret flywheel considers itself to be up to speed (for generalized release routine)
-                public static final double kMaxVelocity = 10.0; // maximum velocity the flywheel is capable of reaching (requires testing)
-                public static final double kCurrentSpikeThreshold = 0.0; // ! - the threshold for if a current spike should trigger (for generalized release routine)
-                public static final double kPostSpikeDelay = 0.1; // ! - the delay in seconds between a current spike and running progressBall (for generalized release routine)
-            }
+            public static final double kErrorThreshold = 0.1;
+            public static final double kMinSafeAngle = 0;
+            public static final double kMaxSafeAngle = 12.5;
+        }
+
+        public static final class Flywheel {
+            public static final double kP = 0.0005;
+            public static final double kI = 0.0;
+            public static final double kD = 0.1;
+            public static final double kFF = 0.000179;
+            public static final double kMaxAbsoluteVoltage = 1.0;
+
+            public static final double kErrorThreshold = 25;
+            public static final double kInchesPerSecondToRPM = 60 * 4 / Math.PI;
         }
 
         public static final class PhysicsInfo {
-            // ! - requires testing
-            public static final double minLimelightViewableDistance = 20;
-            public static final double maxLimelightViewableDistance = 320.0;
-            // Not necessary if we are using interpolation table
-            public static final double kGravity = -386;
-            public static final double kTurretShotDeltaY = 104 - 34;
+            public static final double kDeltaY = 70;
             public static final double kUpperHubRadius = 24;
-            public static final double kAlpha = 45 * Math.PI / 180;
-            public static final double kSinAlpha = Math.sin(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kCosAlpha = Math.cos(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kTanAlpha = Math.tan(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kPitchMountAngle = 42;
+            
+            public static final double kMinLimelightViewableDistance = 20;
+            public static final double kMaxLimelightViewableDistance = 320.0;
+
+            public static final double kMountAngle = 42;
+
+            // Uses alpha = 60 in base trajectory interpolation table
         }
     }
 

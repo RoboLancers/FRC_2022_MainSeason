@@ -10,7 +10,7 @@ import frc.robot.subsystems.drivetrain.Drivetrain;
 public class TurnToAngle extends PIDCommand {
     private Drivetrain drivetrain;
 
-    TurnToAngle(Drivetrain drivetrain, DoubleSupplier setpoint){
+    public TurnToAngle(Drivetrain drivetrain, DoubleSupplier setpoint){
         super(
             new PIDController(
                 Constants.Drivetrain.kP,

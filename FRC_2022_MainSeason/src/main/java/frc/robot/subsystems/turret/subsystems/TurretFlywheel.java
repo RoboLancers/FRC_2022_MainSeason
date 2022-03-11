@@ -1,5 +1,6 @@
 package frc.robot.subsystems.turret.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -31,29 +32,33 @@ public class TurretFlywheel extends SubsystemBase {
         this.PIDControllerA = this.motorA.getPIDController();
         this.PIDControllerB = this.motorB.getPIDController();
 
-        this.PIDControllerA.setP(Constants.Turret.TunedCoefficients.FlywheelPID.kP);
-        this.PIDControllerA.setI(Constants.Turret.TunedCoefficients.FlywheelPID.kI);
-        this.PIDControllerA.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
-        this.PIDControllerA.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
-        this.PIDControllerA.setFF(Constants.Turret.TunedCoefficients.FlywheelPID.kFF);
+        this.PIDControllerA.setP(Constants.Turret.Flywheel.kP);
+        this.PIDControllerA.setI(Constants.Turret.Flywheel.kI);
+        this.PIDControllerA.setD(Constants.Turret.Flywheel.kD);
+        this.PIDControllerA.setD(Constants.Turret.Flywheel.kD);
+        this.PIDControllerA.setFF(Constants.Turret.Flywheel.kFF);
         this.PIDControllerA.setOutputRange(
-            -Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput,
-            Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput
+            -Constants.Turret.Flywheel.kMaxAbsoluteVoltage,
+            Constants.Turret.Flywheel.kMaxAbsoluteVoltage
         );
 
-        this.PIDControllerB.setP(Constants.Turret.TunedCoefficients.FlywheelPID.kP);
-        this.PIDControllerB.setI(Constants.Turret.TunedCoefficients.FlywheelPID.kI);
-        this.PIDControllerB.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
-        this.PIDControllerB.setD(Constants.Turret.TunedCoefficients.FlywheelPID.kD);
-        this.PIDControllerB.setFF(Constants.Turret.TunedCoefficients.FlywheelPID.kFF);
+        this.PIDControllerB.setP(Constants.Turret.Flywheel.kP);
+        this.PIDControllerB.setI(Constants.Turret.Flywheel.kI);
+        this.PIDControllerB.setD(Constants.Turret.Flywheel.kD);
+        this.PIDControllerB.setD(Constants.Turret.Flywheel.kD);
+        this.PIDControllerB.setFF(Constants.Turret.Flywheel.kFF);
         this.PIDControllerB.setOutputRange(
-            -Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput,
-            Constants.Turret.TunedCoefficients.FlywheelPID.kMaxAbsoluteOutput
+            -Constants.Turret.Flywheel.kMaxAbsoluteVoltage,
+            Constants.Turret.Flywheel.kMaxAbsoluteVoltage
         );
     }
 
     @Override
     public void periodic(){
+        if(SmartDashboard.getBoolean("Manual Entry", true)){
+            this.velocitySetpoint = SmartDashboard.getNumber("Target Speed", 0);
+        }
+
         this.PIDControllerA.setReference(this.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
         this.PIDControllerB.setReference(this.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
     }
@@ -71,10 +76,10 @@ public class TurretFlywheel extends SubsystemBase {
     }
 
     public boolean isAtRest(){
-        return this.getVelocity() < Constants.Turret.TunedCoefficients.FlywheelPID.kStoppedVelocity;
+        return Math.abs(this.getVelocity()) < Constants.Turret.Flywheel.kErrorThreshold;
     }
 
-    public boolean isUpToSpeed(double launchTrajectorySpeed){
-        return Math.abs(this.getVelocity() - launchTrajectorySpeed) < Constants.Turret.TunedCoefficients.FlywheelPID.kErrorThreshold;
+    public boolean isUpToSpeed(){
+        return Math.abs(this.getVelocity() - this.velocitySetpoint) < Constants.Turret.Flywheel.kErrorThreshold;
     }
 }

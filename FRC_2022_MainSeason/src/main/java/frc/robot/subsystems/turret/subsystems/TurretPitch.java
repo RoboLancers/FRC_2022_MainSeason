@@ -6,10 +6,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 public class TurretPitch extends SubsystemBase {
     public double positionSetpoint = 0;
@@ -23,21 +25,23 @@ public class TurretPitch extends SubsystemBase {
 
     public TurretPitch(){
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
+        this.motor.setSoftLimit(SoftLimitDirection.kReverse, (float) Constants.Turret.Pitch.kMinSafeAngle);
+        this.motor.setSoftLimit(SoftLimitDirection.kForward, (float) Constants.Turret.Pitch.kMaxSafeAngle);
+        this.motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+        this.motor.enableSoftLimit(SoftLimitDirection.kForward, true);
 
         this.encoder = this.motor.getEncoder();
-        this.encoder.setPositionConversionFactor(Constants.Turret.TunedCoefficients.PitchPID.kGearRatio);
+        this.encoder.setPositionConversionFactor(Constants.Turret.Pitch.kGearRatio);
         this.encoder.setPosition(0.0);
 
         this.PIDController = this.motor.getPIDController();
-
-        this.PIDController.setP(Constants.Turret.TunedCoefficients.PitchPID.kP);
-        this.PIDController.setI(Constants.Turret.TunedCoefficients.PitchPID.kI);
-        this.PIDController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
-        this.PIDController.setD(Constants.Turret.TunedCoefficients.PitchPID.kD);
-        this.PIDController.setFF(Constants.Turret.TunedCoefficients.PitchPID.kFF);
+        this.PIDController.setP(Constants.Turret.Pitch.kP);
+        this.PIDController.setI(Constants.Turret.Pitch.kI);
+        this.PIDController.setD(Constants.Turret.Pitch.kD);
+        this.PIDController.setFF(Constants.Turret.Pitch.kFF);
         this.PIDController.setOutputRange(
-            0,
-            Constants.Turret.TunedCoefficients.PitchPID.kMaxAbsoluteOutput
+            -Constants.Turret.Pitch.kMaxAbsoluteVoltage,
+            Constants.Turret.Pitch.kMaxAbsoluteVoltage
         );
 
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kPitchLimitSwitch);
@@ -49,6 +53,10 @@ public class TurretPitch extends SubsystemBase {
 
     @Override
     public void periodic(){
+        if(SmartDashboard.getBoolean("Manual Entry", true)){
+            this.positionSetpoint = SmartDashboard.getNumber("Target Pitch", 0);
+        }
+
         this.PIDController.setReference(this.positionSetpoint, CANSparkMax.ControlType.kPosition);
     }
 
@@ -57,10 +65,10 @@ public class TurretPitch extends SubsystemBase {
     }
 
     public boolean isAtZero(){
-        return Math.abs(this.getPosition()) < Constants.Turret.TunedCoefficients.PitchPID.kStoppedPosition;
+        return Math.abs(this.getPosition()) < Constants.Turret.Pitch.kErrorThreshold;
     }
 
-    public boolean isAligned(double launchTrajectoryTheta){
-        return Math.abs(this.getPosition() + Constants.Turret.PhysicsInfo.kPitchMountAngle - launchTrajectoryTheta) < Constants.Turret.TunedCoefficients.PitchPID.kErrorThreshold;
+    public boolean isAligned(){
+        return Math.abs(this.getPosition() - this.positionSetpoint) < Constants.Turret.Pitch.kErrorThreshold;
     }
 }

@@ -1,42 +1,59 @@
 package frc.robot.subsystems.turret;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.misc.LimeLight;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.TurretPitch;
-import frc.robot.subsystems.turret.subsystems.TurretYaw;
 
 public class Turret extends SubsystemBase {
     public boolean inHangMode = false;
 
-    public TurretYaw yaw;
+    public LimeLight limelight;
+
     public TurretPitch pitch;
     public TurretFlywheel flywheel;
 
-    public LaunchTrajectory launchTrajectory;
+    private LaunchTrajectory launchTrajectory;
 
-    public Turret(Drivetrain driveTrain){
-        this.yaw = new TurretYaw(this, driveTrain);
+    public Turret(){
+        this.limelight = new LimeLight();
         this.pitch = new TurretPitch();
         this.flywheel = new TurretFlywheel();
     }
 
-    public void adjust(){
-        // this.pitch.positionSetpoint = this.launchTrajectory.theta;
-        // this.flywheel.velocitySetpoint = this.launchTrajectory.speed;
+    @Override
+    public void periodic(){
+        if(!SmartDashboard.getBoolean("Manual Entry", true)){
+            this.pitch.positionSetpoint = this.launchTrajectory.theta;
+            this.flywheel.velocitySetpoint = this.launchTrajectory.speed;
+        }
+        SmartDashboard.putBoolean("Ready To Shoot", this.isReadyToShoot());
     }
 
-    public boolean inShootingRange()
-    {
-        return this.flywheel.getVelocity() < Constants.Turret.TunedCoefficients.FlywheelPID.kMaxVelocity;
-    };
+    public void resetLaunchTrajectory(){
+        this.launchTrajectory = new LaunchTrajectory(0.0, 0.0);
+    }
+
+    public void setLaunchTrajectory(LaunchTrajectory newLaunchTrajectory){
+        this.launchTrajectory.theta = 90.0 - newLaunchTrajectory.theta;
+        this.launchTrajectory.speed = newLaunchTrajectory.speed * Constants.Turret.Flywheel.kInchesPerSecondToRPM;
+    }
+
+    public boolean inShootingRange(){
+        // TODO: measure actual max distance the flywheel can reach
+        return true;
+    }
 
     public boolean isReadyToShoot(){
         return (
-            this.yaw.isAligned() &&
-            this.pitch.isAligned(this.launchTrajectory.theta) &&
-            this.flywheel.isUpToSpeed(this.launchTrajectory.speed)
+            // TODO: make a constant for yaw error threshold
+            this.limelight.hasTarget() &&
+            Math.abs(this.limelight.yawOffset()) < 0.25 &&
+
+            this.pitch.isAligned() &&
+            this.flywheel.isUpToSpeed()
         );
     };
 }
