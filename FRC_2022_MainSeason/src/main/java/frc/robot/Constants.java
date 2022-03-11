@@ -93,7 +93,7 @@ public final class Constants {
     public static final class Intake {
         public static final int kRetractorChannelOne = 0;
         public static final int kRetractorChannelTwo = 0;
-        public static final int kIntakePort = 11;
+        public static final int kIntakePort = 13;
         public static final int kPistonDeploy = 6;
         public static final int kPistonRetract = 7;
         public static final double kIntakePower = 0.6;

@@ -164,8 +164,9 @@ public class RobotContainer {
       indexer.setPower(manipulatorController.getAxisValue(Axis.RIGHT_Y));
     }, indexer));
     
-    intake.setDefaultCommand(new RunCommand(() -> {
+    intake.setDefaultCommand(new RunCommand(() -> { if (intake.retractionPiston.get() == Value.kReverse) {
       intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
+    }
     }, intake));
     driverController.whenPressed(XboxController.Button.X, (new InstantCommand(() -> {
         intake.toggleDeploy();
