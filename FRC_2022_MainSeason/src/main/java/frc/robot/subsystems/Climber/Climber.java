@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Climber extends SubsystemBase{
     public CANSparkMax climberMotor1;
     public CANSparkMax climberMotor2;
-    public static RelativeEncoder climbEncoder1;
+    public RelativeEncoder climbEncoder1;
     public RelativeEncoder climbEncoder2;
     public boolean isEnabled;
     
@@ -24,6 +24,8 @@ public class Climber extends SubsystemBase{
         climbEncoder2.setPosition(0);
         climberMotor1.setIdleMode(IdleMode.kBrake);
         climberMotor2.setIdleMode(IdleMode.kBrake);
+        climberMotor1.setInverted(true);
+        climberMotor2.setInverted(false);
     }
 
     public void set(double power){
