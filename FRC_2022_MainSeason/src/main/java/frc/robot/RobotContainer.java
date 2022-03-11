@@ -115,8 +115,6 @@ public class RobotContainer {
         this.indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
       }, this.indexer
     ));
-    
-    this.configureButtonBindings();
 
     // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
     this.drivetrain.setDefaultCommand(
