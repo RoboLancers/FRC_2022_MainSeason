@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class Intake extends SubsystemBase {
     public CANSparkMax intakeMotor; // for roller
     public DoubleSolenoid retractionPiston; // for pistons
-    public boolean intakeOn = false;
 
     public Intake() {
         this.intakeMotor = new CANSparkMax(Constants.Intake.kIntakePort, MotorType.kBrushless); //intake motor for roller
@@ -26,14 +25,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void toggleIntake() {
-        if (intakeOn) {
-            intakeMotor.set(0);
-            intakeOn = false;
-        }
-        else {
-            intakeMotor.set(Constants.Intake.kIntakePower);
-            intakeOn = true;
-        }
+        intakeMotor.set(Constants.Intake.kIntakePower);
     }
 
     public Value isIntakeDown() {
