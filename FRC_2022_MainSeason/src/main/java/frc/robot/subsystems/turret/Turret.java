@@ -6,19 +6,19 @@ import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.TurretPitch;
-import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
+// import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
 
 public class Turret extends SubsystemBase {
     public boolean inHangMode = false;
 
-    public TurretYaw yaw;
+    // public TurretYaw yaw;
     public TurretPitch pitch;
     public TurretFlywheel flywheel;
 
     public LaunchTrajectory launchTrajectory;
 
     public Turret(Drivetrain driveTrain){
-        this.yaw = new TurretYaw(this, driveTrain);
+        // this.yaw = new TurretYaw(this, driveTrain);
         this.pitch = new TurretPitch();
         this.flywheel = new TurretFlywheel();
     }
@@ -35,7 +35,7 @@ public class Turret extends SubsystemBase {
 
     public boolean isReadyToShoot(){
         return (
-            this.yaw.isAligned() &&
+            // this.yaw.isAligned() &&
             this.pitch.isAligned(this.launchTrajectory.theta) &&
             this.flywheel.isUpToSpeed(this.launchTrajectory.speed)
         );
