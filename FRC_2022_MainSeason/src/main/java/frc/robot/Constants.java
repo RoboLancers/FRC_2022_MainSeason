@@ -28,6 +28,16 @@ public final class Constants {
             public static final int kPitchLimitSwitch = 2;
         }
 
+        public static final class Yaw {
+            // Used in drivetrain, not actual turret yaw motor
+            public static final double kP = 0.0;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+
+            public static final double kErrorThreshold = 0.1;
+            public static final double kSeekAdjustment = 1;
+        }
+
         public static final class Pitch {
             public static final double kP = 0.75;
             public static final double kI = 0.0;
@@ -38,6 +48,7 @@ public final class Constants {
             public static final double kGearRatio = (12 * 464) / (18 * 360);
 
             public static final double kErrorThreshold = 0.1;
+            public static final double kZeroAdjustment = 0.1;
             public static final double kMinSafeAngle = 0;
             public static final double kMaxSafeAngle = 12.5;
         }
@@ -50,19 +61,16 @@ public final class Constants {
             public static final double kMaxAbsoluteVoltage = 1.0;
 
             public static final double kErrorThreshold = 25;
-            public static final double kInchesPerSecondToRPM = 60 * 4 / Math.PI;
         }
 
-        public static final class PhysicsInfo {
+        public static final class Physics {
+            public static final double kAlpha = 60;
             public static final double kDeltaY = 70;
+
             public static final double kUpperHubRadius = 24;
-            
-            public static final double kMinLimelightViewableDistance = 20;
-            public static final double kMaxLimelightViewableDistance = 320.0;
+            public static final double kMaxShootDistance = 200;
 
             public static final double kMountAngle = 42;
-
-            // Uses alpha = 60 in base trajectory interpolation table
         }
     }
 

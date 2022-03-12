@@ -48,7 +48,7 @@ import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 
 //import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
-import frc.robot.subsystems.turret.commands.ZeroAndDisable;
+import frc.robot.subsystems.turret.commands.ZeroPitch;
 // import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.NotifierCommand;
@@ -63,15 +63,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
-import frc.robot.subsystems.climber.commands.ManualClimber;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.util.XboxController;
-import frc.robot.util.XboxController.Axis;
 
 public class RobotContainer {
-  // private String trajectoryJSON = "paths/MyPath.wpilib.json";
   private RobotContainer m_robotContainer;
   private XboxController xboxController = new XboxController(0);
 
@@ -97,17 +90,8 @@ public class RobotContainer {
   private PIDController rightPID = new PIDController(Constants.Trajectory.kP, 0, 0);
   private PIDController leftPID = new PIDController(Constants.Trajectory.kP, 0, 0);
   private Field2d m_field = new Field2d();
-  
-
-  //private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
 
   public RobotContainer() {
-    // this.pneumatics.setDefaultCommand(new UseCompressor(pneumatics));
-
-    indexer.setDefaultCommand(new RunCommand(() -> {
-      indexer.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
-    }, indexer));
-
     // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
     this.drivetrain.setDefaultCommand(
       new RunCommand(
@@ -118,21 +102,15 @@ public class RobotContainer {
       )
     );
 
-    //m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
-    
-    //turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
-    //turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
-    // m_AddressableLEDs.setDefaultCommand(new UpdateLights(turret, climber, indexer));
-    
-    // turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
-    // turret.yaw.setDefaultCommand(new MatchHeadingYaw(turret.yaw));
+    indexer.setDefaultCommand(new RunCommand(() -> {
+      indexer.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
+    }, indexer));
 
-    this.configureButtonBindings();
-    // camera.initializeFrontCamera();
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
 
+    this.configureButtonBindings();
 
-    // For tuning
+    // In testing
 
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
 
@@ -144,8 +122,11 @@ public class RobotContainer {
 
   private void configureButtonBindings(){
     driverController.whenPressed(XboxController.Button.A, new InstantCommand(() -> {
-      turret.flywheel.overrideSetpoint = !turret.flywheel.overrideSetpoint;
+      SmartDashboard.putNumber("Target Speed", 0.0);
+      SmartDashboard.putNumber("Target Pitch", 0.0);
     }));
+
+    driverController.whenPressed(XboxController.Button.B, new ZeroPitch(turret));
 
     driverController.whenPressed(XboxController.Button.X, new TurnToAngle(drivetrain, () -> {
       if(SmartDashboard.getBoolean("Manual Entry", true)){
@@ -154,8 +135,7 @@ public class RobotContainer {
         if(turret.limelight.hasTarget()){
           return drivetrain.getHeading() + turret.limelight.yawOffset();
         } else {
-          // TODO: make a constant for seek adjustment
-          return drivetrain.getHeading() + 2;
+          return drivetrain.getHeading() + Constants.Turret.Yaw.kSeekAdjustment;
         }
       }
     }));
@@ -221,10 +201,7 @@ public class RobotContainer {
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
     SmartDashboard.putNumber("Actual Pitch", turret.pitch.getPosition());
 
-    SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(
-      Constants.Turret.PhysicsInfo.kDeltaY,
-      turret.limelight.pitchOffset() + Constants.Turret.PhysicsInfo.kMountAngle
-    ));
+    SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(turret.limelight.pitchOffset()));
   }
 }
 

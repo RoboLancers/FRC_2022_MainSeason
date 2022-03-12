@@ -1,6 +1,5 @@
 package frc.robot.subsystems.turret.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -10,7 +9,6 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 public class TurretFlywheel extends SubsystemBase {
-    public boolean overrideSetpoint = false;
     public double velocitySetpoint = 0;
 
     private CANSparkMax motorA;
@@ -63,12 +61,6 @@ public class TurretFlywheel extends SubsystemBase {
 
     @Override
     public void periodic(){
-        if(this.overrideSetpoint){
-            this.velocitySetpoint = 0;
-        } else if(SmartDashboard.getBoolean("Manual Entry", true)){
-            this.velocitySetpoint = SmartDashboard.getNumber("Target Speed", 0);
-        }
-
         this.PIDControllerA.setReference(this.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
         this.PIDControllerB.setReference(this.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
     }

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -16,7 +15,7 @@ import com.revrobotics.CANSparkMax.SoftLimitDirection;
 public class TurretPitch extends SubsystemBase {
     public double positionSetpoint = 0;
 
-    private CANSparkMax motor;
+    public CANSparkMax motor;
     private RelativeEncoder encoder;
     private SparkMaxPIDController PIDController;
 
@@ -44,6 +43,7 @@ public class TurretPitch extends SubsystemBase {
             Constants.Turret.Pitch.kMaxAbsoluteVoltage
         );
 
+        // this is inverted?
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kPitchLimitSwitch);
         this.homingTrigger = new Trigger(() -> { return !homingSwitch.get(); });
         this.homingTrigger.whenActive(new RunCommand(() -> {
@@ -53,10 +53,6 @@ public class TurretPitch extends SubsystemBase {
 
     @Override
     public void periodic(){
-        if(SmartDashboard.getBoolean("Manual Entry", true)){
-            this.positionSetpoint = SmartDashboard.getNumber("Target Pitch", 0);
-        }
-
         this.PIDController.setReference(this.positionSetpoint, CANSparkMax.ControlType.kPosition);
     }
 

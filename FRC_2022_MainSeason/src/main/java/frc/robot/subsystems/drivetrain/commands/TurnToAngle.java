@@ -13,26 +13,26 @@ public class TurnToAngle extends PIDCommand {
     public TurnToAngle(Drivetrain drivetrain, DoubleSupplier setpoint){
         super(
             new PIDController(
-                Constants.Drivetrain.kP,
-                Constants.Drivetrain.kI,
-                Constants.Drivetrain.kD
+                Constants.Turret.Yaw.kP,
+                Constants.Turret.Yaw.kI,
+                Constants.Turret.Yaw.kD
             ),
             drivetrain::getHeading,
             setpoint,
             (outputPower) -> {
-                // drivetrain.leftMotors.set(outputPower);
-                // drivetrain.rightMotors.set(-outputPower);
+                drivetrain.leftMotors.set(outputPower);
+                drivetrain.rightMotors.set(-outputPower);
             }
         );
-        this.m_controller.setTolerance(Constants.Drivetrain.kMaxAbsoluteError);
+        this.m_controller.setTolerance(Constants.Turret.Yaw.kErrorThreshold);
         
         this.drivetrain = drivetrain;
     }
 
     @Override
     public void end(boolean interrupted){
-        // drivetrain.leftMotors.set(0);
-        // drivetrain.rightMotors.set(0);
+        drivetrain.leftMotors.set(0);
+        drivetrain.rightMotors.set(0);
     }
 
     @Override
