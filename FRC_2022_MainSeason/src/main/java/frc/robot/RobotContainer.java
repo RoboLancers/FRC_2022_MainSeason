@@ -128,20 +128,21 @@ public class RobotContainer {
 
     driverController.whenPressed(XboxController.Button.B, new ZeroPitch(turret));
 
-    driverController.whenPressed(XboxController.Button.X, new TurnToAngle(drivetrain, () -> {
-      if(SmartDashboard.getBoolean("Manual Entry", true)){
-        return drivetrain.getHeading();
-      } else {
-        if(turret.limelight.hasTarget()){
-          return drivetrain.getHeading() + turret.limelight.yawOffset();
-        } else {
-          return drivetrain.getHeading() + Constants.Turret.Yaw.kSeekAdjustment;
-        }
-      }
-    }));
+    // driverController.whenPressed(XboxController.Button.X, new TurnToAngle(drivetrain, () -> {
+    //   if(SmartDashboard.getBoolean("Manual Entry", true)){
+    //     return drivetrain.getHeading();
+    //   } else {
+    //     if(turret.limelight.hasTarget()){
+    //       return drivetrain.getHeading() + turret.limelight.yawOffset();
+    //     } else {
+    //       return drivetrain.getHeading() + Constants.Turret.Yaw.kSeekAdjustment;
+    //     }
+    //   }
+    // }));
 
     driverController.whileHeld(XboxController.Button.Y, new InstantCommand(() -> {
-      this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(Constants.Turret.Physics.kUpperHubRadius);
+      this.turret.flywheel.velocitySetpoint = 3700;
+      this.turret.pitch.positionSetpoint = 3.5;
     }));
   }
 

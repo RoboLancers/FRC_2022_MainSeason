@@ -97,7 +97,7 @@ public class LaunchTrajectory {
             }
         }
 
-        private Entry entries[];
+        public Entry entries[];
 
         public InterpolationTable(Entry... entries){
             this.entries = entries;
