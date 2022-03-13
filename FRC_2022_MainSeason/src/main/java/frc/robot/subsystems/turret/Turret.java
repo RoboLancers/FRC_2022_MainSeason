@@ -15,7 +15,7 @@ public class Turret extends SubsystemBase {
     public TurretPitch pitch;
     public TurretFlywheel flywheel;
 
-    public LaunchTrajectory launchTrajectory;
+    public LaunchTrajectory launchTrajectory = new LaunchTrajectory(0, 0);
 
     public Turret(){
         this.limelight = new LimeLight();
@@ -25,7 +25,7 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic(){
-        if(SmartDashboard.getBoolean("Manual Entry", true)){
+        if(SmartDashboard.getBoolean("Manual Entry", false)){
             this.pitch.positionSetpoint = SmartDashboard.getNumber("Target Pitch", 0);
             this.flywheel.velocitySetpoint = SmartDashboard.getNumber("Target Speed", 0);
         } else {

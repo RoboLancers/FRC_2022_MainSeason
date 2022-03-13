@@ -20,13 +20,14 @@ public class ActiveLaunchTrajectory extends CommandBase {
             this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
             return;
         }
-        double distance;
         if(this.turret.limelight.hasTarget()){
-            distance = LaunchTrajectory.estimateDistance(this.turret.limelight.pitchOffset());
+            this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(
+                LaunchTrajectory.estimateDistance(this.turret.limelight.pitchOffset())
+            );
         } else {
-            distance = Constants.Turret.Physics.kUpperHubRadius;
-        };
-        this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(distance);
+            // TODO: use odemetry to rev in this situation
+            this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
+        }
     }
 
     @Override

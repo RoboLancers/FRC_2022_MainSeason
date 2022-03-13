@@ -114,7 +114,7 @@ public class RobotContainer {
 
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
 
-    SmartDashboard.putBoolean("Manual Entry", SmartDashboard.getBoolean("Manual Entry", true));
+    SmartDashboard.putBoolean("Manual Entry", SmartDashboard.getBoolean("Manual Entry", false));
 
     SmartDashboard.putNumber("Target Speed", 0.0);
     SmartDashboard.putNumber("Target Pitch", 0.0);
@@ -138,6 +138,10 @@ public class RobotContainer {
           return drivetrain.getHeading() + Constants.Turret.Yaw.kSeekAdjustment;
         }
       }
+    }));
+
+    driverController.whileHeld(XboxController.Button.Y, new InstantCommand(() -> {
+      this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(Constants.Turret.Physics.kUpperHubRadius);
     }));
   }
 
