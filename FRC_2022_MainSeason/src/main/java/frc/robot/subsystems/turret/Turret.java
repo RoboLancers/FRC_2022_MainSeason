@@ -25,13 +25,13 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic(){
-        if(SmartDashboard.getBoolean("Manual Entry", false)){
-            this.pitch.positionSetpoint = SmartDashboard.getNumber("Target Pitch", 0);
-            this.flywheel.velocitySetpoint = SmartDashboard.getNumber("Target Speed", 0);
-        } else {
+        // if(SmartDashboard.getBoolean("Manual Entry", false)){
+        //     this.pitch.positionSetpoint = SmartDashboard.getNumber("Target Pitch", 0);
+        //     this.flywheel.velocitySetpoint = SmartDashboard.getNumber("Target Speed", 0);
+        // } else {
             this.pitch.positionSetpoint = this.launchTrajectory.theta;
             this.flywheel.velocitySetpoint = this.launchTrajectory.speed;
-        }
+        // }
         SmartDashboard.putBoolean("Ready To Shoot", this.isReadyToShoot());
     }
 

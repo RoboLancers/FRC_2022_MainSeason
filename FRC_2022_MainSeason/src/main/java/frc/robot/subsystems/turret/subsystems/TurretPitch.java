@@ -13,10 +13,12 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 public class TurretPitch extends SubsystemBase {
+    public boolean attemptingToZero = true;
+
     public double positionSetpoint = 0;
 
     public CANSparkMax motor;
-    private RelativeEncoder encoder;
+    public RelativeEncoder encoder;
     private SparkMaxPIDController PIDController;
 
     public DigitalInput homingSwitch;
@@ -53,7 +55,15 @@ public class TurretPitch extends SubsystemBase {
 
     @Override
     public void periodic(){
-        this.PIDController.setReference(this.positionSetpoint, CANSparkMax.ControlType.kPosition);
+        if(this.attemptingToZero){
+            if(this.homingTrigger.get()){
+                this.motor.set(-0.1);
+            } else {
+                this.attemptingToZero = false;
+            }
+        } else {
+            this.PIDController.setReference(this.positionSetpoint, CANSparkMax.ControlType.kPosition);
+        }
     }
 
     public double getPosition(){

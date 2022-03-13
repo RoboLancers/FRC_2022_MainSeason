@@ -24,8 +24,8 @@ public class TurretFlywheel extends SubsystemBase {
         this.motorA = new CANSparkMax(Constants.Turret.Ports.kFlywheelMotorA, CANSparkMax.MotorType.kBrushless);
         this.motorB = new CANSparkMax(Constants.Turret.Ports.kFlywheelMotorB, CANSparkMax.MotorType.kBrushless);
 
-        this.motorA.setInverted(true);
-        this.motorB.setInverted(false);
+        this.motorA.setInverted(false);
+        this.motorB.setInverted(true);
         
         this.encoderA = this.motorA.getEncoder();
         this.encoderB = this.motorB.getEncoder();
@@ -67,6 +67,10 @@ public class TurretFlywheel extends SubsystemBase {
     public void periodic(){
         this.PIDControllerA.setReference(this.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
         this.PIDControllerB.setReference(this.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
+        if(this.velocitySetpoint == 0){
+            this.motorA.set(0);
+            this.motorB.set(0);
+        }
     }
 
     public double getVelocity(){
