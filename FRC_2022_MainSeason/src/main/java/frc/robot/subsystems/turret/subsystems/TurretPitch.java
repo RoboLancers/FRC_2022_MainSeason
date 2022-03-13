@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -28,8 +29,9 @@ public class TurretPitch extends SubsystemBase {
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
         this.motor.setSoftLimit(SoftLimitDirection.kReverse, (float) Constants.Turret.Pitch.kMinSafeAngle);
         this.motor.setSoftLimit(SoftLimitDirection.kForward, (float) Constants.Turret.Pitch.kMaxSafeAngle);
-        this.motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-        this.motor.enableSoftLimit(SoftLimitDirection.kForward, true);
+
+        this.motor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+                this.motor.enableSoftLimit(SoftLimitDirection.kForward, false);
 
         this.encoder = this.motor.getEncoder();
         this.encoder.setPositionConversionFactor(Constants.Turret.Pitch.kGearRatio);
@@ -55,6 +57,7 @@ public class TurretPitch extends SubsystemBase {
 
     @Override
     public void periodic(){
+        SmartDashboard.putBoolean("Pitch Homing Switch", this.homingSwitch.get());
         if(this.attemptingToZero){
             if(this.homingTrigger.get()){
                 this.motor.set(-0.1);

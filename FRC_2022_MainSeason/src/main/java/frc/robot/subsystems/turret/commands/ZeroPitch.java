@@ -15,7 +15,7 @@ public class ZeroPitch extends CommandBase {
 
     @Override
     public void execute(){
-        this.turret.pitch.positionSetpoint = this.turret.pitch.positionSetpoint - Constants.Turret.Pitch.kZeroAdjustment;
+        this.turret.pitch.motor.set(-0.1);
     }
 
     @Override

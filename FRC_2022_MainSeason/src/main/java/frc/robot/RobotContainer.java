@@ -120,12 +120,15 @@ public class RobotContainer {
 
     SmartDashboard.putBoolean("Manual Entry", SmartDashboard.getBoolean("Manual Entry", false));
 
+    // Low Hub: 1500, 1.5
     SmartDashboard.putNumber("Shoot Speed", SmartDashboard.getNumber("Shoot Speed", 3700));
     SmartDashboard.putNumber("Shoot Angle", SmartDashboard.getNumber("Shoot Angle", 3));
   }
 
   private void configureButtonBindings(){
     manipulatorController.whileHeld(XboxController.Trigger.RIGHT_TRIGGER, new BasicShoot(turret));
+
+    manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
   }
 
   public Command getAutonomousCommand() {

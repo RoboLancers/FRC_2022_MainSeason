@@ -18,9 +18,6 @@ public class ActiveLaunchTrajectory extends CommandBase {
     @Override
     public void execute(){
         this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
-        if(this.turret.pitch.homingSwitch.get()){
-            this.turret.pitch.motor.set(-0.3);
-        }
         // if(this.turret.inHangMode){
         //     this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
         //     return;
