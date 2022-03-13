@@ -18,6 +18,8 @@ public class Climber extends SubsystemBase{
         climberMotor2 = new CANSparkMax(Constants.Climber.CLIMBER_PORT2, CANSparkMax.MotorType.kBrushless);
         climbEncoder1 = climberMotor1.getEncoder();
         climbEncoder2 = climberMotor2.getEncoder();
+        climberMotor2.setInverted(true);
+        climberMotor1.setInverted(false);
         climbEncoder1.setPositionConversionFactor(Constants.Climber.kRotationToInch);
         climbEncoder2.setPositionConversionFactor(Constants.Climber.kRotationToInch);
         climbEncoder1.setPosition(0);
