@@ -160,18 +160,44 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
     // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
+
     indexer.setDefaultCommand(new RunCommand(() -> {
-      indexer.setPower(manipulatorController.getAxisValue(Axis.RIGHT_Y));
-    }, indexer));
+     indexer.setPower(0); 
+    }));
+
+    manipulatorController.whenPressed(XboxController.Button.RIGHT_BUMPER, (new InstantCommand(() -> {
+      indexer.setPower((Constants.Indexer.kIndexerSpeed));
+    }, indexer)));
+
+    manipulatorController.whenPressed(XboxController.Button.X, (new InstantCommand(() -> {
+      indexer.setPower((0 - Constants.Indexer.kIndexerSpeed));
+    }, indexer)));
     
-    intake.setDefaultCommand(new RunCommand(() -> { if (intake.retractionPiston.get() == Value.kReverse) {
-      intake.setPower(driverController.getAxisValue(Axis.RIGHT_TRIGGER));
-    }
-    }, intake));
+    intake.setDefaultCommand(new RunCommand(() -> {
+     intake.setPower(0);
+    }));
+
     driverController.whenPressed(XboxController.Button.X, (new InstantCommand(() -> {
         intake.toggleDeploy();
         System.out.println("Toggled");
       }, intake)));
+
+      manipulatorController.whenPressed(XboxController.Button.X, (new InstantCommand(() -> {
+        intake.toggleDeploy();
+        System.out.println("Toggled");
+      }, intake)));
+    
+    driverController.whenPressed(XboxController.Button.Y, new InstantCommand(() -> {
+      if (intake.retractionPiston.get() == Value.kReverse) {
+        intake.setPower(Constants.Intake.kIntakePower);
+      }  
+    }, intake));
+
+    manipulatorController.whenPressed(XboxController.Button.Y, new InstantCommand(() -> {
+      if (intake.retractionPiston.get() == Value.kReverse) {
+        intake.setPower(Constants.Intake.kIntakePower);
+      }  
+    }, intake));
 
     // Trigger threshColorSensor = new Trigger(() -> {
     //   the condition that triggers the command
