@@ -14,8 +14,6 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 public class TurretPitch extends SubsystemBase {
-    public boolean attemptingToZero = true;
-
     public double positionSetpoint = 0;
 
     public CANSparkMax motor;
@@ -23,15 +21,11 @@ public class TurretPitch extends SubsystemBase {
     private SparkMaxPIDController PIDController;
 
     public DigitalInput homingSwitch;
-    private Trigger homingTrigger;
 
     public TurretPitch(){
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
         this.motor.setSoftLimit(SoftLimitDirection.kReverse, (float) Constants.Turret.Pitch.kMinSafeAngle);
         this.motor.setSoftLimit(SoftLimitDirection.kForward, (float) Constants.Turret.Pitch.kMaxSafeAngle);
-
-        this.motor.enableSoftLimit(SoftLimitDirection.kReverse, false);
-                this.motor.enableSoftLimit(SoftLimitDirection.kForward, false);
 
         this.encoder = this.motor.getEncoder();
         this.encoder.setPositionConversionFactor(Constants.Turret.Pitch.kGearRatio);
@@ -49,22 +43,20 @@ public class TurretPitch extends SubsystemBase {
 
         // this is inverted?
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kPitchLimitSwitch);
-        this.homingTrigger = new Trigger(() -> { return !homingSwitch.get(); });
-        this.homingTrigger.whenActive(new RunCommand(() -> {
-            this.encoder.setPosition(0);
-        }, this));
     }
 
     @Override
     public void periodic(){
-        SmartDashboard.putBoolean("Pitch Homing Switch", this.homingSwitch.get());
-        if(this.attemptingToZero){
-            if(this.homingTrigger.get()){
-                this.motor.set(-0.1);
-            } else {
-                this.attemptingToZero = false;
-            }
+        if(!this.homingSwitch.get()){
+            this.encoder.setPosition(0);
+        }
+        if(this.positionSetpoint == 0 && this.homingSwitch.get()){
+            this.motor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+            this.motor.enableSoftLimit(SoftLimitDirection.kForward, false);
+            this.motor.set(-0.1);
         } else {
+            this.motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+            this.motor.enableSoftLimit(SoftLimitDirection.kForward, true);
             this.PIDController.setReference(this.positionSetpoint, CANSparkMax.ControlType.kPosition);
         }
     }

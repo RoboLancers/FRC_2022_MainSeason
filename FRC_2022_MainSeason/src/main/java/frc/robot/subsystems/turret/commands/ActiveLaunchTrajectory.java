@@ -10,26 +10,9 @@ public class ActiveLaunchTrajectory extends CommandBase {
 
     public ActiveLaunchTrajectory(Turret turret){
         this.turret = turret;
-        this.turret.pitch.attemptingToZero = true;
+        this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
         
         this.addRequirements(this.turret);
-    }
-
-    @Override
-    public void execute(){
-        this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
-        // if(this.turret.inHangMode){
-        //     this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
-        //     return;
-        // }
-        // if(this.turret.limelight.hasTarget()){
-        //     this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(
-        //         LaunchTrajectory.estimateDistance(this.turret.limelight.pitchOffset())
-        //     );
-        // } else {
-        //     // TODO: use odemetry to rev in this situation
-        //     this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
-        // }
     }
 
     @Override

@@ -46,10 +46,8 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
-import frc.robot.subsystems.turret.commands.BasicShoot;
-//import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
-import frc.robot.subsystems.turret.commands.ZeroPitch;
-// import frc.robot.subsystems.turret.subsystems.yaw.commands.MatchHeadingYaw;
+import frc.robot.subsystems.turret.commands.LowHubShoot;
+import frc.robot.subsystems.turret.commands.UpperHubShoot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.NotifierCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -92,6 +90,8 @@ public class RobotContainer {
   private Field2d m_field = new Field2d();
 
   public RobotContainer() {
+    this.configureButtonBindings();
+
     // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
     this.drivetrain.setDefaultCommand(
       new RunCommand(
@@ -112,23 +112,18 @@ public class RobotContainer {
 
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
 
-    this.configureButtonBindings();
-
-    // In testing
-
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
 
-    SmartDashboard.putBoolean("Manual Entry", SmartDashboard.getBoolean("Manual Entry", false));
+    SmartDashboard.putNumber("Low Shot Speed", SmartDashboard.getNumber("Low Shot Speed", 1500));
+    SmartDashboard.putNumber("Low Shot Angle", SmartDashboard.getNumber("Low Shot Angle", 12));
 
-    // Low Hub: 1500, 1.5
-    SmartDashboard.putNumber("Shoot Speed", SmartDashboard.getNumber("Shoot Speed", 3700));
-    SmartDashboard.putNumber("Shoot Angle", SmartDashboard.getNumber("Shoot Angle", 3));
+    SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
+    SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
   }
 
   private void configureButtonBindings(){
-    manipulatorController.whileHeld(XboxController.Trigger.RIGHT_TRIGGER, new BasicShoot(turret));
-
-    manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
+    manipulatorController.whileHeld(XboxController.Trigger.LEFT_TRIGGER, new UpperHubShoot(turret));
+    manipulatorController.whileHeld(XboxController.Trigger.RIGHT_TRIGGER, new LowHubShoot(turret));
   }
 
   public Command getAutonomousCommand() {
@@ -165,7 +160,6 @@ public class RobotContainer {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     }
 
-
     // Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command
     // so that it constantly updates and corrects the trajectory auto.
     RamseteCommand ramseteCommand = new RamseteCommand(
@@ -182,7 +176,6 @@ public class RobotContainer {
         rightPID,
         drivetrain::tankDriveVolts,
         drivetrain);
-
     drivetrain.resetOdometry(trajectory.getInitialPose());
     return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
   }
@@ -194,4 +187,3 @@ public class RobotContainer {
     SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(turret.limelight.pitchOffset()));
   }
 }
-
