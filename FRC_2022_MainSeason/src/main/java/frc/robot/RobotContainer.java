@@ -182,7 +182,7 @@ public class RobotContainer {
         System.out.println("Toggled");
       }, intake)));
 
-      manipulatorController.whenPressed(XboxController.Button.X, (new InstantCommand(() -> {
+      manipulatorController.whenPressed(XboxController.Button.Y, (new InstantCommand(() -> {
         intake.toggleDeploy();
         System.out.println("Toggled");
       }, intake)));
@@ -193,7 +193,7 @@ public class RobotContainer {
       }  
     }, intake));
 
-    manipulatorController.whenPressed(XboxController.Button.Y, new InstantCommand(() -> {
+    manipulatorController.whenPressed(XboxController.Button.A, new InstantCommand(() -> {
       if (intake.retractionPiston.get() == Value.kReverse) {
         intake.setPower(Constants.Intake.kIntakePower);
       }  
