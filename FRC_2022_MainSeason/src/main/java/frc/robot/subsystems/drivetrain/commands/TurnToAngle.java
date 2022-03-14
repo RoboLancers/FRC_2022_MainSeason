@@ -3,6 +3,7 @@ package frc.robot.subsystems.drivetrain.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.drivetrain.Drivetrain;
@@ -27,6 +28,13 @@ public class TurnToAngle extends PIDCommand {
         this.m_controller.setTolerance(Constants.Turret.Yaw.kErrorThreshold);
         
         this.drivetrain = drivetrain;
+    }
+
+    @Override
+    public void execute(){
+        this.m_controller.setP(SmartDashboard.getNumber("Angular kP", 0.0));
+        this.m_controller.setI(SmartDashboard.getNumber("Angular kI", 0.0));
+        this.m_controller.setD(SmartDashboard.getNumber("Angular kD", 0.0));
     }
 
     @Override

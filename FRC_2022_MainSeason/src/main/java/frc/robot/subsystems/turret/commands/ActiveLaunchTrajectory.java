@@ -1,5 +1,9 @@
 package frc.robot.subsystems.turret.commands;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.turret.LaunchTrajectory;
@@ -10,24 +14,16 @@ public class ActiveLaunchTrajectory extends CommandBase {
 
     public ActiveLaunchTrajectory(Turret turret){
         this.turret = turret;
+        this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
+
+        SmartDashboard.putBoolean("Zeroed Pitch", false);
         
         this.addRequirements(this.turret);
     }
 
     @Override
     public void execute(){
-        if(this.turret.inHangMode){
-            this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
-            return;
-        }
-        if(this.turret.limelight.hasTarget()){
-            this.turret.launchTrajectory = LaunchTrajectory.trajectoryMap.interpolate(
-                LaunchTrajectory.estimateDistance(this.turret.limelight.pitchOffset())
-            );
-        } else {
-            // TODO: use odemetry to rev in this situation
-            this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
-        }
+        this.turret.pitch.PIDController.setReference(SmartDashboard.getNumber("Target Pitch", 0), CANSparkMax.ControlType.kPosition);
     }
 
     @Override

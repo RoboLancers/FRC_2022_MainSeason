@@ -1,11 +1,13 @@
 package frc.robot.subsystems.turret.subsystems;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -16,8 +18,8 @@ public class TurretPitch extends SubsystemBase {
     public double positionSetpoint = 0;
 
     public CANSparkMax motor;
-    private RelativeEncoder encoder;
-    private SparkMaxPIDController PIDController;
+    public RelativeEncoder encoder;
+    public SparkMaxPIDController PIDController;
 
     public DigitalInput homingSwitch;
     private Trigger homingTrigger;
@@ -26,6 +28,7 @@ public class TurretPitch extends SubsystemBase {
         this.motor = new CANSparkMax(Constants.Turret.Ports.kPitchMotor, CANSparkMax.MotorType.kBrushless);
         this.motor.setSoftLimit(SoftLimitDirection.kReverse, (float) Constants.Turret.Pitch.kMinSafeAngle);
         this.motor.setSoftLimit(SoftLimitDirection.kForward, (float) Constants.Turret.Pitch.kMaxSafeAngle);
+
         this.motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
         this.motor.enableSoftLimit(SoftLimitDirection.kForward, true);
 
@@ -46,14 +49,34 @@ public class TurretPitch extends SubsystemBase {
         // this is inverted?
         this.homingSwitch = new DigitalInput(Constants.Turret.Ports.kPitchLimitSwitch);
         this.homingTrigger = new Trigger(() -> { return !homingSwitch.get(); });
-        this.homingTrigger.whenActive(new RunCommand(() -> {
+        this.homingTrigger.whenActive(new InstantCommand(() -> {
             this.encoder.setPosition(0);
         }, this));
     }
 
     @Override
     public void periodic(){
-        this.PIDController.setReference(this.positionSetpoint, CANSparkMax.ControlType.kPosition);
+        SmartDashboard.putBoolean("pitch triigered", !this.homingSwitch.get());
+
+        this.PIDController.setP(SmartDashboard.getNumber("Pitch kP", 0.0));
+        this.PIDController.setI(SmartDashboard.getNumber("Pitch kI", 0.0));
+        this.PIDController.setD(SmartDashboard.getNumber("Pitch kD", 0.0));
+        this.PIDController.setFF(SmartDashboard.getNumber("Pitch kFF", 0.0));
+
+        // this.PIDController.setReference(SmartDashboard.getNumber("Target Pitch", 0), CANSparkMax.ControlType.kPosition);
+
+        // if(!this.homingSwitch.get()){
+        //     this.encoder.setPosition(0);
+        // }
+        // if(this.positionSetpoint == 0 && this.homingSwitch.get()){
+        //     this.motor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+        //     this.motor.enableSoftLimit(SoftLimitDirection.kForward, false);
+        //     this.motor.set(-0.1);
+        // } else {
+        //     this.motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+        //     this.motor.enableSoftLimit(SoftLimitDirection.kForward, true);
+        //     this.PIDController.setReference(this.positionSetpoint, CANSparkMax.ControlType.kPosition);
+        // }
     }
 
     public double getPosition(){

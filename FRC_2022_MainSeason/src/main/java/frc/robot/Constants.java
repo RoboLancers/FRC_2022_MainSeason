@@ -49,15 +49,15 @@ public final class Constants {
 
             public static final double kErrorThreshold = 0.1;
             public static final double kZeroAdjustment = 0.1;
-            public static final double kMinSafeAngle = 0;
+            public static final double kMinSafeAngle = -0.5;
             public static final double kMaxSafeAngle = 12.5;
         }
 
         public static final class Flywheel {
-            public static final double kP = 0;//0.0005;
+            public static final double kP = 0;
             public static final double kI = 0.0;
-            public static final double kD = 0;//0.1;
-            public static final double kFF = 0.000179;
+            public static final double kD = 0;
+            public static final double kFF = 0.00019;
             public static final double kMaxAbsoluteVoltage = 1.0;
 
             public static final double kErrorThreshold = 25;

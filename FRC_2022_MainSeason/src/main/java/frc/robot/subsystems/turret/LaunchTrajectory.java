@@ -87,9 +87,9 @@ public class LaunchTrajectory {
     }
 
     public static class InterpolationTable {
-        private static class Entry {
+        public static class Entry {
             private double key;
-            private LaunchTrajectory value;
+            public LaunchTrajectory value;
     
             public Entry(double key, LaunchTrajectory value){
                 this.key = key;
