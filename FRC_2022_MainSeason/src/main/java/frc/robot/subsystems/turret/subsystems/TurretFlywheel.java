@@ -12,14 +12,14 @@ import com.revrobotics.CANSparkMax.IdleMode;
 public class TurretFlywheel extends SubsystemBase {
     public double velocitySetpoint = 0;
 
-    private CANSparkMax motorA;
-    private CANSparkMax motorB;
+    public CANSparkMax motorA;
+    public CANSparkMax motorB;
     
     private RelativeEncoder encoderA;
     private RelativeEncoder encoderB;
 
-    private SparkMaxPIDController PIDControllerA;
-    private SparkMaxPIDController PIDControllerB;
+    public SparkMaxPIDController PIDControllerA;
+    public SparkMaxPIDController PIDControllerB;
 
     public TurretFlywheel(){
         this.motorA = new CANSparkMax(Constants.Turret.Ports.kFlywheelMotorA, CANSparkMax.MotorType.kBrushless);
@@ -66,11 +66,6 @@ public class TurretFlywheel extends SubsystemBase {
 
     @Override
     public void periodic(){
-        this.PIDControllerA.setFF(SmartDashboard.getNumber("Flywheel kFF", 0));
-        this.PIDControllerB.setFF(SmartDashboard.getNumber("Flywheel kFF", 0));
-
-        this.PIDControllerA.setReference(SmartDashboard.getNumber("Target Speed", 0), CANSparkMax.ControlType.kVelocity);
-        this.PIDControllerB.setReference(SmartDashboard.getNumber("Target Speed", 0), CANSparkMax.ControlType.kVelocity);
         // this.PIDControllerA.setReference(this.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
         // this.PIDControllerB.setReference(this.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
         // if(this.velocitySetpoint == 0){

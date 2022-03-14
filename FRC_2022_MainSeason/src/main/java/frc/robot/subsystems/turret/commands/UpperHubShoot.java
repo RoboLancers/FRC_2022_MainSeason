@@ -15,8 +15,6 @@ public class UpperHubShoot extends CommandBase {
             SmartDashboard.getNumber("High Shot Speed", 0)
         );
 
-        SmartDashboard.putBoolean("Zeroed Pitch", false);
-
         addRequirements(this.turret);
     }
 

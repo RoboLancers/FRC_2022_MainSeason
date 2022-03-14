@@ -109,24 +109,12 @@ public class RobotContainer {
 
     intake.setDefaultCommand(new RunCommand(() -> {
       intake.setPower(driverController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER));
+      intake.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER));
     }, intake));
 
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
 
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
-  
-    // Pitch PID tuning
-
-    SmartDashboard.putNumber("Pitch kP", SmartDashboard.getNumber("Pitch kP", Constants.Turret.Pitch.kP));
-    SmartDashboard.putNumber("Pitch kI", SmartDashboard.getNumber("Pitch kI", Constants.Turret.Pitch.kI));
-    SmartDashboard.putNumber("Pitch kD", SmartDashboard.getNumber("Pitch kD", Constants.Turret.Pitch.kD));
-    SmartDashboard.putNumber("Pitch kFF", SmartDashboard.getNumber("Pitch kFF", Constants.Turret.Pitch.kFF));
-
-    SmartDashboard.putNumber("Target Pitch", 0);
-
-    SmartDashboard.putNumber("Flywheel kP", 0);
-    SmartDashboard.putNumber("Flywheel kFF", 0);
-    SmartDashboard.putNumber("Target Speed", 0);
 
     // Shot trajectory tuning
 
@@ -140,8 +128,8 @@ public class RobotContainer {
   private void configureButtonBindings(){
     manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
 
-    manipulatorController.whileHeld(XboxController.Trigger.LEFT_TRIGGER, new UpperHubShoot(turret));
-    manipulatorController.whileHeld(XboxController.Trigger.RIGHT_TRIGGER, new LowHubShoot(turret));
+    manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new UpperHubShoot(turret));
+    manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new LowHubShoot(turret));
   }
 
   public Command getAutonomousCommand() {
@@ -199,6 +187,7 @@ public class RobotContainer {
   }
 
   public void doSendables(){
+
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
     SmartDashboard.putNumber("Actual Pitch", turret.pitch.getPosition());
 

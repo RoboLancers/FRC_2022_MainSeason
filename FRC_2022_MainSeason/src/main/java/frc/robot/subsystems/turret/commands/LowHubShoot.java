@@ -15,8 +15,6 @@ public class LowHubShoot extends CommandBase {
             SmartDashboard.getNumber("Low Shot Speed", 0)
         );
 
-        SmartDashboard.putBoolean("Zeroed Pitch", false);
-
         addRequirements(this.turret);
     }
 

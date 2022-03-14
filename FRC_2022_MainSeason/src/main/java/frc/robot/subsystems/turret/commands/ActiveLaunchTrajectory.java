@@ -15,15 +15,20 @@ public class ActiveLaunchTrajectory extends CommandBase {
     public ActiveLaunchTrajectory(Turret turret){
         this.turret = turret;
         this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
-
-        SmartDashboard.putBoolean("Zeroed Pitch", false);
         
         this.addRequirements(this.turret);
     }
 
     @Override
     public void execute(){
-        this.turret.pitch.PIDController.setReference(SmartDashboard.getNumber("Target Pitch", 0), CANSparkMax.ControlType.kPosition);
+        this.turret.pitch.PIDController.setReference(12, CANSparkMax.ControlType.kPosition);
+
+        this.turret.flywheel.PIDControllerA.setReference(this.turret.flywheel.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
+        this.turret.flywheel.PIDControllerB.setReference(this.turret.flywheel.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
+        if(this.turret.flywheel.velocitySetpoint == 0){
+            this.turret.flywheel.motorA.set(0);
+            this.turret.flywheel.motorB.set(0);
+        }
     }
 
     @Override

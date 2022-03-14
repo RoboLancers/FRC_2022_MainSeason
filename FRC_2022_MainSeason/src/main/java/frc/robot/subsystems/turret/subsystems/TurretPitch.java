@@ -54,31 +54,6 @@ public class TurretPitch extends SubsystemBase {
         }, this));
     }
 
-    @Override
-    public void periodic(){
-        SmartDashboard.putBoolean("pitch triigered", !this.homingSwitch.get());
-
-        this.PIDController.setP(SmartDashboard.getNumber("Pitch kP", 0.0));
-        this.PIDController.setI(SmartDashboard.getNumber("Pitch kI", 0.0));
-        this.PIDController.setD(SmartDashboard.getNumber("Pitch kD", 0.0));
-        this.PIDController.setFF(SmartDashboard.getNumber("Pitch kFF", 0.0));
-
-        // this.PIDController.setReference(SmartDashboard.getNumber("Target Pitch", 0), CANSparkMax.ControlType.kPosition);
-
-        // if(!this.homingSwitch.get()){
-        //     this.encoder.setPosition(0);
-        // }
-        // if(this.positionSetpoint == 0 && this.homingSwitch.get()){
-        //     this.motor.enableSoftLimit(SoftLimitDirection.kReverse, false);
-        //     this.motor.enableSoftLimit(SoftLimitDirection.kForward, false);
-        //     this.motor.set(-0.1);
-        // } else {
-        //     this.motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-        //     this.motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-        //     this.PIDController.setReference(this.positionSetpoint, CANSparkMax.ControlType.kPosition);
-        // }
-    }
-
     public double getPosition(){
         return this.encoder.getPosition();
     }
