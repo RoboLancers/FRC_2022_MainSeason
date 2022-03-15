@@ -20,27 +20,27 @@ public class GeneralizedReleaseRoutine extends CommandBase {
 
     @Override
     public void execute(){
-        if(this.indexer.ballQueue.size() > 0 && this.turret.inShootingRange() && this.turret.isReadyToShoot()){
-            new SequentialCommandGroup(
-                new InstantCommand(() -> {
-                    this.indexer.indexerMotor.set(Constants.Indexer.kIndexerSpeed);
-                    this.turret.flywheel.velocitySetpoint = 0.8;
-                }),
-                new WaitUntilCommand(() -> {
-                    // TODO: return true on voltage spike
-                    return true;
-                }),
-                // TODO: add some delay here
-                new WaitCommand(0.0),
-                // ! - this is potentially not the right logic, we may need to reconsider what to do after this step
-                // maybe if there are no balls left, turn off indexer and return, otherwise start a new generalized release routine
-                new InstantCommand (() -> {
-                    indexer.progressBalls();
-                    indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
-                    turret.flywheel.velocitySetpoint = 0;
-                    return;
-                })
-            );
-        }
+        // if(this.indexer.ballQueue.size() > 0 && this.turret.inShootingRange() && this.turret.isReadyToShoot()){
+        //     new SequentialCommandGroup(
+        //         new InstantCommand(() -> {
+        //             this.indexer.indexerMotor.set(Constants.Indexer.kIndexerSpeed);
+        //             this.turret.flywheel.velocitySetpoint = 0.8;
+        //         }),
+        //         new WaitUntilCommand(() -> {
+        //             // TODO: return true on voltage spike
+        //             return true;
+        //         }),
+        //         // TODO: add some delay here
+        //         new WaitCommand(0.0),
+        //         // ! - this is potentially not the right logic, we may need to reconsider what to do after this step
+        //         // maybe if there are no balls left, turn off indexer and return, otherwise start a new generalized release routine
+        //         new InstantCommand (() -> {
+        //             indexer.progressBalls();
+        //             indexer.indexerMotor.set(Constants.Indexer.kIndexerOff);
+        //             turret.flywheel.velocitySetpoint = 0;
+        //             return;
+        //         })
+        //     );
+        // }
     }
 }

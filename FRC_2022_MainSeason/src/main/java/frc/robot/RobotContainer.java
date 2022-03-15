@@ -64,7 +64,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class RobotContainer {
   private RobotContainer m_robotContainer;
-  private XboxController xboxController = new XboxController(0);
 
   /*   Controllers   */
   private final XboxController driverController = new XboxController(0);
@@ -117,11 +116,11 @@ public class RobotContainer {
 
     // Shot trajectory tuning
 
-    SmartDashboard.putNumber("Low Shot Speed", SmartDashboard.getNumber("Low Shot Speed", 1500));
-    SmartDashboard.putNumber("Low Shot Angle", SmartDashboard.getNumber("Low Shot Angle", 12));
+    // SmartDashboard.putNumber("Low Shot Speed", SmartDashboard.getNumber("Low Shot Speed", 1500));
+    // SmartDashboard.putNumber("Low Shot Angle", SmartDashboard.getNumber("Low Shot Angle", 12));
 
-    SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
-    SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
+    // SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
+    // SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
   }
 
   private void configureButtonBindings(){
@@ -188,7 +187,5 @@ public class RobotContainer {
   public void doSendables(){
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
     SmartDashboard.putNumber("Actual Pitch", turret.pitch.getPosition());
-
-    SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(turret.limelight.pitchOffset()));
   }
 }
