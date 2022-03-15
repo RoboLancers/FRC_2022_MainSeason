@@ -1,11 +1,6 @@
 package frc.robot.subsystems.turret.commands;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.Turret;
 
@@ -21,14 +16,14 @@ public class ActiveLaunchTrajectory extends CommandBase {
 
     @Override
     public void execute(){
-        this.turret.pitch.PIDController.setReference(12, CANSparkMax.ControlType.kPosition);
+        this.turret.pitch.setPosition(this.turret.launchTrajectory.theta);
 
-        this.turret.flywheel.PIDControllerA.setReference(this.turret.flywheel.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
-        this.turret.flywheel.PIDControllerB.setReference(this.turret.flywheel.velocitySetpoint, CANSparkMax.ControlType.kVelocity);
-        if(this.turret.flywheel.velocitySetpoint == 0){
-            this.turret.flywheel.motorA.set(0);
-            this.turret.flywheel.motorB.set(0);
-        }
+        // force stop if target speed is 0
+        if(this.turret.launchTrajectory.speed == 0){
+            this.turret.flywheel.setPower(0);
+        } else {
+            this.turret.flywheel.setVelocity(this.turret.launchTrajectory.speed);
+        }        
     }
 
     @Override

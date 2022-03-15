@@ -23,12 +23,6 @@ public class Turret extends SubsystemBase {
         this.flywheel = new TurretFlywheel();
     }
 
-    @Override
-    public void periodic(){
-        this.pitch.positionSetpoint = this.launchTrajectory.theta;
-        this.flywheel.velocitySetpoint = this.launchTrajectory.speed;
-    }
-
     public boolean inShootingRange(){
         return (
             this.limelight.hasTarget() &&
@@ -37,12 +31,13 @@ public class Turret extends SubsystemBase {
     }
 
     public boolean isReadyToShoot(){
+        // TODO: make this take pitch and flywheel setpoints as args
         return (
             this.limelight.hasTarget() &&
             Math.abs(this.limelight.yawOffset()) < Constants.Turret.Yaw.kErrorThreshold &&
 
-            this.pitch.isAligned() &&
-            this.flywheel.isUpToSpeed()
+            this.pitch.isAligned(0) &&
+            this.flywheel.isUpToSpeed(0)
         );
     };
 }

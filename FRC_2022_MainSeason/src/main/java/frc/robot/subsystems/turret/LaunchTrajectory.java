@@ -105,9 +105,9 @@ public class LaunchTrajectory {
 
         public LaunchTrajectory interpolate(double key){
             // check if key is within bounds of the table
-            if(key < this.entries[0].key){
+            if(key <= this.entries[0].key){
                 return this.entries[0].value;
-            } else if(key > this.entries[this.entries.length - 1].key){
+            } else if(key >= this.entries[this.entries.length - 1].key){
                 return this.entries[this.entries.length - 1].value;
             }
             // find lower and upper bounds of interpolation

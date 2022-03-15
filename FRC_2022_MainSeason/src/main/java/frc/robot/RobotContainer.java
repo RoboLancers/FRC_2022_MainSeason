@@ -44,7 +44,6 @@ import frc.robot.subsystems.misc.Camera;
 
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.turret.LaunchTrajectory;
-import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.LowHubShoot;
 import frc.robot.subsystems.turret.commands.UpperHubShoot;
@@ -187,7 +186,6 @@ public class RobotContainer {
   }
 
   public void doSendables(){
-
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
     SmartDashboard.putNumber("Actual Pitch", turret.pitch.getPosition());
 
