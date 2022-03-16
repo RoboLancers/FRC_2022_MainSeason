@@ -12,7 +12,7 @@ public class LimeLight implements Subsystem {
     }
 
     public boolean hasTarget(){
-        return this.table.getEntry("tv").getBoolean(false);
+        return this.table.getEntry("tv").getDouble(0) == 1;
     }
 
     public double yawOffset(){

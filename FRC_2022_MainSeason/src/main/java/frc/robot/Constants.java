@@ -67,10 +67,9 @@ public final class Constants {
             public static final double kAlpha = 60;
             public static final double kDeltaY = 70;
 
-            public static final double kUpperHubRadius = 24;
             public static final double kMaxShootDistance = 200;
 
-            public static final double kMountAngle = 42;
+            public static final double kMountAngle = 21;
         }
     }
 

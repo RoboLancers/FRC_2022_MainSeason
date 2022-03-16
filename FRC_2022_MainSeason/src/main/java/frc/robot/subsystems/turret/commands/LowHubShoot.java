@@ -15,8 +15,8 @@ public class LowHubShoot extends CommandBase {
 
     @Override
     public void execute(){
-        double angle = SmartDashboard.getNumber("Low Shot Angle", 0);
-        double speed = SmartDashboard.getNumber("Low Shot Speed", 0);
+        double angle = 12; // SmartDashboard.getNumber("Low Shot Angle", 0);
+        double speed = 1500; // SmartDashboard.getNumber("Low Shot Speed", 0);
 
         this.turret.pitch.setPosition(angle);
         this.turret.flywheel.setVelocity(speed);
