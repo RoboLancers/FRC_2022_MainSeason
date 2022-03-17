@@ -35,7 +35,6 @@ public final class Constants {
             public static final double kD = 0.0;
 
             public static final double kErrorThreshold = 0.1;
-            public static final double kSeekAdjustment = 1;
         }
 
         public static final class Pitch {

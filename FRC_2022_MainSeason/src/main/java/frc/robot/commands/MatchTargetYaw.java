@@ -1,40 +1,48 @@
-package frc.robot.subsystems.drivetrain.commands;
-
-import java.util.function.DoubleSupplier;
+package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.turret.Turret;
 
-public class TurnToAngle extends PIDCommand {
+public class MatchTargetYaw extends PIDCommand {
     private Drivetrain drivetrain;
 
-    public TurnToAngle(Drivetrain drivetrain, DoubleSupplier setpoint){
+    public MatchTargetYaw(Drivetrain drivetrain, Turret turret){
         super(
             new PIDController(
-                Constants.Turret.Yaw.kP,
-                Constants.Turret.Yaw.kI,
-                Constants.Turret.Yaw.kD
+                SmartDashboard.getNumber("Angular kP", 0),
+                SmartDashboard.getNumber("Angular kI", 0),
+                SmartDashboard.getNumber("Angular kD", 0)
             ),
-            drivetrain::getHeading,
-            setpoint,
+            () -> {
+                if(turret.limelight.hasTarget()){
+                    return turret.limelight.yawOffset();
+                } else {
+                    return 0;
+                }
+            },
+            () -> 0,
             (outputPower) -> {
                 drivetrain.leftMotors.set(outputPower);
                 drivetrain.rightMotors.set(-outputPower);
-            }
+            },
+            drivetrain
         );
         this.m_controller.setTolerance(Constants.Turret.Yaw.kErrorThreshold);
-        
+
         this.drivetrain = drivetrain;
     }
 
     @Override
     public void execute(){
-        this.m_controller.setP(SmartDashboard.getNumber("Angular kP", 0.0));
-        this.m_controller.setI(SmartDashboard.getNumber("Angular kI", 0.0));
-        this.m_controller.setD(SmartDashboard.getNumber("Angular kD", 0.0));
+        this.m_controller.setPID(
+            SmartDashboard.getNumber("Angular kP", 0.0),
+            SmartDashboard.getNumber("Angular kI", 0.0),
+            SmartDashboard.getNumber("Angular kD", 0.0)
+        );
     }
 
     @Override

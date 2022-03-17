@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
+import frc.robot.commands.MatchTargetYaw;
 import frc.robot.commands.TaxiAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.commands.UpdateLights;
@@ -32,7 +33,6 @@ import frc.robot.subsystems.climber.commands.ManualClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
-import frc.robot.subsystems.drivetrain.commands.TurnToAngle;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
 //import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.indexer.Indexer;
@@ -116,8 +116,9 @@ public class RobotContainer {
 
     // Shot trajectory tuning
 
-    // SmartDashboard.putNumber("Low Shot Speed", SmartDashboard.getNumber("Low Shot Speed", 1500));
-    // SmartDashboard.putNumber("Low Shot Angle", SmartDashboard.getNumber("Low Shot Angle", 12));
+    SmartDashboard.putNumber("Angular kP", SmartDashboard.getNumber("Angular kP", Constants.Turret.Yaw.kP));
+    SmartDashboard.putNumber("Angular kI", SmartDashboard.getNumber("Angular kI", Constants.Turret.Yaw.kI));
+    SmartDashboard.putNumber("Angular kD", SmartDashboard.getNumber("Angular kD", Constants.Turret.Yaw.kD));
 
     SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
     SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
@@ -125,6 +126,7 @@ public class RobotContainer {
 
   private void configureButtonBindings(){
     manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
+    manipulatorController.whenPressed(XboxController.Button.Y, new MatchTargetYaw(drivetrain, turret));
 
     manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new UpperHubShoot(turret));
     manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new LowHubShoot(turret));
