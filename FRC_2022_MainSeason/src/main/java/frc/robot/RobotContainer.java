@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
-import frc.robot.commands.MatchTargetYaw;
 import frc.robot.commands.TaxiAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.commands.UpdateLights;
@@ -33,6 +32,7 @@ import frc.robot.subsystems.climber.commands.ManualClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
+import frc.robot.subsystems.drivetrain.commands.TurnToAngle;
 import frc.robot.subsystems.drivetrain.commands.UseCompressor;
 //import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.indexer.Indexer;
@@ -126,7 +126,14 @@ public class RobotContainer {
 
   private void configureButtonBindings(){
     manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
-    manipulatorController.whenPressed(XboxController.Button.Y, new MatchTargetYaw(drivetrain, turret));
+    
+    driverController.whileHeld(XboxController.Button.Y, new TurnToAngle(drivetrain, turret, () -> {
+      if(turret.limelight.hasTarget()){
+        return turret.limelight.yawOffset() + drivetrain.getHeading();
+      } else {
+        return drivetrain.getHeading();
+      }
+    }));
 
     manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new UpperHubShoot(turret));
     manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new LowHubShoot(turret));
@@ -187,6 +194,8 @@ public class RobotContainer {
   }
 
   public void doSendables(){
+    SmartDashboard.putNumber("Gyro Angle", drivetrain.getHeading());
+
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
     SmartDashboard.putNumber("Actual Pitch", turret.pitch.getPosition());
   }

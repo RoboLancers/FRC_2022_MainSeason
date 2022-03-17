@@ -22,9 +22,9 @@ public class UpperHubShoot extends CommandBase {
 
         SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(turret.limelight.pitchOffset()));
 
-        // SmartDashboard.putBoolean("Has Target", this.turret.limelight.hasTarget());
-        // SmartDashboard.putNumber("Interpolated Angle", interpolatedTrajectory.theta);
-        // SmartDashboard.putNumber("Interpolated Speed", interpolatedTrajectory.speed);
+        SmartDashboard.putBoolean("Has Target", this.turret.limelight.hasTarget());
+        SmartDashboard.putNumber("Interpolated Angle", interpolatedTrajectory.theta);
+        SmartDashboard.putNumber("Interpolated Speed", interpolatedTrajectory.speed);
 
         // for tuning interpolation control points
         // double angle = SmartDashboard.getNumber("High Shot Angle", 0);
