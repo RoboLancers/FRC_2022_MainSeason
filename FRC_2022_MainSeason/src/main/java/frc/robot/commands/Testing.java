@@ -29,15 +29,25 @@ public class Testing extends CommandBase {
     public void execute() {
         new SequentialCommandGroup(
             new ParallelRaceGroup(new RunCommand(() -> {
-                intake.setPower(0.5);
+                intake.setPower(0.05);
               }, intake),
               new WaitCommand(2)),
             new ParallelRaceGroup(new RunCommand(() -> {
-                    intake.setPower(0.5);
+                    intake.setPower(-0.05);
                 }, intake),
                 new WaitCommand(2)),
             new ParallelRaceGroup(new RunCommand(() -> {
-                indexer.setPower(0.5);    
+                    intake.setPower(0);
+            }, intake),
+            new WaitCommand(2)),
+            new ParallelRaceGroup(new RunCommand(() -> {
+                indexer.setPower(0.05);    
+            }, indexer), new WaitCommand(2)),
+            new ParallelRaceGroup(new RunCommand(() -> {
+                indexer.setPower(-0.05);    
+            }, indexer), new WaitCommand(2)),
+            new ParallelRaceGroup(new RunCommand(() -> {
+                indexer.setPower(0);    
             }, indexer),
             new WaitCommand(2)),
             new ParallelRaceGroup(
@@ -46,18 +56,18 @@ public class Testing extends CommandBase {
                 }, turret),
                 new WaitCommand(2)),
             new ParallelRaceGroup(new RunCommand(() -> {
-                climber.climberMotor1.set(0.2);
-                climber.climberMotor2.set(0.2);
+                climber.climberMotor1.set(0.1);
+                climber.climberMotor2.set(0.1);
             }, climber),
             new WaitUntilCommand(1)),
-            new ParallelRaceGroup(new RunCommand(() -> {
+            /* new ParallelRaceGroup(new RunCommand(() -> {
                 intake.toggleIntake();
                 intake.toggleIntake();
             }, intake),
-            new WaitUntilCommand(15)),
+            new WaitUntilCommand(15)), */
             new ParallelRaceGroup(new RunCommand(() -> {
-                climber.climberMotor1.set(-0.2);
-                climber.climberMotor2.set(-0.2);
+                climber.climberMotor1.set(-0.1);
+                climber.climberMotor2.set(-0.1);
             }, climber),
             new WaitUntilCommand(1))
         );
