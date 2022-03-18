@@ -61,6 +61,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import frc.robot.commands.Testing;
 
 public class RobotContainer {
   private RobotContainer m_robotContainer;
@@ -91,29 +92,6 @@ public class RobotContainer {
   public RobotContainer() {
     this.configureButtonBindings();
 
-    // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
-    this.drivetrain.setDefaultCommand(
-      new RunCommand(
-        () -> {
-          this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
-        },
-        drivetrain
-      )
-    );
-
-    indexer.setDefaultCommand(new RunCommand(() -> {
-      indexer.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y));
-    }, indexer));
-
-    intake.setDefaultCommand(new RunCommand(() -> {
-      intake.setPower(driverController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER));
-      intake.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER));
-    }, intake));
-
-    climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
-
-    turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
-
     // Shot trajectory tuning
 
     SmartDashboard.putNumber("Angular kP", SmartDashboard.getNumber("Angular kP", Constants.Turret.Yaw.kP));
@@ -125,18 +103,8 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings(){
-    manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
     
-    driverController.whileHeld(XboxController.Button.Y, new TurnToAngle(drivetrain, turret, () -> {
-      if(turret.limelight.hasTarget()){
-        return turret.limelight.yawOffset() + drivetrain.getHeading();
-      } else {
-        return drivetrain.getHeading();
-      }
-    }));
-
-    manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new UpperHubShoot(turret));
-    manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new LowHubShoot(turret));
+    driverController.whenPressed(XboxController.Button.Y, new Testing(intake, indexer, turret, climber));
   }
 
   public Command getAutonomousCommand() {
