@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.commands.ShootOneBall;
+import frc.robot.commands.ShootTwoBalls;
 import frc.robot.commands.TaxiAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.commands.UpdateLights;
@@ -44,6 +45,7 @@ import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.misc.Camera;
 
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.commands.UseIntake;
 import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.LowHubShoot;
@@ -194,7 +196,18 @@ public class RobotContainer {
         drivetrain);
     drivetrain.resetOdometry(trajectory.getInitialPose());
     return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
-  */ return new ShootOneBall(drivetrain, turret, indexer); }
+  */ return new ShootOneBall(drivetrain, turret, indexer);
+  //return new ShootTwoBalls(drivetrain, turret, indexer, intake); error: "unreachable code"
+ }
+
+ 
+
+ 
+   
+    
+
+
+
 
   public void doSendables(){
     SmartDashboard.putNumber("Gyro Angle", drivetrain.getHeading());
