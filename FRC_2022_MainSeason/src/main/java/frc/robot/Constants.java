@@ -18,7 +18,7 @@ public final class Constants {
         public static final double kNormalHangCurrent = 1;
         public static final int kMaxHeight1 = 0;
         public static final int kMaxHeight2 = 0;
-        public static final int kResetCurrent = 0;
+        public static final int kResetCurrent = 50;
 
     }
 

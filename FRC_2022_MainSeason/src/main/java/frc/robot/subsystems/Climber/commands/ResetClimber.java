@@ -17,7 +17,8 @@ public class ResetClimber extends CommandBase{
 
     @Override
     public void execute(){
-        climber.climberMotor1.set(Constants.Climber.kNegativePower*0.1);
+        climberMotor1.set(Constants.Climber.kNegativePower*0.3);
+
     }
 
     @Override
