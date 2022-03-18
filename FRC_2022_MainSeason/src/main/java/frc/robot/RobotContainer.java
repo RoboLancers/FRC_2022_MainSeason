@@ -67,6 +67,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import frc.robot.subsystems.climber.commands.ResetClimber;
 
 import frc.robot.commands.ShootOneBall;
 
@@ -136,7 +137,27 @@ public class RobotContainer {
     autoChooser.addOption("TwoBallAuto", new TwoBallAuto(drivetrain, turret, indexer, intake));
   }
 
-  private void configureButtonBindings(){
+    // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
+    // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
+    // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
+    // manipulatorController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(
+    // () -> {
+    // indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
+    // }
+    // );
+    // manipulatorController.whenPressed(XboxController.Axis.LEFT_Y, new ManualClimber(driverController, climber));
+    // manipulatorController.whenPressed(XboxController.Up, new REzero);
+    // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
+    // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
+    // manipulatorController.whenPressed(XboxController.ButtonThinggggg, new Instant)
+    // manipulatorController.whenPressed(XboxController.Button.B, new SequentialCommandGroup(
+    //   new ZeroAndDisable(turret),
+    //   new UpClimber(climber, Constants.Climber.kLowClimb)));
+    // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
+    //   new ZeroAndDisable(turret),
+    //   new UpClimber(climber, Constants.Climber.kMidClimb)));
+ 
+    private void configureButtonBindings(){
     manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
     
     driverController.whileHeld(XboxController.Button.Y, new TurnToAngle(drivetrain, turret, () -> {
@@ -152,6 +173,11 @@ public class RobotContainer {
 
     manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new UpperHubShoot(turret));
     manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new LowHubShoot(turret));
+  
+    manipulatorController.whenPressed(XboxController.Button.A, new ResetClimber(climber, climber.climberMotor1));
+    manipulatorController.whenPressed(XboxController.Button.B, new ResetClimber(climber, climber.climberMotor2));
+
+    manipulatorController.whenPressed(XboxController.Button.Y, new InstantCommand(climber :: setEncoderPosition));
   }
 
   public Command getAutonomousCommand() {
@@ -224,5 +250,10 @@ public class RobotContainer {
 
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
     SmartDashboard.putNumber("Actual Pitch", turret.pitch.getPosition());
+    SmartDashboard.putNumber("Climber Encoder1", climber.climbEncoder1.getPosition());
+    SmartDashboard.putNumber("Climber Encoder2", climber.climbEncoder2.getPosition());
+    SmartDashboard.putNumber("Climber Current1", climber.climberMotor1.getOutputCurrent());
+    SmartDashboard.putNumber("Climber Current1", climber.climberMotor1.getOutputCurrent());
+
   }
 }

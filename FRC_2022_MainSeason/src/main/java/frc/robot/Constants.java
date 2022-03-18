@@ -16,6 +16,10 @@ public final class Constants {
         public static final double kPower = 1;
         public static final double kNegativePower = -1;
         public static final double kNormalHangCurrent = 1;
+        public static final int kMaxHeight1 = 0;
+        public static final int kMaxHeight2 = 0;
+        public static final int kResetCurrent = 50;
+
     }
 
     public static final class Turret {
