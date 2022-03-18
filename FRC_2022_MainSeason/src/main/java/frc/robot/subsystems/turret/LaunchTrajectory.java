@@ -17,7 +17,7 @@ public class LaunchTrajectory {
     }
 
     public static double estimateDistance(double thetaY){
-        return Constants.Turret.Physics.kDeltaY / Math.tan((Constants.Turret.Physics.kMountAngle + thetaY) * Math.PI / 180) + Constants.Turret.Physics.kUpperHubRadius;
+        return Constants.Turret.Physics.kDeltaY / Math.tan((Constants.Turret.Physics.kMountAngle + thetaY) * Math.PI / 180);
     }
 
     // Calculate the trajectory to hit the target at a given angle alpha
@@ -132,9 +132,10 @@ public class LaunchTrajectory {
 
     // Calculate the trajectory by interpolating between known shot trajectories with respect to distance
     public static final InterpolationTable upperHubTrajectoryMap = new InterpolationTable(
-        new InterpolationTable.Entry(63, new LaunchTrajectory(3.2, 3800)),
-        new InterpolationTable.Entry(88, new LaunchTrajectory(11, 4600)),
-        new InterpolationTable.Entry(97, new LaunchTrajectory(12, 4800)),
-        new InterpolationTable.Entry(103, new LaunchTrajectory(12, 5200))
+        new InterpolationTable.Entry(0, new LaunchTrajectory(3.2, 3800)),
+        new InterpolationTable.Entry(90, new LaunchTrajectory(8.5, 3750)),
+        new InterpolationTable.Entry(130, new LaunchTrajectory(10.6, 4240)),
+        new InterpolationTable.Entry(146, new LaunchTrajectory(11.2, 4480)),
+        new InterpolationTable.Entry(165.5, new LaunchTrajectory(12, 4650))
     );
 }

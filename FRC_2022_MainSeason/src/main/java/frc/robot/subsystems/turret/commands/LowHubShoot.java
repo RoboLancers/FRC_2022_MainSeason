@@ -1,6 +1,5 @@
 package frc.robot.subsystems.turret.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.turret.Turret;
 
@@ -15,11 +14,8 @@ public class LowHubShoot extends CommandBase {
 
     @Override
     public void execute(){
-        double angle = SmartDashboard.getNumber("Low Shot Angle", 0);
-        double speed = SmartDashboard.getNumber("Low Shot Speed", 0);
-
-        this.turret.pitch.setPosition(angle);
-        this.turret.flywheel.setVelocity(speed);
+        this.turret.pitch.setPosition(12);
+        this.turret.flywheel.setVelocity(1500);
     }
 
     @Override

@@ -119,15 +119,24 @@ public class RobotContainer {
 
     // Shot trajectory tuning
 
-    // SmartDashboard.putNumber("Low Shot Speed", SmartDashboard.getNumber("Low Shot Speed", 1500));
-    // SmartDashboard.putNumber("Low Shot Angle", SmartDashboard.getNumber("Low Shot Angle", 12));
+    SmartDashboard.putNumber("Angular kP", SmartDashboard.getNumber("Angular kP", Constants.Turret.Yaw.kP));
+    SmartDashboard.putNumber("Angular kI", SmartDashboard.getNumber("Angular kI", Constants.Turret.Yaw.kI));
+    SmartDashboard.putNumber("Angular kD", SmartDashboard.getNumber("Angular kD", Constants.Turret.Yaw.kD));
 
-    // SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
-    // SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
+    SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
+    SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
   }
 
   private void configureButtonBindings(){
     manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
+    
+    driverController.whileHeld(XboxController.Button.Y, new TurnToAngle(drivetrain, turret, () -> {
+      if(turret.limelight.hasTarget()){
+        return turret.limelight.yawOffset() + drivetrain.getHeading();
+      } else {
+        return drivetrain.getHeading();
+      }
+    }));
 
     manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new UpperHubShoot(turret));
     manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new LowHubShoot(turret));
@@ -188,6 +197,8 @@ public class RobotContainer {
   */ return new ShootOneBall(drivetrain, turret, indexer); }
 
   public void doSendables(){
+    SmartDashboard.putNumber("Gyro Angle", drivetrain.getHeading());
+
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
     SmartDashboard.putNumber("Actual Pitch", turret.pitch.getPosition());
   }

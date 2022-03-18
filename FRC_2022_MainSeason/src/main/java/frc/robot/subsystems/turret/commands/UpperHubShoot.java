@@ -2,7 +2,6 @@ package frc.robot.subsystems.turret.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.Turret;
 
@@ -19,7 +18,7 @@ public class UpperHubShoot extends CommandBase {
     public void execute(){
         LaunchTrajectory interpolatedTrajectory = this.turret.limelight.hasTarget() ?
             LaunchTrajectory.upperHubTrajectoryMap.interpolate(LaunchTrajectory.estimateDistance(this.turret.limelight.pitchOffset())) :
-            LaunchTrajectory.upperHubTrajectoryMap.interpolate(Constants.Turret.Physics.kUpperHubRadius);
+            LaunchTrajectory.upperHubTrajectoryMap.interpolate(0);
 
         SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(turret.limelight.pitchOffset()));
 
@@ -31,8 +30,11 @@ public class UpperHubShoot extends CommandBase {
         // double angle = SmartDashboard.getNumber("High Shot Angle", 0);
         // double speed = SmartDashboard.getNumber("High Shot Speed", 0);
 
-        this.turret.pitch.setPosition(3.2);
-        this.turret.flywheel.setVelocity(3800);
+        this.turret.pitch.setPosition(interpolatedTrajectory.theta);
+        this.turret.flywheel.setVelocity(interpolatedTrajectory.speed);
+
+        // this.turret.pitch.setPosition(angle);
+        // this.turret.flywheel.setVelocity(speed);
     }
 
     @Override
