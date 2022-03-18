@@ -74,11 +74,11 @@ public final class Constants {
 
     public static final class Intake {
         public static final int kRollerPort = 0;
-        public static final int kRetractorChannelOne = 0;
-        public static final int kRetractorChannelTwo = 0;
+        public static final int kRetractorChannelOne = 6;
+        public static final int kRetractorChannelTwo = 7;
         public static final int kIndexerPort = 11;
-        public static final int kPistonDeploy = 0;
-        public static final int kPistonRetract = 0;
+        public static final int kPistonDeploy = 6;
+        public static final int kPistonRetract = 7;
         public static final double kIntakePower = 0.6;
         public static final double kErrorMargin = 20;
         public static final double kIRollerOff = 0;

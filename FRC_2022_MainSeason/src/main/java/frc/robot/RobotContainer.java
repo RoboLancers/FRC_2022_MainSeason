@@ -23,9 +23,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
+import frc.robot.commands.OneBallAuto;
 import frc.robot.commands.TaxiAuto;
+import frc.robot.commands.TwoBallAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.commands.UpdateLights;
 import frc.robot.subsystems.climber.commands.ManualClimber;
@@ -88,6 +91,8 @@ public class RobotContainer {
   private PIDController leftPID = new PIDController(Constants.Trajectory.kP, 0, 0);
   private Field2d m_field = new Field2d();
 
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+
   public RobotContainer() {
     this.configureButtonBindings();
 
@@ -102,12 +107,15 @@ public class RobotContainer {
     );
 
     indexer.setDefaultCommand(new RunCommand(() -> {
-      indexer.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y));
+      indexer.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y)));
     }, indexer));
 
     intake.setDefaultCommand(new RunCommand(() -> {
-      intake.setPower(driverController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER));
-      intake.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER));
+      if(Math.abs(driverController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)) > 0.05){
+        intake.setPower(Math.signum(driverController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)));
+      } else if(Math.abs(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)) > 0.05){
+        intake.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)));
+      }
     }, intake));
 
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
@@ -122,6 +130,9 @@ public class RobotContainer {
 
     SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
     SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
+  
+    autoChooser.setDefaultOption("OneBallAuto", new OneBallAuto(drivetrain, turret, indexer));
+    autoChooser.addOption("TwoBallAuto", new TwoBallAuto(drivetrain, turret, indexer, intake));
   }
 
   private void configureButtonBindings(){
@@ -132,8 +143,11 @@ public class RobotContainer {
         return turret.limelight.yawOffset() + drivetrain.getHeading();
       } else {
         return drivetrain.getHeading();
+        
       }
     }));
+
+    manipulatorController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy));
 
     manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new UpperHubShoot(turret));
     manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new LowHubShoot(turret));
@@ -190,7 +204,8 @@ public class RobotContainer {
         drivetrain::tankDriveVolts,
         drivetrain);
     drivetrain.resetOdometry(trajectory.getInitialPose());
-    return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
+    return new TwoBallAuto(drivetrain, turret, indexer, intake);
+    // return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
   }
 
   public void doSendables(){

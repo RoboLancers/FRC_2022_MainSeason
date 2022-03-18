@@ -12,18 +12,18 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Intake extends SubsystemBase {
     public CANSparkMax intakeMotor; // for roller
-    // public DoubleSolenoid retractionPiston; // for pistons
+    public DoubleSolenoid retractionPiston; // for pistons
     public boolean intakeOn = false;
 
     public Intake() {
         this.intakeMotor = new CANSparkMax(13, MotorType.kBrushless); //intake motor for roller
         intakeMotor.setIdleMode(IdleMode.kCoast); // This means that the motor running the intake will not brake
-        // this.retractionPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.Intake.kPistonDeploy, Constants.Intake.kPistonRetract);
-        // retractionPiston.set(Value.kReverse);
+        this.retractionPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.Intake.kPistonDeploy, Constants.Intake.kPistonRetract);
+        retractionPiston.set(Value.kReverse);
     }
 
     public void toggleDeploy() {
-        // retractionPiston.toggle();
+        retractionPiston.toggle();
     }
 
     public void toggleIntake() {
@@ -36,9 +36,9 @@ public class Intake extends SubsystemBase {
         }
     }
 
-    // public Value isIntakeDown() {
-    //     // return (retractionPiston.get());
-    // }
+    public Value isIntakeDown() {
+        return (retractionPiston.get());
+    }
 
     public void setPower(double power) {
         intakeMotor.set(power);
