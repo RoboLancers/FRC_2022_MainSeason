@@ -26,7 +26,12 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
+<<<<<<< HEAD
 import frc.robot.commands.OneBallAuto;
+=======
+import frc.robot.commands.ShootOneBall;
+import frc.robot.commands.ShootTwoBalls;
+>>>>>>> 5379e525ecfe59f132d9eec76d0f323cc3c8794a
 import frc.robot.commands.TaxiAuto;
 import frc.robot.commands.TwoBallAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
@@ -46,6 +51,7 @@ import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.misc.Camera;
 
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.commands.UseIntake;
 import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.LowHubShoot;
@@ -64,6 +70,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
+import frc.robot.commands.ShootOneBall;
 
 public class RobotContainer {
   private RobotContainer m_robotContainer;
@@ -111,11 +119,7 @@ public class RobotContainer {
     }, indexer));
 
     intake.setDefaultCommand(new RunCommand(() -> {
-      if(Math.abs(driverController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)) > 0.05){
-        intake.setPower(Math.signum(driverController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)));
-      } else if(Math.abs(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)) > 0.05){
         intake.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)));
-      }
     }, intake));
 
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
@@ -155,15 +159,15 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // The voltage constraint makes sure the robot doesn't exceed a certain voltage during runtime.
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+    /*var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
         new SimpleMotorFeedforward(
           Constants.Trajectory.ksVolts, 
           Constants.Trajectory.ksVoltSecondsPerMeter,
           Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
-        Constants.Trajectory.kDriveKinematics,10);
+        Constants.Trajectory.kDriveKinematics,10);*/
 
     // Gives the trajectory the constants determined in characterization.
-    TrajectoryConfig config = new TrajectoryConfig(
+    /*TrajectoryConfig config = new TrajectoryConfig(
       Constants.Trajectory.kMaxSpeedMetersPerSecond,
       Constants.Trajectory.kMaxAccelerationMetersPerSecondSquared
     ).setKinematics(Constants.Trajectory.kDriveKinematics).addConstraint(autoVoltageConstraint);    
@@ -180,7 +184,7 @@ public class RobotContainer {
           config);
     */
             
-    try {
+    /*try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON); 
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException ex) {
@@ -189,7 +193,7 @@ public class RobotContainer {
 
     // Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command
     // so that it constantly updates and corrects the trajectory auto.
-    RamseteCommand ramseteCommand = new RamseteCommand(
+   /* RamseteCommand ramseteCommand = new RamseteCommand(
       trajectory, 
       drivetrain::getPose, // Gets the translational and rotational position of the robot.
       new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),//Uses constants of 2.0 and 0.7
@@ -204,9 +208,19 @@ public class RobotContainer {
         drivetrain::tankDriveVolts,
         drivetrain);
     drivetrain.resetOdometry(trajectory.getInitialPose());
-    return new TwoBallAuto(drivetrain, turret, indexer, intake);
-    // return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
-  }
+    return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
+  */ return new ShootOneBall(drivetrain, turret, indexer);
+  //return new ShootTwoBalls(drivetrain, turret, indexer, intake); error: "unreachable code"
+ }
+
+ 
+
+ 
+   
+    
+
+
+
 
   public void doSendables(){
     SmartDashboard.putNumber("Gyro Angle", drivetrain.getHeading());
