@@ -26,12 +26,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
-<<<<<<< HEAD
 import frc.robot.commands.OneBallAuto;
-=======
 import frc.robot.commands.ShootOneBall;
 import frc.robot.commands.ShootTwoBalls;
->>>>>>> 5379e525ecfe59f132d9eec76d0f323cc3c8794a
 import frc.robot.commands.TaxiAuto;
 import frc.robot.commands.TwoBallAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
