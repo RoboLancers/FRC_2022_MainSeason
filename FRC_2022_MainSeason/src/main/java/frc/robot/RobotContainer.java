@@ -29,6 +29,7 @@ import frc.robot.commands.TaxiAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.commands.UpdateLights;
 import frc.robot.subsystems.climber.commands.ManualClimber;
+import frc.robot.subsystems.climber.commands.ResetClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
@@ -62,6 +63,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.yaw.BetterYaw;
 import frc.robot.subsystems.climber.commands.ManualClimber;
+import frc.robot.subsystems.climber.commands.ResetClimber;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -178,7 +180,9 @@ public class RobotContainer {
     // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
     //   new ZeroAndDisable(turret),
     //   new UpClimber(climber, Constants.Climber.kMidClimb)));
-      
+    manipulatorController.whenPressed(XboxController.Button.A, new ResetClimber(climber, climber.climberMotor1));
+    
+    manipulatorController.whenPressed(XboxController.Button.Y, new InstantCommand(climber :: setEncoderPosition));
   }
 
   public Command getAutonomousCommand() {
@@ -255,6 +259,8 @@ public class RobotContainer {
     SmartDashboard.putNumber("Right Encoder Ticks", drivetrain.getRightEncoder().getPosition() * 4096);
     SmartDashboard.putNumber("Climber Encoder 1", climber.climbEncoder1.getPosition());
     SmartDashboard.putNumber("Climber Encoder 2", climber.climbEncoder2.getPosition());
+    SmartDashboard.putNumber("Climber Current 1", climber.climberMotor1.getOutputCurrent());
+    SmartDashboard.putNumber("Climber Current 2", climber.climberMotor2.getOutputCurrent());
 
   }
 }
