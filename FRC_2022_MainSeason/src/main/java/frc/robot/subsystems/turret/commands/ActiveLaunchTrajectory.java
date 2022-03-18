@@ -1,26 +1,20 @@
 package frc.robot.subsystems.turret.commands;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.turret.LaunchTrajectory;
 import frc.robot.subsystems.turret.Turret;
-import frc.robot.util.Maths;
 
 public class ActiveLaunchTrajectory extends CommandBase {
     private Turret turret;
-    private Drivetrain driveTrain;
 
-    public ActiveLaunchTrajectory(Turret turret, Drivetrain driveTrain){
+    public ActiveLaunchTrajectory(Turret turret){
         this.turret = turret;
-        this.driveTrain = driveTrain;
+        this.turret.launchTrajectory = new LaunchTrajectory(0, 0);
         
         this.addRequirements(this.turret);
     }
 
+<<<<<<< HEAD
 //     @Override
 //     public void execute(){
 //         if(this.turret.inHangMode){
@@ -64,6 +58,19 @@ public class ActiveLaunchTrajectory extends CommandBase {
 //             }
 //         }
 //     }
+=======
+    @Override
+    public void execute(){
+        this.turret.pitch.setPosition(this.turret.launchTrajectory.theta);
+
+        // force stop if target speed is 0
+        if(this.turret.launchTrajectory.speed == 0){
+            this.turret.flywheel.setPower(0);
+        } else {
+            this.turret.flywheel.setVelocity(this.turret.launchTrajectory.speed);
+        }        
+    }
+>>>>>>> 51c0f53f0f499ead1f5f5777d9d603d7599c6767
 
     @Override
     public boolean isFinished(){
