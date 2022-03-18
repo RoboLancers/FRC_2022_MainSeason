@@ -75,17 +75,10 @@ public final class Constants {
     public static final class Intake {
         public static final int kRetractorChannelOne = 0;
         public static final int kRetractorChannelTwo = 0;
-<<<<<<< HEAD
-        public static final int kIntakePort = 13;
-        public static final int kPistonDeploy = 6;
-        public static final int kPistonRetract = 7;
-        public static final double kIntakePower = 0.8;
-=======
         public static final int kIndexerPort = 11;
         public static final int kPistonDeploy = 0;
         public static final int kPistonRetract = 0;
         public static final double kIntakePower = 0.6;
->>>>>>> 51c0f53f0f499ead1f5f5777d9d603d7599c6767
         public static final double kErrorMargin = 20;
         public static final double kIRollerOff = 0;
     }
