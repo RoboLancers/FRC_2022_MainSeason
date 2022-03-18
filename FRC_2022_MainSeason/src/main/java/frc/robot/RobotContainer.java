@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
+import frc.robot.commands.ShootOneBall;
 import frc.robot.commands.TaxiAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.commands.UpdateLights;
@@ -61,6 +62,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
+import frc.robot.commands.ShootOneBall;
 
 public class RobotContainer {
   private RobotContainer m_robotContainer;
@@ -101,9 +104,9 @@ public class RobotContainer {
       )
     );
 
-    indexer.setDefaultCommand(new RunCommand(() -> {
-      indexer.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y));
-    }, indexer));
+    // indexer.setDefaultCommand(new RunCommand(() -> {
+    //   indexer.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y));
+    // }, indexer));
 
     intake.setDefaultCommand(new RunCommand(() -> {
       intake.setPower(driverController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER));
@@ -132,15 +135,15 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // The voltage constraint makes sure the robot doesn't exceed a certain voltage during runtime.
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+    /*var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
         new SimpleMotorFeedforward(
           Constants.Trajectory.ksVolts, 
           Constants.Trajectory.ksVoltSecondsPerMeter,
           Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
-        Constants.Trajectory.kDriveKinematics,10);
+        Constants.Trajectory.kDriveKinematics,10);*/
 
     // Gives the trajectory the constants determined in characterization.
-    TrajectoryConfig config = new TrajectoryConfig(
+    /*TrajectoryConfig config = new TrajectoryConfig(
       Constants.Trajectory.kMaxSpeedMetersPerSecond,
       Constants.Trajectory.kMaxAccelerationMetersPerSecondSquared
     ).setKinematics(Constants.Trajectory.kDriveKinematics).addConstraint(autoVoltageConstraint);    
@@ -157,7 +160,7 @@ public class RobotContainer {
           config);
     */
             
-    try {
+    /*try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON); 
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException ex) {
@@ -166,7 +169,7 @@ public class RobotContainer {
 
     // Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command
     // so that it constantly updates and corrects the trajectory auto.
-    RamseteCommand ramseteCommand = new RamseteCommand(
+   /* RamseteCommand ramseteCommand = new RamseteCommand(
       trajectory, 
       drivetrain::getPose, // Gets the translational and rotational position of the robot.
       new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),//Uses constants of 2.0 and 0.7
@@ -182,7 +185,7 @@ public class RobotContainer {
         drivetrain);
     drivetrain.resetOdometry(trajectory.getInitialPose());
     return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
-  }
+  */ return new ShootOneBall(drivetrain, turret, indexer); }
 
   public void doSendables(){
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
