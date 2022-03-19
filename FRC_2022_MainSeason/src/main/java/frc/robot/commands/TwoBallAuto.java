@@ -20,12 +20,20 @@ public class TwoBallAuto extends SequentialCommandGroup {
             new ZeroPitch(turret),
             new ParallelRaceGroup(
                 new RunCommand(() -> {
-                    drivetrain.setDrivePower(0.4);
+                    drivetrain.arcadeDrive(0.4, 0);
                     intake.setPower(Constants.Intake.kIntakePower);
+                    indexer.setPower(0.6);
                 }),
                 new WaitUntilCommand(() -> {
                     return turret.limelight.hasTarget() && Math.abs(turret.limelight.pitchOffset()) < 2;
                 })
+            ),
+            new ParallelRaceGroup(
+                new RunCommand(() -> {
+                    drivetrain.arcadeDrive(0,0);
+                    indexer.setPower(0.05);
+                }),
+                new WaitCommand(1)
             ),
             new ParallelRaceGroup(
                 new UpperHubShoot(turret),

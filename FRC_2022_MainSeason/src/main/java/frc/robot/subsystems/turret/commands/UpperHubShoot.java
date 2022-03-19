@@ -28,18 +28,18 @@ public class UpperHubShoot extends CommandBase {
         SmartDashboard.putNumber("Interpolated Angle", interpolatedTrajectory.theta);
         SmartDashboard.putNumber("Interpolated Speed", interpolatedTrajectory.speed);
 
-        this.turret.pitch.setPosition(interpolatedTrajectory.theta);
-        this.turret.flywheel.setVelocity(interpolatedTrajectory.speed);
+        // this.turret.pitch.setPosition(interpolatedTrajectory.theta);
+        // this.turret.flywheel.setVelocity(interpolatedTrajectory.speed);
 
 
         // to use manual tuning
 
         // for tuning interpolation control points 
-        // double angle = SmartDashboard.getNumber("High Shot Angle", 0);
-        // double speed = SmartDashboard.getNumber("High Shot Speed", 0);
+        double angle = SmartDashboard.getNumber("High Shot Angle", 0);
+        double speed = SmartDashboard.getNumber("High Shot Speed", 0);
 
-        // this.turret.pitch.setPosition(angle);
-        // this.turret.flywheel.setVelocity(speed);
+        this.turret.pitch.setPosition(angle);
+        this.turret.flywheel.setVelocity(speed);
     }
 
     @Override

@@ -26,13 +26,13 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.Pneumatics;
+import frc.robot.commands.MoveForward;
 import frc.robot.commands.OneBallAuto;
-import frc.robot.commands.ShootOneBall;
-import frc.robot.commands.ShootTwoBalls;
 import frc.robot.commands.TaxiAuto;
 import frc.robot.commands.TwoBallAuto;
 // import frc.robot.commands.GeneralizedReleaseRoutine;
 import frc.robot.commands.UpdateLights;
+import frc.robot.commands.ZeroClimber;
 import frc.robot.subsystems.climber.commands.ManualClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
@@ -67,9 +67,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
 import frc.robot.util.XboxController.Axis;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.robot.subsystems.climber.commands.ResetClimber;
+// import frc.robot.subsystems.climber.commands.ResetClimber;
 
-import frc.robot.commands.ShootOneBall;
 
 public class RobotContainer {
   private RobotContainer m_robotContainer;
@@ -112,9 +111,9 @@ public class RobotContainer {
       )
     );
 
-    indexer.setDefaultCommand(new RunCommand(() -> {
-      indexer.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y)));
-    }, indexer));
+    // indexer.setDefaultCommand(new RunCommand(() -> {
+    //   indexer.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y)));
+    // }, indexer));
 
     intake.setDefaultCommand(new RunCommand(() -> {
         intake.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)));
@@ -133,8 +132,11 @@ public class RobotContainer {
     SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
     SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
   
-    autoChooser.setDefaultOption("OneBallAuto", new OneBallAuto(drivetrain, turret, indexer));
-    autoChooser.addOption("TwoBallAuto", new TwoBallAuto(drivetrain, turret, indexer, intake));
+    autoChooser.setDefaultOption("One Ball Auto", new OneBallAuto(drivetrain, turret, indexer));
+    autoChooser.addOption("Two Ball Auto", new TwoBallAuto(drivetrain, turret, indexer, intake));
+    autoChooser.addOption("Go Forth", new MoveForward(drivetrain, turret, indexer));
+    autoChooser.addOption("Zero Climber", new ZeroClimber(climber, turret));
+    autoChooser.addOption("Nothing", new ZeroPitch(turret));
   }
 
     // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
@@ -171,13 +173,14 @@ public class RobotContainer {
 
     manipulatorController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy));
 
-    manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new UpperHubShoot(turret));
-    manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new LowHubShoot(turret));
+    manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new UpperHubShoot(turret));
+    manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new LowHubShoot(turret));
   
-    manipulatorController.whenPressed(XboxController.Button.A, new ResetClimber(climber, climber.climberMotor1));
-    manipulatorController.whenPressed(XboxController.Button.B, new ResetClimber(climber, climber.climberMotor2));
+    // manipulatorController.whenPressed(XboxController.Button.A, new ResetClimber(climber, climber.climberMotor1));
+    // manipulatorController.whenPressed(XboxController.Button.B, new ResetClimber(climber, climber.climberMotor2));
 
     manipulatorController.whenPressed(XboxController.Button.Y, new InstantCommand(climber :: setEncoderPosition));
+    manipulatorController.whenPressed(XboxController.POV.DOWN, new InstantCommand(climber :: setEncoderPosition));
   }
 
   public Command getAutonomousCommand() {
@@ -232,7 +235,7 @@ public class RobotContainer {
         drivetrain);
     drivetrain.resetOdometry(trajectory.getInitialPose());
     return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
-  */ return new ShootOneBall(drivetrain, turret, indexer);
+  */ return autoChooser.getSelected();
   //return new ShootTwoBalls(drivetrain, turret, indexer, intake); error: "unreachable code"
  }
 
@@ -247,7 +250,7 @@ public class RobotContainer {
 
   public void doSendables(){
     SmartDashboard.putNumber("Gyro Angle", drivetrain.getHeading());
-
+    SmartDashboard.putData(autoChooser);
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
     SmartDashboard.putNumber("Actual Pitch", turret.pitch.getPosition());
     SmartDashboard.putNumber("Climber Encoder1", climber.climbEncoder1.getPosition());
