@@ -28,7 +28,7 @@ public class ResetClimber extends CommandBase{
     
     @Override
     public void end(boolean interrupted){
-        climber.climberMotor1.set(0);
+        // climber.climberMotor1.set(0);
         climber.climberMotor2.set(0);
     }
 }

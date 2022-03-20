@@ -34,7 +34,7 @@ public final class Constants {
 
         public static final class Yaw {
             // Used in drivetrain, not actual turret yaw motor
-            public static final double kP = 0.0001;
+            public static final double kP = 0.001;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
 
@@ -60,7 +60,7 @@ public final class Constants {
             public static final double kP = 0;
             public static final double kI = 0.0;
             public static final double kD = 0;
-            public static final double kFF = 0.0001873;
+            public static final double kFF = 0.0001761;
             public static final double kMaxAbsoluteVoltage = 1.0;
 
             public static final double kErrorThreshold = 25;

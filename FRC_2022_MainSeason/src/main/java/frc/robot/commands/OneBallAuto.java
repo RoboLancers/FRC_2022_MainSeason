@@ -19,11 +19,11 @@ public class OneBallAuto extends SequentialCommandGroup {
             new ParallelRaceGroup(
                 new UpperHubShoot(turret),
                 new SequentialCommandGroup(
-                    new WaitCommand(1.0),
+                    new WaitCommand(1.5),
                     new InstantCommand(() -> {
                         indexer.setPower(1.0);
                     }),
-                    new WaitCommand(1.0)
+                    new WaitCommand(1.5)
                 )
             ),
             new InstantCommand(() -> {
@@ -31,16 +31,13 @@ public class OneBallAuto extends SequentialCommandGroup {
             }),
             new ParallelRaceGroup(
                 new RunCommand(() -> {
-                    drivetrain.arcadeDrive(0.4, 0);;
+                    drivetrain.arcadeDrive(0.4, 0);
                 }),
-                new WaitCommand(2)
+                new WaitCommand(2.0)
             ),
-            new ParallelRaceGroup(
-                new RunCommand(() -> {
-                    drivetrain.arcadeDrive(0, 0);;
-                }),
-                new WaitCommand(1)
-            )
+            new InstantCommand(() -> {
+                drivetrain.arcadeDrive(0, 0);
+            })
         );
         addRequirements(drivetrain, turret, indexer);
     }

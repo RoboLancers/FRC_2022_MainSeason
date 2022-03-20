@@ -111,12 +111,12 @@ public class RobotContainer {
       )
     );
 
-    // indexer.setDefaultCommand(new RunCommand(() -> {
-    //   indexer.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y)));
-    // }, indexer));
+    indexer.setDefaultCommand(new RunCommand(() -> {
+      indexer.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y));
+    }, indexer));
 
     intake.setDefaultCommand(new RunCommand(() -> {
-        intake.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)));
+      intake.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)));
     }, intake));
 
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
@@ -161,13 +161,12 @@ public class RobotContainer {
  
     private void configureButtonBindings(){
     manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
-    
-    driverController.whileHeld(XboxController.Button.Y, new TurnToAngle(drivetrain, turret, () -> {
+
+    driverController.whileHeld(XboxController.Button.RIGHT_BUMPER, new TurnToAngle(drivetrain, turret, () -> {
       if(turret.limelight.hasTarget()){
         return turret.limelight.yawOffset() + drivetrain.getHeading();
       } else {
         return drivetrain.getHeading();
-        
       }
     }));
 

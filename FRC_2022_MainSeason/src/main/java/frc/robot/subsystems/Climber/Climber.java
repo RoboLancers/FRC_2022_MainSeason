@@ -28,8 +28,8 @@ public class Climber extends SubsystemBase{
         climberMotor2.setIdleMode(IdleMode.kBrake);
         climberMotor1.setInverted(true);
         climberMotor2.setInverted(false);
-       // climberMotor1.setSoftLimit(SoftLimitDirection.kForward, Constants.Climber.kMaxHeight1);
-       // climberMotor2.setSoftLimit(SoftLimitDirection.kForward, Constants.Climber.kMaxHeight2);
+       climberMotor1.setSoftLimit(SoftLimitDirection.kForward, Constants.Climber.kMaxHeight1);
+       climberMotor2.setSoftLimit(SoftLimitDirection.kForward, Constants.Climber.kMaxHeight2);
         
     }
     public void setEncoderPosition(){
@@ -39,7 +39,7 @@ public class Climber extends SubsystemBase{
     public void set(double power){
         climberMotor1.set(power);
         climberMotor2.set(power);
-        }
+    }
     
     public double getPosition1(){
         return climbEncoder1.getPosition();
@@ -50,7 +50,7 @@ public class Climber extends SubsystemBase{
     }
 
     public boolean isHung(){
-        if (this.climberMotor1.getOutputCurrent() >= Constants.Climber.kNormalHangCurrent){
+        if (this.climberMotor2.getOutputCurrent() >= Constants.Climber.kNormalHangCurrent){
             return true;
         }
         return false;
