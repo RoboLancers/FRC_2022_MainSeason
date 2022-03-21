@@ -15,7 +15,7 @@ public class LowHubShoot extends CommandBase {
     @Override
     public void execute(){
         this.turret.pitch.setPosition(12);
-        this.turret.flywheel.setVelocity(1500);
+        this.turret.flywheel.setVelocity(1700);
     }
 
     @Override
