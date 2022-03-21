@@ -7,12 +7,14 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.UpperHubShoot;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.climber.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Testing extends CommandBase {
 
@@ -20,11 +22,13 @@ public class Testing extends CommandBase {
     private Indexer indexer;
     private Turret turret;
     private Climber climber;
+    private DoubleSolenoid.Value value;
 
     public Testing(Intake intake, Indexer indexer, Turret turret, Climber climber) {
         this.intake = intake;
         this.indexer = indexer;
         this.turret = turret;
+        this.value = intake.retractionPiston.get();
     }
 
     public void execute() {
@@ -65,19 +69,26 @@ public class Testing extends CommandBase {
                 climber.climberMotor1.set(0.1);
                 climber.climberMotor2.set(0.1);
             }, climber),
-            new WaitUntilCommand(1)),
+            new WaitCommand(1)),
             new PrintCommand("climber up success"),
             /* new ParallelRaceGroup(new RunCommand(() -> {
                 intake.toggleIntake();
                 intake.toggleIntake();
             }, intake),
-            new WaitUntilCommand(15)), */
+            new WaitCommand(15),
+            new WaitUntilCommand()), */
             new ParallelRaceGroup(new RunCommand(() -> {
                 climber.climberMotor1.set(-0.1);
                 climber.climberMotor2.set(-0.1);
             }, climber),
-            new WaitUntilCommand(1)),
+            new WaitCommand(1)),
             new PrintCommand("climber down success")
+            new ParallelRaceGroup(new RunCommand(() -> {
+                climber.climberMotor1.set(0);
+                climber.climberMotor2.set(0);
+            }, climber),
+            new WaitCommand(1)),
+            new PrintCommand("climber motor off")
         );
     }
 }
