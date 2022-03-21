@@ -77,14 +77,9 @@ public final class Constants {
     }
 
     public static final class Intake {
-<<<<<<< HEAD
-        public static final int kRetractorChannelOne = 0;
-        public static final int kRetractorChannelTwo = 0;
-=======
         public static final int kRollerPort = 0;
         public static final int kRetractorChannelOne = 6;
         public static final int kRetractorChannelTwo = 7;
->>>>>>> 6aec639c7321017ff813e148c9524732abae9ff0
         public static final int kIndexerPort = 11;
         public static final int kPistonDeploy = 6;
         public static final int kPistonRetract = 7;
