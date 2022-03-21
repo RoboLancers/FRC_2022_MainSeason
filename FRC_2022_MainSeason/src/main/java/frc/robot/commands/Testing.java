@@ -14,7 +14,10 @@ import frc.robot.subsystems.turret.commands.UpperHubShoot;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.climber.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
+import java.util.function.Supplier;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Testing extends CommandBase {
 
@@ -66,29 +69,14 @@ public class Testing extends CommandBase {
                 new WaitCommand(2)),
             new PrintCommand("turret success"),
             new ParallelRaceGroup(new RunCommand(() -> {
-                climber.climberMotor1.set(0.1);
-                climber.climberMotor2.set(0.1);
-            }, climber),
-            new WaitCommand(1)),
-            new PrintCommand("climber up success"),
-            /* new ParallelRaceGroup(new RunCommand(() -> {
-                intake.toggleIntake();
                 intake.toggleIntake();
             }, intake),
             new WaitCommand(15),
-            new WaitUntilCommand()), */
+            new WaitUntilCommand(() -> (intake.retractionPiston.get() != value))),
             new ParallelRaceGroup(new RunCommand(() -> {
-                climber.climberMotor1.set(-0.1);
-                climber.climberMotor2.set(-0.1);
-            }, climber),
-            new WaitCommand(1)),
-            new PrintCommand("climber down success")
-            new ParallelRaceGroup(new RunCommand(() -> {
-                climber.climberMotor1.set(0);
-                climber.climberMotor2.set(0);
-            }, climber),
-            new WaitCommand(1)),
-            new PrintCommand("climber motor off")
-        );
+                intake.toggleIntake();
+            }, intake),
+            new WaitCommand(15),
+            new WaitUntilCommand(() -> (intake.retractionPiston.get() == value))));
     }
 }
