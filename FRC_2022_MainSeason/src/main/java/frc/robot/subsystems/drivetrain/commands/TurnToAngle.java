@@ -15,9 +15,9 @@ public class TurnToAngle extends PIDCommand {
         public TurnToAngle(Drivetrain drivetrain, Turret turret, DoubleSupplier setpoint){
             super(
                 new PIDController(
-                    SmartDashboard.getNumber("Angular kP", 0),
-                    SmartDashboard.getNumber("Angular kI", 0),
-                    SmartDashboard.getNumber("Angular kD", 0)
+                    Constants.Turret.Yaw.kP,
+                    Constants.Turret.Yaw.kI,
+                    Constants.Turret.Yaw.kD
                 ),
                 drivetrain::getHeading,
                 () -> {

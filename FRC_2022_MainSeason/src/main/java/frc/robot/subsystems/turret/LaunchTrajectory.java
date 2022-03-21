@@ -132,8 +132,8 @@ public class LaunchTrajectory {
 
     // Calculate the trajectory by interpolating between known shot trajectories with respect to distance
     public static final InterpolationTable upperHubTrajectoryMap = new InterpolationTable(
-        new InterpolationTable.Entry(0, new LaunchTrajectory(3.2, 3800)),
-        new InterpolationTable.Entry(90, new LaunchTrajectory(8.5, 3750)),
+        new InterpolationTable.Entry(0, new LaunchTrajectory(2.25, 3550)),
+        new InterpolationTable.Entry(90, new LaunchTrajectory(8.0, 4000)),
         new InterpolationTable.Entry(130, new LaunchTrajectory(10.6, 4240)),
         new InterpolationTable.Entry(146, new LaunchTrajectory(11.2, 4480)),
         new InterpolationTable.Entry(165.5, new LaunchTrajectory(12, 4650))

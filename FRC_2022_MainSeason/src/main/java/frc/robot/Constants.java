@@ -16,6 +16,10 @@ public final class Constants {
         public static final double kPower = 1;
         public static final double kNegativePower = -1;
         public static final double kNormalHangCurrent = 1;
+        public static final int kMaxHeight1 = 0;
+        public static final int kMaxHeight2 = 0;
+        public static final int kResetCurrent = 50;
+
     }
 
     public static final class Turret {
@@ -30,7 +34,7 @@ public final class Constants {
 
         public static final class Yaw {
             // Used in drivetrain, not actual turret yaw motor
-            public static final double kP = 0.0001;
+            public static final double kP = 0.001;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
 
@@ -56,7 +60,7 @@ public final class Constants {
             public static final double kP = 0;
             public static final double kI = 0.0;
             public static final double kD = 0;
-            public static final double kFF = 0.0001873;
+            public static final double kFF = 0.0001761;
             public static final double kMaxAbsoluteVoltage = 1.0;
 
             public static final double kErrorThreshold = 25;
@@ -73,11 +77,17 @@ public final class Constants {
     }
 
     public static final class Intake {
+<<<<<<< HEAD
         public static final int kRetractorChannelOne = 0;
         public static final int kRetractorChannelTwo = 0;
+=======
+        public static final int kRollerPort = 0;
+        public static final int kRetractorChannelOne = 6;
+        public static final int kRetractorChannelTwo = 7;
+>>>>>>> 6aec639c7321017ff813e148c9524732abae9ff0
         public static final int kIndexerPort = 11;
-        public static final int kPistonDeploy = 0;
-        public static final int kPistonRetract = 0;
+        public static final int kPistonDeploy = 6;
+        public static final int kPistonRetract = 7;
         public static final double kIntakePower = 0.6;
         public static final double kErrorMargin = 20;
         public static final double kIRollerOff = 0;
