@@ -35,10 +35,10 @@ public class Indexer extends SubsystemBase {
 
     public Indexer(){
         // trigger is a class that'll let you run a command when the trigger is activated
-        Trigger threshColorSensor = new Trigger(() -> {
+        // Trigger threshColorSensor = new Trigger(() -> {
             // the condition that triggers the command
-            return bottomColorSensor.getProximity() >= Constants.Indexer.kProximityLimit;
-        });
+            // return bottomColorSensor.getProximity() >= Constants.Indexer.kProximityLimit;
+        // });
         // This is an example of command composition.
         // threshColorSensor.whenActive(new RunCommand(this::processBall) // This runs the processBall() function once the color sensor is activated
         //     .withInterrupt(this::indexFinished) // Stop this command when the highest ball in the indexer reaches the next color sensor up

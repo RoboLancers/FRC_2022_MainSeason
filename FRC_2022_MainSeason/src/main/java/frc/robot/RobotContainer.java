@@ -112,7 +112,7 @@ public class RobotContainer {
       )
     );
 
-    indexer.setDefaultCommand(new RunCommand(() -> {
+   /*  indexer.setDefaultCommand(new RunCommand(() -> {
       indexer.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y));
     }, indexer));
 
@@ -122,7 +122,7 @@ public class RobotContainer {
 
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
 
-    turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
+    turret.setDefaultCommand(new ActiveLaunchTrajectory(turret)); */
 
     // Shot trajectory tuning
 
