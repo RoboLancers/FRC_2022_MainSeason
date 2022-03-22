@@ -57,9 +57,9 @@ public final class Constants {
         }
 
         public static final class Flywheel {
-            public static final double kP = 0;
+            public static final double kP = 0.0;
             public static final double kI = 0.0;
-            public static final double kD = 0;
+            public static final double kD = 0.0;
             public static final double kFF = 0.0001761;
             public static final double kMaxAbsoluteVoltage = 1.0;
 

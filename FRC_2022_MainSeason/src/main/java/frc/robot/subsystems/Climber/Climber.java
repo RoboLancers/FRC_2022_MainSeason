@@ -32,7 +32,7 @@ public class Climber extends SubsystemBase{
        climberMotor2.setSoftLimit(SoftLimitDirection.kForward, Constants.Climber.kMaxHeight2);
         
     }
-    public void setEncoderPosition(){
+    public void resetEncoderPosition(){
         climbEncoder1.setPosition(0);
         climbEncoder2.setPosition(0);
     }

@@ -50,9 +50,11 @@ import frc.robot.subsystems.misc.Camera;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.commands.UseIntake;
 import frc.robot.subsystems.turret.LaunchTrajectory;
+import frc.robot.subsystems.turret.commands.ActiveFlywheel;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
-import frc.robot.subsystems.turret.commands.LowHubShoot;
-import frc.robot.subsystems.turret.commands.UpperHubShoot;
+import frc.robot.subsystems.turret.commands.ActivePitch;
+import frc.robot.subsystems.turret.commands.LowHubShot;
+import frc.robot.subsystems.turret.commands.UpperHubShot;
 import frc.robot.subsystems.turret.commands.ZeroPitch;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.NotifierCommand;
@@ -102,14 +104,10 @@ public class RobotContainer {
     this.configureButtonBindings();
 
     // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
-    this.drivetrain.setDefaultCommand(
-      new RunCommand(
-        () -> {
-          this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
-        },
-        drivetrain
-      )
-    );
+    this.drivetrain.setDefaultCommand(new RunCommand(
+      () -> this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X)),
+      drivetrain
+    ));
 
     indexer.setDefaultCommand(new RunCommand(() -> {
       indexer.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y));
@@ -122,12 +120,8 @@ public class RobotContainer {
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
 
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
-
-    // Shot trajectory tuning
-
-    SmartDashboard.putNumber("Angular kP", SmartDashboard.getNumber("Angular kP", Constants.Turret.Yaw.kP));
-    SmartDashboard.putNumber("Angular kI", SmartDashboard.getNumber("Angular kI", Constants.Turret.Yaw.kI));
-    SmartDashboard.putNumber("Angular kD", SmartDashboard.getNumber("Angular kD", Constants.Turret.Yaw.kD));
+    turret.flywheel.setDefaultCommand(new ActiveFlywheel(turret));
+    turret.pitch.setDefaultCommand(new ActivePitch(turret));
 
     SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
     SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
@@ -138,124 +132,34 @@ public class RobotContainer {
     autoChooser.addOption("Zero Climber", new ZeroClimber(climber, turret));
     autoChooser.addOption("Nothing", new ZeroPitch(turret));
   }
-
-    // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
-    // manipulatorController.whenPressed(XboxController.Trigger.RIGHT_TRIGGER, new GeneralizedReleaseRoutine(indexer, turret));
-    // manipulatorController.whenPressed(XboxController.LEFT_BUMPER, new PassThrough Out);
-    // manipulatorController.whenPressed(XboxController.Button.RIGHT_BUMPER, new RunCommand(
-    // () -> {
-    // indexer.setPower(Constants.Indexer.kIndexerSpeed), indexer;
-    // }
-    // );
-    // manipulatorController.whenPressed(XboxController.Axis.LEFT_Y, new ManualClimber(driverController, climber));
-    // manipulatorController.whenPressed(XboxController.Up, new REzero);
-    // manipulatorController.whenPressed(XboxController.DOWN, new ShootFromLaunchpad);
-    // manipulatorController.whenPressed(XboxController.Button.A, new ClimberDown);
-    // manipulatorController.whenPressed(XboxController.ButtonThinggggg, new Instant)
-    // manipulatorController.whenPressed(XboxController.Button.B, new SequentialCommandGroup(
-    //   new ZeroAndDisable(turret),
-    //   new UpClimber(climber, Constants.Climber.kLowClimb)));
-    // manipulatorController.whenPressed(XboxController.Button.Y, new SequentialCommandGroup(
-    //   new ZeroAndDisable(turret),
-    //   new UpClimber(climber, Constants.Climber.kMidClimb)));
  
-    private void configureButtonBindings(){
-    manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
-
+  private void configureButtonBindings(){
     driverController.whileHeld(XboxController.Button.RIGHT_BUMPER, new TurnToAngle(drivetrain, turret, () -> {
-      if(turret.limelight.hasTarget()){
-        return turret.limelight.yawOffset() + drivetrain.getHeading();
-      } else {
-        return drivetrain.getHeading();
-      }
+      return drivetrain.getHeading() + (turret.limelight.hasTarget() ? turret.limelight.yawOffset() : 0);
     }));
 
-    manipulatorController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy));
-
-    manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new UpperHubShoot(turret));
-    manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new LowHubShoot(turret));
-  
-    // manipulatorController.whenPressed(XboxController.Button.A, new ResetClimber(climber, climber.climberMotor1));
-    // manipulatorController.whenPressed(XboxController.Button.B, new ResetClimber(climber, climber.climberMotor2));
-
-    manipulatorController.whenPressed(XboxController.Button.Y, new InstantCommand(climber :: setEncoderPosition));
-    manipulatorController.whenPressed(XboxController.POV.DOWN, new InstantCommand(climber :: setEncoderPosition));
+    manipulatorController
+      .whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy))
+      .whenPressed(XboxController.Button.X, new ZeroPitch(turret))
+      // .whenPressed(XboxController.Button.Y, new InstantCommand(climber::resetEncoderPosition))
+      // .whenPressed(XboxController.Button.A, new ResetClimber(climber, climber.climberMotor1))
+      // .whenPressed(XboxController.Button.B, new ResetClimber(climber, climber.climberMotor2))
+      .whileHeld(XboxController.Button.LEFT_BUMPER, new LowHubShot(turret))
+      .whileHeld(XboxController.Button.RIGHT_BUMPER, new UpperHubShot(turret));
   }
 
   public Command getAutonomousCommand() {
-    // The voltage constraint makes sure the robot doesn't exceed a certain voltage during runtime.
-    /*var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(
-          Constants.Trajectory.ksVolts, 
-          Constants.Trajectory.ksVoltSecondsPerMeter,
-          Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
-        Constants.Trajectory.kDriveKinematics,10);*/
-
-    // Gives the trajectory the constants determined in characterization.
-    /*TrajectoryConfig config = new TrajectoryConfig(
-      Constants.Trajectory.kMaxSpeedMetersPerSecond,
-      Constants.Trajectory.kMaxAccelerationMetersPerSecondSquared
-    ).setKinematics(Constants.Trajectory.kDriveKinematics).addConstraint(autoVoltageConstraint);    
-
-    // Generates the actual path with given points.
-    /*
-      trajectory = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)),
-          // Pass through these two interior waypoints, making an 's' curve path
-          List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-          // End 3 meters straight ahead of where we started, facing forward
-          new Pose2d(3, 0, new Rotation2d(0)),
-          // Pass config
-          config);
-    */
-            
-    /*try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON); 
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    }
-
-    // Ramsete is a trajectory tracker and auto corrector. We feed it parameters into a ramsete command
-    // so that it constantly updates and corrects the trajectory auto.
-   /* RamseteCommand ramseteCommand = new RamseteCommand(
-      trajectory, 
-      drivetrain::getPose, // Gets the translational and rotational position of the robot.
-      new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),//Uses constants of 2.0 and 0.7
-      new SimpleMotorFeedforward( // Feedforward controller to control the motors before they move
-        Constants.Trajectory.ksVolts,  
-        Constants.Trajectory.ksVoltSecondsPerMeter,
-        Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
-        Constants.Trajectory.kDriveKinematics, 
-        drivetrain::getWheelSpeeds,
-        leftPID,
-        rightPID,
-        drivetrain::tankDriveVolts,
-        drivetrain);
-    drivetrain.resetOdometry(trajectory.getInitialPose());
-    return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0,0));
-  */ return autoChooser.getSelected();
-  //return new ShootTwoBalls(drivetrain, turret, indexer, intake); error: "unreachable code"
- }
-
- 
-
- 
-   
-    
-
-
-
+    return autoChooser.getSelected();
+  }
 
   public void doSendables(){
-    SmartDashboard.putNumber("Gyro Angle", drivetrain.getHeading());
     SmartDashboard.putData(autoChooser);
+    SmartDashboard.putNumber("Gyro Angle", drivetrain.getHeading());
     SmartDashboard.putNumber("Actual Speed", turret.flywheel.getVelocity());
     SmartDashboard.putNumber("Actual Pitch", turret.pitch.getPosition());
     SmartDashboard.putNumber("Climber Encoder1", climber.climbEncoder1.getPosition());
     SmartDashboard.putNumber("Climber Encoder2", climber.climbEncoder2.getPosition());
     SmartDashboard.putNumber("Climber Current1", climber.climberMotor1.getOutputCurrent());
     SmartDashboard.putNumber("Climber Current1", climber.climberMotor1.getOutputCurrent());
-
   }
 }

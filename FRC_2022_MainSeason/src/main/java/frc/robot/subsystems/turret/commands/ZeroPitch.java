@@ -1,6 +1,5 @@
 package frc.robot.subsystems.turret.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.turret.Turret;
 
@@ -12,7 +11,7 @@ public class ZeroPitch extends CommandBase {
 
         this.turret.pitch.enableSoftLimits(false);
 
-        addRequirements(this.turret);
+        this.addRequirements(this.turret.pitch);
     };
 
     @Override
