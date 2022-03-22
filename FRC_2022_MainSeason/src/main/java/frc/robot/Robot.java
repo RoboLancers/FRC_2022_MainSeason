@@ -30,14 +30,8 @@ import frc.robot.subsystems.climber.Climber;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private Field2d m_field;
-  private Trajectory trajectoree;
-
-  //private Trajectory trajectoree = new Trajectory();
  
   private RobotContainer m_robotContainer = new RobotContainer();
-  /*private String trajectoryJSON = "paths/TestNumbaWon.wpilib.json";
-  private Trajectory trajectory;*/
 
   /**
    * This function is run when the robot is first started up and should be used for any

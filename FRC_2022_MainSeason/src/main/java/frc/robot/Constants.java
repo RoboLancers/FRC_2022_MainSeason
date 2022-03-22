@@ -60,19 +60,18 @@ public final class Constants {
             public static final double kP = 0.0;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
-            public static final double kFF = 0.0001761;
+            public static final double kS = 0.1801;
+            public static final double kV = 0.12747;
+            public static final double kA = 0.0038965;
             public static final double kMaxAbsoluteVoltage = 1.0;
 
             public static final double kErrorThreshold = 25;
         }
 
         public static final class Physics {
-            public static final double kAlpha = 60;
             public static final double kDeltaY = 70;
-
-            public static final double kMaxShootDistance = 200;
-
             public static final double kMountAngle = 21;
+            public static final double kUpperHubRadius = 24;
         }
     }
 

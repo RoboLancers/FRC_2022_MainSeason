@@ -1,76 +1,35 @@
 package frc.robot;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
 
-import frc.robot.subsystems.climber.Climber;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;  
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.drivetrain.Pneumatics;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.MoveForward;
 import frc.robot.commands.OneBallAuto;
-import frc.robot.commands.TaxiAuto;
 import frc.robot.commands.TwoBallAuto;
-// import frc.robot.commands.GeneralizedReleaseRoutine;
-import frc.robot.commands.UpdateLights;
 import frc.robot.commands.ZeroClimber;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.climber.commands.ManualClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
-import frc.robot.subsystems.drivetrain.commands.ToggleGearShifter;
+import frc.robot.subsystems.drivetrain.Pneumatics;
 import frc.robot.subsystems.drivetrain.commands.TurnToAngle;
-import frc.robot.subsystems.drivetrain.commands.UseCompressor;
-//import frc.robot.subsystems.misc.AddressableLEDs;
 import frc.robot.subsystems.indexer.Indexer;
-import frc.robot.subsystems.turret.Turret;
-//import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
-import frc.robot.subsystems.drivetrain.enums.GearShifterState;
-import frc.robot.subsystems.misc.AddressableLEDs;
-import frc.robot.subsystems.misc.Camera;
-
 import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.intake.commands.UseIntake;
-import frc.robot.subsystems.turret.LaunchTrajectory;
+import frc.robot.subsystems.misc.Camera;
+import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.commands.ActiveFlywheel;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ActivePitch;
 import frc.robot.subsystems.turret.commands.LowHubShot;
 import frc.robot.subsystems.turret.commands.UpperHubShot;
 import frc.robot.subsystems.turret.commands.ZeroPitch;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.NotifierCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.XboxController;
-import frc.robot.util.XboxController.Axis;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-// import frc.robot.subsystems.climber.commands.ResetClimber;
-
 
 public class RobotContainer {
   private RobotContainer m_robotContainer;
@@ -162,4 +121,3 @@ public class RobotContainer {
     SmartDashboard.putNumber("Climber Current1", climber.climberMotor1.getOutputCurrent());
     SmartDashboard.putNumber("Climber Current1", climber.climberMotor1.getOutputCurrent());
   }
-}

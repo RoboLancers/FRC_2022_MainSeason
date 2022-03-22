@@ -23,9 +23,9 @@ public class ActiveFlywheel extends CommandBase {
         this.pidController.reset();
 
         this.ffController = new SimpleMotorFeedforward(
-            0.18017,
-            0.12747,
-            0.0038965
+            Constants.Turret.Flywheel.kS,
+            Constants.Turret.Flywheel.kV,
+            Constants.Turret.Flywheel.kA
         );
 
         this.addRequirements(this.turret.flywheel);
