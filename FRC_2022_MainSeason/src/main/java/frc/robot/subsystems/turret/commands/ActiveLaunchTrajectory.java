@@ -18,12 +18,13 @@ public class ActiveLaunchTrajectory extends CommandBase {
     public void execute(){
         this.turret.pitch.setPosition(this.turret.launchTrajectory.theta);
 
-        // force stop if target speed is 0
-        if(this.turret.launchTrajectory.speed == 0){
-            this.turret.flywheel.setPower(0);
-        } else {
-            this.turret.flywheel.setVelocity(this.turret.launchTrajectory.speed);
-        }        
+        this.turret.flywheel.setVelocity(this.turret.launchTrajectory.speed);
+
+        // if(this.turret.launchTrajectory.speed == 0){
+        //     this.turret.flywheel.setPower(0);
+        // } else {
+        //     this.turret.flywheel.setVelocity(this.turret.launchTrajectory.speed);
+        // }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package frc.robot.subsystems.turret.subsystems;
 
+import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -16,8 +17,10 @@ public class TurretFlywheel extends SubsystemBase {
     private RelativeEncoder encoderA;
     private RelativeEncoder encoderB;
 
-    private SparkMaxPIDController PIDControllerA;
-    private SparkMaxPIDController PIDControllerB;
+    private BangBangController controller = new BangBangController();
+
+    // private SparkMaxPIDController PIDControllerA;
+    // private SparkMaxPIDController PIDControllerB;
 
     public TurretFlywheel(){
         this.motorA = new CANSparkMax(Constants.Turret.Ports.kFlywheelMotorA, CANSparkMax.MotorType.kBrushless);
@@ -38,28 +41,28 @@ public class TurretFlywheel extends SubsystemBase {
         this.encoderA.setVelocityConversionFactor(1);
         this.encoderB.setVelocityConversionFactor(1);
 
-        this.PIDControllerA = this.motorA.getPIDController();
-        this.PIDControllerB = this.motorB.getPIDController();
+        // this.PIDControllerA = this.motorA.getPIDController();
+        // this.PIDControllerB = this.motorB.getPIDController();
 
-        this.PIDControllerA.setP(Constants.Turret.Flywheel.kP);
-        this.PIDControllerA.setI(Constants.Turret.Flywheel.kI);
-        this.PIDControllerA.setD(Constants.Turret.Flywheel.kD);
-        this.PIDControllerA.setD(Constants.Turret.Flywheel.kD);
-        this.PIDControllerA.setFF(Constants.Turret.Flywheel.kFF);
-        this.PIDControllerA.setOutputRange(
-            -Constants.Turret.Flywheel.kMaxAbsoluteVoltage,
-            Constants.Turret.Flywheel.kMaxAbsoluteVoltage
-        );
+        // this.PIDControllerA.setP(Constants.Turret.Flywheel.kP);
+        // this.PIDControllerA.setI(Constants.Turret.Flywheel.kI);
+        // this.PIDControllerA.setD(Constants.Turret.Flywheel.kD);
+        // this.PIDControllerA.setD(Constants.Turret.Flywheel.kD);
+        // this.PIDControllerA.setFF(Constants.Turret.Flywheel.kFF);
+        // this.PIDControllerA.setOutputRange(
+        //     -Constants.Turret.Flywheel.kMaxAbsoluteVoltage,
+        //     Constants.Turret.Flywheel.kMaxAbsoluteVoltage
+        // );
 
-        this.PIDControllerB.setP(Constants.Turret.Flywheel.kP);
-        this.PIDControllerB.setI(Constants.Turret.Flywheel.kI);
-        this.PIDControllerB.setD(Constants.Turret.Flywheel.kD);
-        this.PIDControllerB.setD(Constants.Turret.Flywheel.kD);
-        this.PIDControllerB.setFF(Constants.Turret.Flywheel.kFF);
-        this.PIDControllerB.setOutputRange(
-            -Constants.Turret.Flywheel.kMaxAbsoluteVoltage,
-            Constants.Turret.Flywheel.kMaxAbsoluteVoltage
-        );
+        // this.PIDControllerB.setP(Constants.Turret.Flywheel.kP);
+        // this.PIDControllerB.setI(Constants.Turret.Flywheel.kI);
+        // this.PIDControllerB.setD(Constants.Turret.Flywheel.kD);
+        // this.PIDControllerB.setD(Constants.Turret.Flywheel.kD);
+        // this.PIDControllerB.setFF(Constants.Turret.Flywheel.kFF);
+        // this.PIDControllerB.setOutputRange(
+        //     -Constants.Turret.Flywheel.kMaxAbsoluteVoltage,
+        //     Constants.Turret.Flywheel.kMaxAbsoluteVoltage
+        // );
 
         SmartDashboard.putNumber("Flywheel kP", SmartDashboard.getNumber("Flywheel kP", Constants.Turret.Flywheel.kP));
         SmartDashboard.putNumber("Flywheel kI", SmartDashboard.getNumber("Flywheel kI", Constants.Turret.Flywheel.kI));
@@ -69,25 +72,30 @@ public class TurretFlywheel extends SubsystemBase {
 
     @Override
     public void periodic(){
-        double kP = SmartDashboard.getNumber("Flywheel kP", 0);
-        double kI = SmartDashboard.getNumber("Flywheel kI", 0);
-        double kD = SmartDashboard.getNumber("Flywheel kD", 0);
-        double kFF = SmartDashboard.getNumber("Flywheel kFF", 0);
+        // double kP = SmartDashboard.getNumber("Flywheel kP", 0);
+        // double kI = SmartDashboard.getNumber("Flywheel kI", 0);
+        // double kD = SmartDashboard.getNumber("Flywheel kD", 0);
+        // double kFF = SmartDashboard.getNumber("Flywheel kFF", 0);
 
-        this.PIDControllerA.setP(kP);
-        this.PIDControllerA.setI(kI);
-        this.PIDControllerA.setD(kD);
-        this.PIDControllerA.setFF(kFF);
+        // this.PIDControllerA.setP(kP);
+        // this.PIDControllerA.setI(kI);
+        // this.PIDControllerA.setD(kD);
+        // this.PIDControllerA.setFF(kFF);
 
-        this.PIDControllerB.setP(kP);
-        this.PIDControllerB.setI(kI);
-        this.PIDControllerB.setD(kD);
-        this.PIDControllerB.setFF(kFF);
+        // this.PIDControllerB.setP(kP);
+        // this.PIDControllerB.setI(kI);
+        // this.PIDControllerB.setD(kD);
+        // this.PIDControllerB.setFF(kFF);
     }
 
     public void setVelocity(double velocity){
-        this.PIDControllerA.setReference(velocity, CANSparkMax.ControlType.kVelocity);
-        this.PIDControllerB.setReference(velocity, CANSparkMax.ControlType.kVelocity);
+        this.controller.setSetpoint(velocity);
+
+        this.motorA.set(this.controller.calculate(this.encoderA.getVelocity()));
+        this.motorB.set(this.controller.calculate(this.encoderB.getVelocity()));
+
+        // this.PIDControllerA.setReference(velocity, CANSparkMax.ControlType.kVelocity);
+        // this.PIDControllerB.setReference(velocity, CANSparkMax.ControlType.kVelocity);
     }
 
     public void setPower(double power){
