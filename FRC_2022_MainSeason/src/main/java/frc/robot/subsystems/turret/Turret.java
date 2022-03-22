@@ -51,9 +51,14 @@ public class Turret extends SubsystemBase {
         }
     }
 
-    public double angleToHub(){
+    private double angleToHub(){
         double deltaX = hubPosition.x - this.odemetry.get().getX();
         double deltaY = hubPosition.y - this.odemetry.get().getY();
         return Math.atan2(deltaY, deltaX);
+    }
+
+    public double getTurnSetpoint(){
+        // do stuff
+        return 0;
     }
 }
