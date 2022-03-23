@@ -134,10 +134,10 @@ public class LaunchTrajectory {
     public static final InterpolationTable upperHubTrajectoryMap = new InterpolationTable(
         new InterpolationTable.Entry(0, new LaunchTrajectory(2.25, 3550)),
         new InterpolationTable.Entry(70, new LaunchTrajectory(6.5, 3600)),
-        new InterpolationTable.Entry(90, new LaunchTrajectory(8.0, 4000)),
+        new InterpolationTable.Entry(90, new LaunchTrajectory(8.0, 3940)),
         new InterpolationTable.Entry(112, new LaunchTrajectory(10.0, 3900)),
         new InterpolationTable.Entry(130, new LaunchTrajectory(10.6, 4240)),
-        new InterpolationTable.Entry(146, new LaunchTrajectory(11.2, 4480)),
+        new InterpolationTable.Entry(146, new LaunchTrajectory(11.2, 4520)),
         new InterpolationTable.Entry(165.5, new LaunchTrajectory(12, 4650))
     );
 }
