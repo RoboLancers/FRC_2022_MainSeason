@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
-public class Testing extends CommandBase {
+public class Testing extends SequentialCommandGroup {
 
     private Intake intake;
     private Indexer indexer;
@@ -32,31 +32,31 @@ public class Testing extends CommandBase {
         this.indexer = indexer;
         this.turret = turret;
         this.value = intake.retractionPiston.get();
-    }
 
-    public void execute() {
-        new SequentialCommandGroup(
+        addRequirements(intake, indexer, turret, climber);
+
+        addCommands(
             new ParallelRaceGroup(new RunCommand(() -> {
-                intake.setPower(0.05);
+                intake.setPower(0.5);
               }, intake),
               new WaitCommand(2)),
             new PrintCommand("intake forward success"),
             new ParallelRaceGroup(new RunCommand(() -> {
-                    intake.setPower(-0.05);
+                    intake.setPower(-0.5);
                 }, intake),
                 new WaitCommand(2)),
             new PrintCommand("intake backward success"),
             new ParallelRaceGroup(new RunCommand(() -> {
                     intake.setPower(0);
             }, intake),
-            new PrintCommand("intake off"),
             new WaitCommand(2)),
+            new PrintCommand("intake off"),
             new ParallelRaceGroup(new RunCommand(() -> {
-                indexer.setPower(0.05);    
+                indexer.setPower(0.5);    
             }, indexer), new WaitCommand(2)),
             new PrintCommand("indexer forward success"),
             new ParallelRaceGroup(new RunCommand(() -> {
-                indexer.setPower(-0.05);    
+                indexer.setPower(-0.5);    
             }, indexer), new WaitCommand(2)),
             new PrintCommand("indexer backward success"),
             new ParallelRaceGroup(new RunCommand(() -> {
@@ -77,6 +77,6 @@ public class Testing extends CommandBase {
                 intake.toggleIntake();
             }, intake),
             new WaitCommand(15),
-            new WaitUntilCommand(() -> (intake.retractionPiston.get() == value))));
+            new WaitUntilCommand(() -> (intake.retractionPiston.get() == this.value))));
     }
 }

@@ -103,14 +103,14 @@ public class RobotContainer {
     this.configureButtonBindings();
 
     // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
-    this.drivetrain.setDefaultCommand(
-      new RunCommand(
-        () -> {
-          this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
-        },
-        drivetrain
-      )
-    );
+    // this.drivetrain.setDefaultCommand(
+    //  new RunCommand(
+    //    () -> {
+    //      this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X));
+    //    },
+    //    drivetrain
+    //  )
+    // );
 
    /*  indexer.setDefaultCommand(new RunCommand(() -> {
       indexer.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y));
@@ -126,7 +126,7 @@ public class RobotContainer {
 
     // Shot trajectory tuning
 
-    SmartDashboard.putNumber("Angular kP", SmartDashboard.getNumber("Angular kP", Constants.Turret.Yaw.kP));
+    /* SmartDashboard.putNumber("Angular kP", SmartDashboard.getNumber("Angular kP", Constants.Turret.Yaw.kP));
     SmartDashboard.putNumber("Angular kI", SmartDashboard.getNumber("Angular kI", Constants.Turret.Yaw.kI));
     SmartDashboard.putNumber("Angular kD", SmartDashboard.getNumber("Angular kD", Constants.Turret.Yaw.kD));
 
@@ -137,7 +137,7 @@ public class RobotContainer {
     autoChooser.addOption("Two Ball Auto", new TwoBallAuto(drivetrain, turret, indexer, intake));
     autoChooser.addOption("Go Forth", new MoveForward(drivetrain, turret, indexer));
     autoChooser.addOption("Zero Climber", new ZeroClimber(climber, turret));
-    autoChooser.addOption("Nothing", new ZeroPitch(turret));
+    autoChooser.addOption("Nothing", new ZeroPitch(turret)); */
   }
 
   private void configureButtonBindings() {
