@@ -54,11 +54,22 @@ public class Turret extends SubsystemBase {
     private double angleToHub(){
         double deltaX = hubPosition.x - this.odemetry.get().getX();
         double deltaY = hubPosition.y - this.odemetry.get().getY();
-        return Math.atan2(deltaY, deltaX);
+        return Math.atan2(deltaY, deltaX) * 180 / Math.PI;
     }
 
     public double getTurnSetpoint(){
-        // do stuff
-        return 0;
+        if(this.limelight.hasTarget()){
+            return this.odemetry.get().getRotation().getDegrees() + this.limelight.yawOffset();
+        } else {
+            double idealSetpoint = this.angleToHub();
+            double heading = this.odemetry.get().getRotation().getDegrees();
+            // dont try to make the drivetrain turn more than 30 degrees at a time
+            double headingError = idealSetpoint - heading;
+            if(Math.abs(headingError) > 30){
+                return heading + Math.signum(headingError) * 30;
+            } else {
+                return idealSetpoint;
+            }
+        }
     }
 }

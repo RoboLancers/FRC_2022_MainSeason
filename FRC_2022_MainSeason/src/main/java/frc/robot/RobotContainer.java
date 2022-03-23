@@ -93,9 +93,8 @@ public class RobotContainer {
   }
  
   private void configureButtonBindings(){
-    driverController.whileHeld(XboxController.Button.RIGHT_BUMPER, new TurnToAngle(drivetrain, turret, () -> {
-      return drivetrain.getHeading() + (turret.limelight.hasTarget() ? turret.limelight.yawOffset() : 0);
-    }));
+    driverController
+      .whileHeld(XboxController.Button.RIGHT_BUMPER, new TurnToAngle(drivetrain, turret, turret::getTurnSetpoint));
 
     manipulatorController
       .whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy))
