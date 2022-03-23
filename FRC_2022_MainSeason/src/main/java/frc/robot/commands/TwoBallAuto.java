@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.drivetrain.commands.TurnToAngle;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.turret.Turret;
@@ -20,15 +21,44 @@ public class TwoBallAuto extends SequentialCommandGroup {
             new ZeroPitch(turret),
             new ParallelRaceGroup(
                 new RunCommand(() -> {
-                    drivetrain.arcadeDrive(0.4, 0);
-                    intake.setPower(Constants.Intake.kIntakePower);
+                    drivetrain.arcadeDrive(-0.4, 0);
                 }),
-                new WaitUntilCommand(() -> {
-                    return turret.limelight.hasTarget() && Math.abs(turret.limelight.pitchOffset()) < 2;
-                })
+                new WaitCommand(1.0)
+            ),
+            new ParallelRaceGroup(
+                new RunCommand(() -> {
+                    drivetrain.arcadeDrive(0.3, 0);
+                }),
+                new WaitCommand(1.25)
+            ),
+            new ParallelRaceGroup(
+                new UpperHubShoot(turret),
+                new SequentialCommandGroup(
+                    new WaitCommand(1.5),
+                    new InstantCommand(() -> {
+                        indexer.setPower(1.0);
+                    }),
+                    new WaitCommand(1.5)
+                )
             ),
             new InstantCommand(() -> {
-                drivetrain.arcadeDrive(0, 0);
+                indexer.setPower(0.0);
+            }),
+            new ParallelRaceGroup(
+                new RunCommand(() -> {
+                    drivetrain.arcadeDrive(0.5, 0);
+                    intake.setPower(1.0);
+                }),
+                new WaitCommand(2.5)
+            ),
+            new WaitCommand(1.0),
+            new ParallelRaceGroup(
+                new RunCommand(() -> {
+                    drivetrain.arcadeDrive(-0.5, 0);
+                }),
+                new WaitCommand(2.5)
+            ),
+            new InstantCommand(() -> {
                 intake.setPower(0);
             }),
             new ParallelRaceGroup(
@@ -42,8 +72,16 @@ public class TwoBallAuto extends SequentialCommandGroup {
                 )
             ),
             new InstantCommand(() -> {
-                indexer.setPower(0);
-            })
+                indexer.setPower(0.0);
+            }),
+            new ParallelRaceGroup(
+                new RunCommand(() -> {
+                    drivetrain.arcadeDrive(0.5, 0);
+                }),
+                new WaitUntilCommand(() -> {
+                    return turret.limelight.hasTarget() && Math.abs(turret.limelight.pitchOffset()) < 3.0;
+                })
+            )
         );
         addRequirements(drivetrain, turret, indexer, intake);
     }

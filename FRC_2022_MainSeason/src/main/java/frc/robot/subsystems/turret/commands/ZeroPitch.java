@@ -17,7 +17,7 @@ public class ZeroPitch extends CommandBase {
 
     @Override
     public void execute(){
-        this.turret.pitch.setMotorPower(-0.1);
+        this.turret.pitch.setMotorPower(-0.25);
     }
 
     @Override
