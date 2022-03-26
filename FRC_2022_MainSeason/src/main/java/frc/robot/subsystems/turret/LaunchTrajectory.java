@@ -1,5 +1,7 @@
 package frc.robot.subsystems.turret;
 
+import frc.robot.Constants;
+
 // The trajectory information needed to hit the target with certain constraints
 
 public class LaunchTrajectory {
@@ -8,14 +10,14 @@ public class LaunchTrajectory {
 
     public LaunchTrajectory(
         double theta,       // The angle of the determined trajectory [in radians]
-        double speed        // The speed of the determined trajectory [in meters per second]
+        double speed        // The speed of the determined trajectory [in inches per second]
     ){
         this.theta = theta;
         this.speed = speed;
     }
 
-    public static double estimateDistance(double deltaY, double thetaX, double thetaY){
-        return deltaY / (Math.cos(thetaX * Math.PI / 180) * Math.tan(thetaY * Math.PI / 180));
+    public static double estimateDistance(double thetaY){
+        return Constants.Turret.Physics.kDeltaY / Math.tan((Constants.Turret.Physics.kMountAngle + thetaY) * Math.PI / 180);
     }
 
     // Calculate the trajectory to hit the target at a given angle alpha
@@ -85,9 +87,9 @@ public class LaunchTrajectory {
     }
 
     public static class InterpolationTable {
-        private static class Entry {
+        public static class Entry {
             private double key;
-            private LaunchTrajectory value;
+            public LaunchTrajectory value;
     
             public Entry(double key, LaunchTrajectory value){
                 this.key = key;
@@ -95,7 +97,7 @@ public class LaunchTrajectory {
             }
         }
 
-        private Entry entries[];
+        public Entry entries[];
 
         public InterpolationTable(Entry... entries){
             this.entries = entries;
@@ -103,9 +105,9 @@ public class LaunchTrajectory {
 
         public LaunchTrajectory interpolate(double key){
             // check if key is within bounds of the table
-            if(key < this.entries[0].key){
+            if(key <= this.entries[0].key){
                 return this.entries[0].value;
-            } else if(key > this.entries[this.entries.length - 1].key){
+            } else if(key >= this.entries[this.entries.length - 1].key){
                 return this.entries[this.entries.length - 1].value;
             }
             // find lower and upper bounds of interpolation
@@ -129,13 +131,25 @@ public class LaunchTrajectory {
     }
 
     // Calculate the trajectory by interpolating between known shot trajectories with respect to distance
-    public static final InterpolationTable trajectoryMap = new InterpolationTable(
-        // TODO: tune this very much
-        new InterpolationTable.Entry(0.0, new LaunchTrajectory(0.0, 0.0)),
-        new InterpolationTable.Entry(3.0, new LaunchTrajectory(0.0, 0.0)),
-        new InterpolationTable.Entry(6.0, new LaunchTrajectory(0.0, 0.0)),
-        new InterpolationTable.Entry(9.0, new LaunchTrajectory(0.0, 0.0)),
-        new InterpolationTable.Entry(12.0, new LaunchTrajectory(0.0, 0.0)),
-        new InterpolationTable.Entry(15.0, new LaunchTrajectory(0.0, 0.0))
+    public static final InterpolationTable upperHubTrajectoryMap = new InterpolationTable(
+        new InterpolationTable.Entry(0, new LaunchTrajectory(0.57, 3240)),
+        new InterpolationTable.Entry(70, new LaunchTrajectory(3.5, 3500)),
+        new InterpolationTable.Entry(80, new LaunchTrajectory(10, 4100)),
+        new InterpolationTable.Entry(90, new LaunchTrajectory(12.4, 3850)),
+        new InterpolationTable.Entry(100, new LaunchTrajectory(12.4, 3950)),
+        new InterpolationTable.Entry(110, new LaunchTrajectory(12.4, 4000)),
+        new InterpolationTable.Entry(120, new LaunchTrajectory(12.1, 4120)),
+        new InterpolationTable.Entry(130, new LaunchTrajectory(12.3, 4200)),
+        new InterpolationTable.Entry(140, new LaunchTrajectory(12.4, 4400)),
+        new InterpolationTable.Entry(150, new LaunchTrajectory(12.4, 4400)),
+        new InterpolationTable.Entry(160, new LaunchTrajectory(12.5, 4500)),
+        new InterpolationTable.Entry(180, new LaunchTrajectory(12.5, 4550))
+        // new InterpolationTable.Entry(0, new LaunchTrajectory(2.25, 3550)),
+        // new InterpolationTable.Entry(70, new LaunchTrajectory(10, 3700)),
+        // new InterpolationTable.Entry(90, new LaunchTrajectory(8.0, 3940)),
+        // new InterpolationTable.Entry(112, new LaunchTrajectory(10.0, 3900)),
+        // new InterpolationTable.Entry(130, new LaunchTrajectory(10.6, 4240)),
+        // new InterpolationTable.Entry(146, new LaunchTrajectory(11.2, 4520)),
+        // new InterpolationTable.Entry(165.5, new LaunchTrajectory(12, 4650))
     );
 }

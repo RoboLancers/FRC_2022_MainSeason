@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.util.Color;
 
 
 public final class Constants {
+
     public static final class Climber {
         public static final int CLIMBER_PORT1 = 14;
         public static final int CLIMBER_PORT2 = 15;
@@ -15,86 +16,73 @@ public final class Constants {
         public static final double kPower = 1;
         public static final double kNegativePower = -1;
         public static final double kNormalHangCurrent = 1;
+        public static final int kMaxHeight1 = 0;
+        public static final int kMaxHeight2 = 0;
+        public static final int kResetCurrent = 50;
+
     }
 
     public static final class Turret {
         public static final class Ports {
-            // bully electrical to get these
-            public static final int kYawMotor = 0;
-            public static final int kPitchMotor = 0;
+            public static final int kYawMotor = 13;
+            public static final int kPitchMotor = 9;
             public static final int kFlywheelMotorA = 7;
             public static final int kFlywheelMotorB = 8;
-            public static final int kYawLimitSwitch = 0;
-            public static final int kPitchLimitSwitch = 0;
+            public static final int kYawLimitSwitch = 3;
+            public static final int kPitchLimitSwitch = 2;
         }
 
-        public static final class TunedCoefficients {
-            public static final class YawPID {
-                // PID
-                public static final double kP = 0.0;
-                public static final double kI = 0.0;
-                public static final double kD = 0.0;
-                public static final double kFF = 0.0;
-                public static final double kMaxAbsoluteOutput = 0.0;
-                // logic
-                public static final double kStoppedPosition = 2 * Math.PI / 180; // max absolute difference in radians from 0 where the turret yaw considers itself to be at zero (for resetting turret before climbing)
-                public static final double kErrorThreshold = 2 * Math.PI / 180; // max absolute error in radians where the turret yaw considers itself aligned (for generalized release routine)
-                // being extra careful about not overturning
-                public static final double kMinSafeAngle = -170 * Math.PI / 180; // min turn angle in radians for the turret yaw
-                public static final double kMaxSafeAngle = 170 * Math.PI / 180; // max turn angle in radians for the turret yaw
-                public static final double kSeekAdjustment = 0.5 * Math.PI / 180; // magnitude of the change of the angle in the turret yaw in radians  (when looking for limelight)
-            }
+        public static final class Yaw {
+            // Used in drivetrain, not actual turret yaw motor
+            public static final double kP = 0.016;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
 
-            public static final class PitchPID {
-                // PID
-                public static final double kP = 0.0;
-                public static final double kI = 0.0;
-                public static final double kD = 0.0;
-                public static final double kFF = 0.0;
-                public static final double kMaxAbsoluteOutput = 0.0;
-                // logic
-                public static final double kStoppedPosition = 2 * Math.PI / 180; // max absolute difference in radians from 0 where the turret pitch considers itself to be at zero (for resetting turret before climbing)
-                public static final double kErrorThreshold = 2 * Math.PI / 180; // max absolute error in radians where the turret pitch considers itself to be aligned (for generalized release routine)
-            }
-
-            public static final class FlywheelPID {
-                // PID
-                public static final double kP = 0.0;
-                public static final double kI = 0.0;
-                public static final double kD = 0.0;
-                public static final double kFF = 0.0;
-                public static final double kMaxAbsoluteOutput = 0.0;
-                // logic
-                public static final double kStoppedVelocity = 0.25; // max absolute difference (in m/s?) from 0 where the turret flywheel considers itself to be at rest (for resetting turret before climbing)
-                public static final double kErrorThreshold = 0.25; // max absolute error (in m/s?) where the turret flywheel considers itself to be up to speed (for generalized release routine)
-                public static final double kMaxVelocity = 8.0; // maximum velocity the flywheel is capable of reaching
-                public static final double kCurrentSpikeThreshold = 0.0; // ! - the threshold for if a current spike should trigger (for generalized release routine)
-                public static final double kPostSpikeDelay = 0.1; // the delay in seconds between a current spike and running progressBall (for generalized release routine)
-            }
+            public static final double kErrorThreshold = 1.0;
         }
 
-        public static final class PhysicsInfo {
-            public static final double minLimelightViewableDistance = 0.0;
-            public static final double maxLimelightViewableDistance = 0.0;
-            // Not necessary if we are using interpolation table
-            public static final double kGravity = 9.8;
-            public static final double kTurretShotDeltaY = 2.64 - (0.0); // ! - subtract the height of the turret off the ground
-            public static final double kUpperHubRadius = 0.61;
-            public static final double kAlpha = 45 * Math.PI / 180;
-            public static final double kSinAlpha = Math.sin(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kCosAlpha = Math.cos(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kTanAlpha = Math.tan(Constants.Turret.PhysicsInfo.kAlpha);
-            public static final double kPitchMountAngle = 50 * Math.PI / 180; // ! check this with mechanical
+        public static final class Pitch {
+            public static final double kP = 0.75;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final double kFF = 0.0;
+            public static final double kMaxAbsoluteVoltage = 0.25;
+
+            public static final double kGearRatio = (12 * 464) / (18 * 360);
+
+            public static final double kErrorThreshold = 0.1;
+            public static final double kZeroAdjustment = 0.1;
+            public static final double kMinSafeAngle = -0.5;
+            public static final double kMaxSafeAngle = 12.5;
+        }
+
+        public static final class Flywheel {
+            public static final double kP = 0;
+            public static final double kI = 0.0;
+            public static final double kD = 0;
+            public static final double kFF = 0.0001761;
+            public static final double kMaxAbsoluteVoltage = 1.0;
+
+            public static final double kErrorThreshold = 25;
+        }
+
+        public static final class Physics {
+            public static final double kAlpha = 60;
+            public static final double kDeltaY = 70;
+
+            public static final double kMaxShootDistance = 200;
+
+            public static final double kMountAngle = 21;
         }
     }
 
     public static final class Intake {
         public static final int kRollerPort = 0;
-        public static final int kRetractorChannelOne = 0;
-        public static final int kRetractorChannelTwo = 0;
-        public static final int kIndexerPort = 12;
-        public static final int kPistonDeploy = 0;
-        public static final int kPistonRetract = 0;
+        public static final int kRetractorChannelOne = 6;
+        public static final int kRetractorChannelTwo = 7;
+        public static final int kIndexerPort = 11;
+        public static final int kPistonDeploy = 6;
+        public static final int kPistonRetract = 7;
         public static final double kIntakePower = 0.6;
         public static final double kErrorMargin = 20;
         public static final double kIRollerOff = 0;
@@ -111,6 +99,18 @@ public final class Constants {
         public static final double kIndexerOff = 0;
         public static final Color kRedTarget = new Color(1, 0, 0);
         public static final Color kBlueTarget = new Color(0, 0, 1);
+    }
+
+    public static final class RGBConversion {
+        public static final double a = 3.2404542;
+        public static final double b = -1.5371385;
+        public static final double c = -0.4985314;
+        public static final double d = -0.9692660;
+        public static final double e = 1.8760108;
+        public static final double f = 0.0415560;
+        public static final double g = 0.0556434;
+        public static final double h = -0.2040259;
+        public static final double i = 1.0572252;
     }
 
     public static final class AddressableLEDs {
@@ -149,13 +149,16 @@ public final class Constants {
     public static final double kThrottleFilter = 1.25;
     public static final double kTurnFilter = 3;
 
-    public static class Drivetrain {
+    public static final class Drivetrain {
         public static final int kGyroPort = 1;
         public static final double kDistPerRot = (3.072/100);            
         public static final double kThrottleFilter = 1.5;
         public static final double kTurnFilter = 1.5;
         public static final double kMaxPower = 0.75;
-
+        public static final double kP = 0.0003;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0005;
+        public static final double kMaxAbsoluteError = 0.5;
         public static class LeftMotors {
             public static final int kLeftMotor1_Port = 0;
             public static final int kLeftMotor2_Port = 1;

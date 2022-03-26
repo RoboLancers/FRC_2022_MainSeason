@@ -1,49 +1,43 @@
 package frc.robot.subsystems.turret;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.drivetrain.Drivetrain;
-// import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
+import frc.robot.subsystems.misc.LimeLight;
 import frc.robot.subsystems.turret.subsystems.TurretFlywheel;
 import frc.robot.subsystems.turret.subsystems.TurretPitch;
-// import frc.robot.subsystems.turret.subsystems.yaw.TurretYaw;
 
 public class Turret extends SubsystemBase {
     public boolean inHangMode = false;
 
-    // public TurretYaw yaw;
+    public LimeLight limelight;
+
     public TurretPitch pitch;
     public TurretFlywheel flywheel;
 
-    public LaunchTrajectory launchTrajectory;
+    public LaunchTrajectory launchTrajectory = new LaunchTrajectory(0, 0);
 
-    public Turret(Drivetrain driveTrain){
-        // this.yaw = new TurretYaw(this, driveTrain);
+    public Turret(){
+        this.limelight = new LimeLight();
         this.pitch = new TurretPitch();
         this.flywheel = new TurretFlywheel();
-
-        // initDefaultCommand(driveTrain);
     }
 
-    /* private void initDefaultCommand(Drivetrain driveTrain){
-        setDefaultCommand(new ActiveLaunchTrajectory(this, driveTrain));
-    } */
-
-    public void adjust(){
-        this.pitch.setPositionSetpoint(this.launchTrajectory.theta);
-        this.flywheel.setVelocitySetpoint(this.launchTrajectory.speed);
+    public boolean inShootingRange(){
+        return (
+            this.limelight.hasTarget() &&
+            LaunchTrajectory.estimateDistance(this.limelight.pitchOffset()) < Constants.Turret.Physics.kMaxShootDistance
+        );
     }
-
-    public boolean inShootingRange()
-    {
-        return this.flywheel.getVelocity() < Constants.Turret.TunedCoefficients.FlywheelPID.kMaxVelocity;
-    };
 
     public boolean isReadyToShoot(){
+        // TODO: make this take pitch and flywheel setpoints as args
         return (
-            // this.yaw.isAligned() &&
-            this.pitch.isAligned(this.launchTrajectory.theta) &&
-            this.flywheel.isUpToSpeed(this.launchTrajectory.speed)
+            this.limelight.hasTarget() &&
+            Math.abs(this.limelight.yawOffset()) < Constants.Turret.Yaw.kErrorThreshold &&
+
+            this.pitch.isAligned(0) &&
+            this.flywheel.isUpToSpeed(0)
         );
     };
 }

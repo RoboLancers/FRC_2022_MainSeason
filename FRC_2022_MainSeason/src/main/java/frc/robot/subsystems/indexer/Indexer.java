@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
+import com.revrobotics.CIEColor;
 import frc.robot.Constants;
 import frc.robot.subsystems.indexer.Ball.BallPosition;
 import frc.robot.subsystems.indexer.commands.DefaultIndex;
@@ -39,10 +40,10 @@ public class Indexer extends SubsystemBase {
             return bottomColorSensor.getProximity() >= Constants.Indexer.kProximityLimit;
         });
         // This is an example of command composition.
-        threshColorSensor.whenActive(new RunCommand(this::processBall) // This runs the processBall() function once the color sensor is activated
-            .withInterrupt(this::indexFinished) // Stop this command when the highest ball in the indexer reaches the next color sensor up
-            .andThen(() -> indexerMotor.set(0) // After the command is stopped (i.e. the ball reaches the next sensor) stop the indexer motor
-        ));
+        // threshColorSensor.whenActive(new RunCommand(this::processBall) // This runs the processBall() function once the color sensor is activated
+        //     .withInterrupt(this::indexFinished) // Stop this command when the highest ball in the indexer reaches the next color sensor up
+        //     .andThen(() -> indexerMotor.set(0) // After the command is stopped (i.e. the ball reaches the next sensor) stop the indexer motor
+        // ));
 
         initDefaultCommand();
     }
@@ -53,7 +54,7 @@ public class Indexer extends SubsystemBase {
 
     public void processBall() {
         if (ballQueue.size() == 0) { // If no balls are in the indexer
-            Ball newBall = new Ball((int) (bottomColorSensor.getColor().red), (int) (bottomColorSensor.getColor().green), (int) (bottomColorSensor.getColor().blue), BallPosition.BOTTOM);
+            Ball newBall = new Ball((int) (getRedConversion(bottomColorSensor.getCIEColor())), (int) (getGreenConversion(bottomColorSensor.getCIEColor())), (int) (getBlueConversion(bottomColorSensor.getCIEColor())), BallPosition.BOTTOM);
             ballQueue.add(newBall); // Instantiate a new ball in the bottom position
             indexerMotor.set(Constants.Indexer.kIndexerSpeed); // Set the indexer to the speed we want
             newBall.setPos(BallPosition.MIDDLE); // Check to see if this works
@@ -64,7 +65,7 @@ public class Indexer extends SubsystemBase {
     }
 
     public boolean indexFinished() {
-        if (ballQueue.peek().getPos() == BallPosition.MIDDLE && topLimitSwitch.get()) { // if the indexer is running until a ball reaches the top
+        if (ballQueue.peek().getPos() == BallPosition.MIDDLE && topLimitSwitch.get() && ballQueue.size() > 1) { // if the indexer is running until a ball reaches the top
             ((Ball[]) ballQueue.toArray())[1].setPos(BallPosition.MIDDLE);; // move both balls up
             ballQueue.peek().setPos(BallPosition.TOP);
             return true;
@@ -113,6 +114,18 @@ public class Indexer extends SubsystemBase {
                 ballArray[i].progressPos();
             }
         }
+    }
+
+    public double getRedConversion(CIEColor color) {
+        return (color.getX() * Constants.RGBConversion.a + color.getY() * Constants.RGBConversion.b + color.getZ() * Constants.RGBConversion.c);
+    }
+
+    public double getGreenConversion(CIEColor color) {
+        return (color.getX() * Constants.RGBConversion.g + color.getY() * Constants.RGBConversion.h + color.getZ() * Constants.RGBConversion.i);
+    }
+
+    public double getBlueConversion(CIEColor color) {
+        return (color.getX() * Constants.RGBConversion.d + color.getY() * Constants.RGBConversion.e + color.getZ() * Constants.RGBConversion.f);
     }
 
     public void setPower(double power) {
