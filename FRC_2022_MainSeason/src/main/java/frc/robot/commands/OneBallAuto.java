@@ -17,6 +17,18 @@ public class OneBallAuto extends SequentialCommandGroup {
         addCommands(
             new ZeroPitch(turret),
             new ParallelRaceGroup(
+                new RunCommand(() -> {
+                    drivetrain.arcadeDrive(-0.4, 0);
+                }),
+                new WaitCommand(1.0)
+            ),
+            new ParallelRaceGroup(
+                new RunCommand(() -> {
+                    drivetrain.arcadeDrive(0.3, 0);
+                }),
+                new WaitCommand(1.25)
+            ),
+            new ParallelRaceGroup(
                 new UpperHubShoot(turret),
                 new SequentialCommandGroup(
                     new WaitCommand(1.5),
