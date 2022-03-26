@@ -67,11 +67,11 @@ public class RobotContainer {
     drivetrain));
 
     indexer.setDefaultCommand(new RunCommand(() -> {
-      indexer.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y));
+      indexer.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y)));
     }, indexer));
 
     intake.setDefaultCommand(new RunCommand(() -> {
-      intake.setPower(Math.signum(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER)));
+      intake.setPower(Math.signum((manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER))));
     }, intake));
 
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
@@ -79,6 +79,8 @@ public class RobotContainer {
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
 
     // Shot trajectory tuning
+
+    SmartDashboard.putBoolean("Use Interpolation", SmartDashboard.getBoolean("Use Interpolation", true));
 
     SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
     SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
@@ -122,5 +124,6 @@ public class RobotContainer {
     SmartDashboard.putNumber("Climber Encoder2", climber.climbEncoder2.getPosition());
     SmartDashboard.putNumber("Climber Current1", climber.climberMotor1.getOutputCurrent());
     SmartDashboard.putNumber("Climber Current1", climber.climberMotor1.getOutputCurrent());
+    SmartDashboard.putNumber("Indexer Speed", indexer.indexerMotor.get());
   }
 }

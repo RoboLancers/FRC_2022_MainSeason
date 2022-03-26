@@ -15,31 +15,27 @@ public class UpperHubShoot extends CommandBase {
     }
 
     @Override
-    public void execute(){  
-        // to use interpolation
-
-        LaunchTrajectory interpolatedTrajectory = this.turret.limelight.hasTarget() ?
-            LaunchTrajectory.upperHubTrajectoryMap.interpolate(LaunchTrajectory.estimateDistance(this.turret.limelight.pitchOffset())) :
-            LaunchTrajectory.upperHubTrajectoryMap.interpolate(0);
-
+    public void execute(){
+        SmartDashboard.putBoolean("Has Target", this.turret.limelight.hasTarget());
         SmartDashboard.putNumber("Distance XZ", LaunchTrajectory.estimateDistance(turret.limelight.pitchOffset()));
 
-        SmartDashboard.putBoolean("Has Target", this.turret.limelight.hasTarget());
-        SmartDashboard.putNumber("Interpolated Angle", interpolatedTrajectory.theta);
-        SmartDashboard.putNumber("Interpolated Speed", interpolatedTrajectory.speed);
+        if(SmartDashboard.getBoolean("Use Interpolation", true)){
+            LaunchTrajectory interpolatedTrajectory = this.turret.limelight.hasTarget() ?
+                LaunchTrajectory.upperHubTrajectoryMap.interpolate(LaunchTrajectory.estimateDistance(this.turret.limelight.pitchOffset())) :
+                LaunchTrajectory.upperHubTrajectoryMap.interpolate(0);
 
-        this.turret.pitch.setPosition(interpolatedTrajectory.theta);
-        this.turret.flywheel.setVelocity(interpolatedTrajectory.speed);
+            SmartDashboard.putNumber("Interpolated Angle", interpolatedTrajectory.theta);
+            SmartDashboard.putNumber("Interpolated Speed", interpolatedTrajectory.speed);
 
+            this.turret.pitch.setPosition(interpolatedTrajectory.theta);
+            this.turret.flywheel.setVelocity(interpolatedTrajectory.speed);
+        } else {
+            double angle = SmartDashboard.getNumber("High Shot Angle", 0);
+            double speed = SmartDashboard.getNumber("High Shot Speed", 0);
 
-        // to use manual tuning
-
-        // for tuning interpolation control points 
-        // double angle = SmartDashboard.getNumber("High Shot Angle", 0);
-        // double speed = SmartDashboard.getNumber("High Shot Speed", 0);
-
-        // this.turret.pitch.setPosition(angle);
-        // this.turret.flywheel.setVelocity(speed);
+            this.turret.pitch.setPosition(angle);
+            this.turret.flywheel.setVelocity(speed);
+        }
     }
 
     @Override

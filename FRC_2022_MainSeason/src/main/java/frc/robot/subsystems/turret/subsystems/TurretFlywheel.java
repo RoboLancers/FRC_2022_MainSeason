@@ -13,50 +13,35 @@ public class TurretFlywheel extends SubsystemBase {
     private CANSparkMax motorA;
     private CANSparkMax motorB;
     
-    private RelativeEncoder encoderA;
-    private RelativeEncoder encoderB;
+    private RelativeEncoder encoder;
 
-    private SparkMaxPIDController PIDControllerA;
-    private SparkMaxPIDController PIDControllerB;
+    private SparkMaxPIDController PIDController;
 
     public TurretFlywheel(){
         this.motorA = new CANSparkMax(Constants.Turret.Ports.kFlywheelMotorA, CANSparkMax.MotorType.kBrushless);
         this.motorB = new CANSparkMax(Constants.Turret.Ports.kFlywheelMotorB, CANSparkMax.MotorType.kBrushless);
 
         this.motorA.setInverted(false);
-        this.motorB.setInverted(true);
-        
-        this.encoderA = this.motorA.getEncoder();
-        this.encoderB = this.motorB.getEncoder();
 
         this.motorA.setIdleMode(IdleMode.kCoast);
         this.motorB.setIdleMode(IdleMode.kCoast);
 
-        this.encoderA.setPosition(0.0);
-        this.encoderB.setPosition(0.0);
+        this.motorB.follow(this.motorA, true);
+        
+        this.encoder = this.motorA.getEncoder();
 
-        this.encoderA.setVelocityConversionFactor(1);
-        this.encoderB.setVelocityConversionFactor(1);
+        this.encoder.setPosition(0.0);
 
-        this.PIDControllerA = this.motorA.getPIDController();
-        this.PIDControllerB = this.motorB.getPIDController();
+        this.encoder.setVelocityConversionFactor(1);
 
-        this.PIDControllerA.setP(Constants.Turret.Flywheel.kP);
-        this.PIDControllerA.setI(Constants.Turret.Flywheel.kI);
-        this.PIDControllerA.setD(Constants.Turret.Flywheel.kD);
-        this.PIDControllerA.setD(Constants.Turret.Flywheel.kD);
-        this.PIDControllerA.setFF(Constants.Turret.Flywheel.kFF);
-        this.PIDControllerA.setOutputRange(
-            -Constants.Turret.Flywheel.kMaxAbsoluteVoltage,
-            Constants.Turret.Flywheel.kMaxAbsoluteVoltage
-        );
+        this.PIDController = this.motorA.getPIDController();
 
-        this.PIDControllerB.setP(Constants.Turret.Flywheel.kP);
-        this.PIDControllerB.setI(Constants.Turret.Flywheel.kI);
-        this.PIDControllerB.setD(Constants.Turret.Flywheel.kD);
-        this.PIDControllerB.setD(Constants.Turret.Flywheel.kD);
-        this.PIDControllerB.setFF(Constants.Turret.Flywheel.kFF);
-        this.PIDControllerB.setOutputRange(
+        this.PIDController.setP(Constants.Turret.Flywheel.kP);
+        this.PIDController.setI(Constants.Turret.Flywheel.kI);
+        this.PIDController.setD(Constants.Turret.Flywheel.kD);
+        this.PIDController.setD(Constants.Turret.Flywheel.kD);
+        this.PIDController.setFF(Constants.Turret.Flywheel.kFF);
+        this.PIDController.setOutputRange(
             -Constants.Turret.Flywheel.kMaxAbsoluteVoltage,
             Constants.Turret.Flywheel.kMaxAbsoluteVoltage
         );
@@ -74,37 +59,27 @@ public class TurretFlywheel extends SubsystemBase {
         double kD = SmartDashboard.getNumber("Flywheel kD", 0);
         double kFF = SmartDashboard.getNumber("Flywheel kFF", 0);
 
-        this.PIDControllerA.setP(kP);
-        this.PIDControllerA.setI(kI);
-        this.PIDControllerA.setD(kD);
-        this.PIDControllerA.setFF(kFF);
-
-        this.PIDControllerB.setP(kP);
-        this.PIDControllerB.setI(kI);
-        this.PIDControllerB.setD(kD);
-        this.PIDControllerB.setFF(kFF);
+        this.PIDController.setP(kP);
+        this.PIDController.setI(kI);
+        this.PIDController.setD(kD);
+        this.PIDController.setFF(kFF);
     }
 
     public void setVelocity(double velocity){
-        this.PIDControllerA.setReference(velocity, CANSparkMax.ControlType.kVelocity);
-        this.PIDControllerB.setReference(velocity, CANSparkMax.ControlType.kVelocity);
+        this.PIDController.setReference(velocity, CANSparkMax.ControlType.kVelocity);
     }
 
     public void setPower(double power){
         this.motorA.set(power);
-        this.motorB.set(power);
     }
 
     public double getVelocity(){
-        double speedA = this.encoderA.getVelocity();
-        double speedB = this.encoderB.getVelocity();
-        return 0.5 * (speedA + speedB);
+        return this.encoder.getVelocity();
     }
 
     public double getCurrent(){
-        double currentA = this.motorA.getOutputCurrent();
-        double currentB = this.motorB.getOutputCurrent();
-        return 0.5 * (currentA + currentB);
+        // TODO
+        return 0;
     }
 
     public boolean isAtRest(){

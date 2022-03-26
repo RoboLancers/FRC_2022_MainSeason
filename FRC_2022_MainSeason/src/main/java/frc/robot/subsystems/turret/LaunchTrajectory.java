@@ -132,12 +132,24 @@ public class LaunchTrajectory {
 
     // Calculate the trajectory by interpolating between known shot trajectories with respect to distance
     public static final InterpolationTable upperHubTrajectoryMap = new InterpolationTable(
-        new InterpolationTable.Entry(0, new LaunchTrajectory(2.25, 3550)),
-        new InterpolationTable.Entry(70, new LaunchTrajectory(6.5, 3600)),
-        new InterpolationTable.Entry(90, new LaunchTrajectory(8.0, 3940)),
-        new InterpolationTable.Entry(112, new LaunchTrajectory(10.0, 3900)),
-        new InterpolationTable.Entry(130, new LaunchTrajectory(10.6, 4240)),
-        new InterpolationTable.Entry(146, new LaunchTrajectory(11.2, 4520)),
-        new InterpolationTable.Entry(165.5, new LaunchTrajectory(12, 4650))
+        new InterpolationTable.Entry(0, new LaunchTrajectory(0.57, 3240)),
+        new InterpolationTable.Entry(70, new LaunchTrajectory(3.5, 3500)),
+        new InterpolationTable.Entry(80, new LaunchTrajectory(10, 4100)),
+        new InterpolationTable.Entry(90, new LaunchTrajectory(12.4, 3850)),
+        new InterpolationTable.Entry(100, new LaunchTrajectory(12.4, 3950)),
+        new InterpolationTable.Entry(110, new LaunchTrajectory(12.4, 4000)),
+        new InterpolationTable.Entry(120, new LaunchTrajectory(12.1, 4120)),
+        new InterpolationTable.Entry(130, new LaunchTrajectory(12.3, 4200)),
+        new InterpolationTable.Entry(140, new LaunchTrajectory(12.4, 4400)),
+        new InterpolationTable.Entry(150, new LaunchTrajectory(12.4, 4400)),
+        new InterpolationTable.Entry(160, new LaunchTrajectory(12.5, 4500)),
+        new InterpolationTable.Entry(180, new LaunchTrajectory(12.5, 4550))
+        // new InterpolationTable.Entry(0, new LaunchTrajectory(2.25, 3550)),
+        // new InterpolationTable.Entry(70, new LaunchTrajectory(10, 3700)),
+        // new InterpolationTable.Entry(90, new LaunchTrajectory(8.0, 3940)),
+        // new InterpolationTable.Entry(112, new LaunchTrajectory(10.0, 3900)),
+        // new InterpolationTable.Entry(130, new LaunchTrajectory(10.6, 4240)),
+        // new InterpolationTable.Entry(146, new LaunchTrajectory(11.2, 4520)),
+        // new InterpolationTable.Entry(165.5, new LaunchTrajectory(12, 4650))
     );
 }
