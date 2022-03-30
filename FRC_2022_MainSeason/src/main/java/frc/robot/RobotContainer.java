@@ -23,7 +23,6 @@ import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.misc.Camera;
 import frc.robot.subsystems.turret.Turret;
-import frc.robot.subsystems.turret.commands.ActiveFlywheel;
 import frc.robot.subsystems.turret.commands.ActiveLaunchTrajectory;
 import frc.robot.subsystems.turret.commands.ActivePitch;
 import frc.robot.subsystems.turret.commands.LowHubShot;
@@ -44,7 +43,7 @@ public class RobotContainer {
   private final GearShifter gearShifter = new GearShifter(pneumatics);
   private final Indexer indexer = new Indexer();
   private final Camera camera = new Camera();
-  public final Turret turret = new Turret();
+  public final Turret turret = new Turret(drivetrain);
   private final Climber climber = new Climber();
   private final Intake intake = new Intake();
   // private AddressableLEDs m_AddressableLEDs = new AddressableLEDs();
@@ -65,8 +64,7 @@ public class RobotContainer {
     // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
     this.drivetrain.setDefaultCommand(new RunCommand(
       () -> this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X)),
-      drivetrain
-    ));
+    drivetrain));
 
     indexer.setDefaultCommand(new RunCommand(() -> {
       indexer.setPower(manipulatorController.getAxisValue(XboxController.Axis.RIGHT_Y));
@@ -79,8 +77,8 @@ public class RobotContainer {
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
 
     turret.setDefaultCommand(new ActiveLaunchTrajectory(turret));
-    turret.flywheel.setDefaultCommand(new ActiveFlywheel(turret));
-    turret.pitch.setDefaultCommand(new ActivePitch(turret));
+
+    // Shot trajectory tuning
 
     SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
     SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
@@ -93,22 +91,25 @@ public class RobotContainer {
   }
  
   private void configureButtonBindings(){
-    driverController
-      .whileHeld(XboxController.Button.RIGHT_BUMPER, new TurnToAngle(drivetrain, turret, turret::getTurnSetpoint));
+    manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
 
-    manipulatorController
-      .whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy))
-      .whenPressed(XboxController.Button.X, new ZeroPitch(turret))
-      // .whenPressed(XboxController.Button.Y, new InstantCommand(climber::resetEncoderPosition))
-      // .whenPressed(XboxController.Button.A, new ResetClimber(climber, climber.climberMotor1))
-      // .whenPressed(XboxController.Button.B, new ResetClimber(climber, climber.climberMotor2))
-      .whileHeld(XboxController.Button.LEFT_BUMPER, new LowHubShot(turret))
-      .whileHeld(XboxController.Button.RIGHT_BUMPER, new UpperHubShot(turret));
+    driverController.whileHeld(XboxController.Button.RIGHT_BUMPER, new TurnToAngle(drivetrain, turret, turret::getTurnSetpoint));
+
+    manipulatorController.whenPressed(XboxController.Button.B, new InstantCommand(intake::toggleDeploy));
+
+    manipulatorController.whileHeld(XboxController.Button.RIGHT_BUMPER, new UpperHubShot(turret));
+    manipulatorController.whileHeld(XboxController.Button.LEFT_BUMPER, new LowHubShot(turret));
+  
+    // manipulatorController.whenPressed(XboxController.Button.A, new ResetClimber(climber, climber.climberMotor1));
+    // manipulatorController.whenPressed(XboxController.Button.B, new ResetClimber(climber, climber.climberMotor2));
+
+    // manipulatorController.whenPressed(XboxController.Button.Y, new InstantCommand(climber::resetEncoderPosition));
+    // manipulatorController.whenPressed(XboxController.POV.DOWN, new InstantCommand(climber::resetEncoderPosition));
   }
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
-  }
+ }
 
   public void doSendables(){
     SmartDashboard.putData(autoChooser);
