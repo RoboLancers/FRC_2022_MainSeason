@@ -12,28 +12,29 @@ public class UpdateLights extends CommandBase {
 
     public UpdateLights(Turret turret, Climber climber, Indexer indexer) {
 
-        if (indexer.hasTwoBalls()) { //two cargo in indexer ; 
-            m_AddressableLEDs.setTwoCargo();
-            turretLEDCondition(turret); //will active turret led patterns if turret can be shot
-        } else if (indexer.hasOneBall()) { // only one cargo ; yellow
-            m_AddressableLEDs.setOneCargo();
-            turretLEDCondition(turret);
-        } else { // no cargo ; white
-            m_AddressableLEDs.setNoCargo(); 
-        }
+    //     if (indexer.hasTwoBalls()) { //two cargo in indexer ; 
+    //         m_AddressableLEDs.setTwoCargo();
+    //         turretLEDCondition(turret); //will active turret led patterns if turret can be shot
+    //     } else if (indexer.hasOneBall()) { // only one cargo ; yellow
+    //         m_AddressableLEDs.setOneCargo();
+    //         turretLEDCondition(turret);
+    //     } else { // no cargo ; white
+    //         m_AddressableLEDs.setNoCargo(); 
+    //     }
 
-        // if (climber.isClung()) { //climber is hung ; crimson and gold
-        //     m_AddressableLEDs.setHanging();
-        // }
-    }
+    //     // if (climber.isClung()) { //climber is hung ; crimson and gold
+    //     //     m_AddressableLEDs.setHanging();
+    //     // }
+    // }
 
-    public void turretLEDCondition(Turret turret) {
-        if (turret.inShootingRange() && turret.isReadyToShoot()) { //hub is in range and turret ready to shoot and cargo in indexer; green
-            m_AddressableLEDs.setTargetLocked();
-        } else if (turret.isReadyToShoot()) { // center hub not in range ; red
-            m_AddressableLEDs.setDistanceBad();
-        }
-            //m_AddressableLEDs.setFiringUp();
+   // public void turretLEDCondition(Turret turret) {
+       // if (turret.inShootingRange() && turret.isReadyToShoot()) { //hub is in range and turret ready to shoot and cargo in indexer; green
+    //         m_AddressableLEDs.setTargetLocked();
+    //     } else if (turret.isReadyToShoot()) { // center hub not in range ; red
+    //         m_AddressableLEDs.setDistanceBad();
+    //     }
+    //         //m_AddressableLEDs.setFiringUp();
 
+    // }
     }
 }

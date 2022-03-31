@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.MoveForward;
 import frc.robot.commands.OneBallAuto;
+import frc.robot.commands.ShootOneBallAlt;
+import frc.robot.commands.ShootTwoBallAutoAlt;
 import frc.robot.commands.TwoBallAuto;
 import frc.robot.commands.ZeroClimber;
 import frc.robot.subsystems.climber.Climber;
@@ -51,7 +53,7 @@ public class RobotContainer {
   /*   Autonomous Trajectory   */
   private Trajectory trajectory = new Trajectory();
   private String trajectoryJSON = "pathplanner/generatedJSON/Test Path.wpilib.json";
-  private AHRS gyro = new AHRS(SPI.Port.kMXP);
+  //private AHRS gyro = new AHRS(SPI.Port.kMXP);
   private PIDController rightPID = new PIDController(Constants.Trajectory.kP, 0, 0);
   private PIDController leftPID = new PIDController(Constants.Trajectory.kP, 0, 0);
   private Field2d m_field = new Field2d();
@@ -88,6 +90,8 @@ public class RobotContainer {
     autoChooser.addOption("Go Forth", new MoveForward(drivetrain, turret, indexer));
     autoChooser.addOption("Zero Climber", new ZeroClimber(climber, turret));
     autoChooser.addOption("Nothing", new ZeroPitch(turret));
+    autoChooser.addOption("Shoot One Ball", new ShootOneBallAlt(drivetrain, turret, indexer));
+    autoChooser.addOption("Shoot Two Balls", new ShootTwoBallAutoAlt(drivetrain, turret, indexer, intake));
   }
  
   private void configureButtonBindings(){
@@ -121,3 +125,4 @@ public class RobotContainer {
     SmartDashboard.putNumber("Climber Current1", climber.climberMotor1.getOutputCurrent());
     SmartDashboard.putNumber("Climber Current1", climber.climberMotor1.getOutputCurrent());
   }
+}
