@@ -17,9 +17,9 @@ import frc.robot.subsystems.turret.commands.ZeroPitch;
 public class TwoBallAuto extends SequentialCommandGroup {
     public TwoBallAuto(Drivetrain drivetrain, Turret turret, Indexer indexer, Intake intake){
         addCommands(
-            new ZeroPitch(turret),
-            new ParallelRaceGroup(
-                new RunCommand(() -> {
+            new ZeroPitch(turret), 
+            new ParallelRaceGroup(  
+                new RunCommand(() -> { 
                     drivetrain.arcadeDrive(0.4, 0);
                     intake.setPower(Constants.Intake.kIntakePower);
                 }),

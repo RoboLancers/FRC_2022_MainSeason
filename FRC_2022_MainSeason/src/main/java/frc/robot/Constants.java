@@ -24,7 +24,7 @@ public final class Constants {
 
     public static final class Turret {
         public static final class Ports {
-            public static final int kYawMotor = 13;
+            public static final int kYawMotor = 0;
             public static final int kPitchMotor = 9;
             public static final int kFlywheelMotorA = 7;
             public static final int kFlywheelMotorB = 8;

@@ -8,7 +8,7 @@ public class UseIntake extends CommandBase{ // DeployIntake
     public Intake intake;
 
     public UseIntake(Intake intake) {
-        this.intake = new Intake();
+        this.intake = intake;
         addRequirements(intake);
     }
 
