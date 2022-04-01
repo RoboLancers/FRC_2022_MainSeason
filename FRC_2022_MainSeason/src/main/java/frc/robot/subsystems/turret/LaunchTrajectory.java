@@ -1,5 +1,6 @@
 package frc.robot.subsystems.turret;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 // The trajectory information needed to hit the target with certain constraints
@@ -130,11 +131,11 @@ public class LaunchTrajectory {
         };
     }
 
-    // Calculate the trajectory by interpolating between known shot trajectories with respect to distance
-    public static final InterpolationTable upperHubTrajectoryMap = new InterpolationTable(
+    public static final InterpolationTable upperHubTrajectoryMapCompetition = new InterpolationTable(
         new InterpolationTable.Entry(0, new LaunchTrajectory(0.57, 3240)),
         new InterpolationTable.Entry(70, new LaunchTrajectory(3.5, 3500)),
-        new InterpolationTable.Entry(80, new LaunchTrajectory(10, 4100)),
+        // new InterpolationTable.Entry(80, new LaunchTrajectory(10, 4100)),
+        new InterpolationTable.Entry(80, new LaunchTrajectory(7.0, 3550)),
         new InterpolationTable.Entry(90, new LaunchTrajectory(12.4, 3850)),
         new InterpolationTable.Entry(100, new LaunchTrajectory(12.4, 3950)),
         new InterpolationTable.Entry(110, new LaunchTrajectory(12.4, 4000)),
@@ -144,12 +145,19 @@ public class LaunchTrajectory {
         new InterpolationTable.Entry(150, new LaunchTrajectory(12.4, 4400)),
         new InterpolationTable.Entry(160, new LaunchTrajectory(12.5, 4500)),
         new InterpolationTable.Entry(180, new LaunchTrajectory(12.5, 4550))
-        // new InterpolationTable.Entry(0, new LaunchTrajectory(2.25, 3550)),
-        // new InterpolationTable.Entry(70, new LaunchTrajectory(10, 3700)),
-        // new InterpolationTable.Entry(90, new LaunchTrajectory(8.0, 3940)),
-        // new InterpolationTable.Entry(112, new LaunchTrajectory(10.0, 3900)),
-        // new InterpolationTable.Entry(130, new LaunchTrajectory(10.6, 4240)),
-        // new InterpolationTable.Entry(146, new LaunchTrajectory(11.2, 4520)),
-        // new InterpolationTable.Entry(165.5, new LaunchTrajectory(12, 4650))
     );
+
+    public static final InterpolationTable upperHubTrajectoryMapShop = new InterpolationTable(
+        new InterpolationTable.Entry(0, new LaunchTrajectory(2.25, 3550)),
+        new InterpolationTable.Entry(70, new LaunchTrajectory(10, 3700)),
+        new InterpolationTable.Entry(90, new LaunchTrajectory(8.0, 3940)),
+        new InterpolationTable.Entry(112, new LaunchTrajectory(10.0, 3900)),
+        new InterpolationTable.Entry(130, new LaunchTrajectory(10.6, 4240)),
+        new InterpolationTable.Entry(146, new LaunchTrajectory(11.2, 4520)),
+        new InterpolationTable.Entry(165.5, new LaunchTrajectory(12, 4650))
+    );
+
+    public static final InterpolationTable getUpperHubTrajectoryMap(){
+        return SmartDashboard.getBoolean("In Shop", false) ? upperHubTrajectoryMapShop : upperHubTrajectoryMapCompetition;
+    }
 }

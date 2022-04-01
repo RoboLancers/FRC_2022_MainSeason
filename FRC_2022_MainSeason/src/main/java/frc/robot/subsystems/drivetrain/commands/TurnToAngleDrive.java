@@ -10,16 +10,19 @@ import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.util.XboxController;
 
-public class TurnToAngle extends PIDCommand {
-        private Drivetrain drivetrain; 
-
+public class TurnToAngleDrive extends PIDCommand {
+        private Drivetrain drivetrain;  
     
-        public TurnToAngle(Drivetrain drivetrain, DoubleSupplier setpoint){
+        public TurnToAngleDrive(Drivetrain drivetrain, XboxController driverController, DoubleSupplier setpoint){
             super(
                 new PIDController(
                     Constants.Turret.Yaw.kP,
                     Constants.Turret.Yaw.kI,
                     Constants.Turret.Yaw.kD
+                    // SmartDashboard.getNumber("Turn kP", 0),
+                    // SmartDashboard.getNumber("Turn kI", 0),
+                    // SmartDashboard.getNumber("Turn kD", 0)
+
                 ),
                 drivetrain::getHeading,
                 () -> {
@@ -30,12 +33,12 @@ public class TurnToAngle extends PIDCommand {
                 },
                 (outputPower) -> {
                     SmartDashboard.putNumber("Angular Output", outputPower);
-                    drivetrain.arcadeDrive(0, outputPower, false);
+                    drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), outputPower, false);
                 },
                 drivetrain
             );
-            
             this.getController().setTolerance(Constants.Turret.Yaw.kErrorThreshold);
+            // this.getController().setTolerance(SmartDashboard.getNumber("Turn error max", 0));
             this.getController().enableContinuousInput(-180.0, 180.0);
 
             SmartDashboard.putBoolean("Angular Running", true);
@@ -45,7 +48,6 @@ public class TurnToAngle extends PIDCommand {
             addRequirements(drivetrain);
         }
     
-
         @Override
         public void end(boolean interrupted){
             SmartDashboard.putBoolean("Angular Running", false);
@@ -55,6 +57,7 @@ public class TurnToAngle extends PIDCommand {
     
         @Override
         public boolean isFinished(){
+            // return true;
             return this.getController().atSetpoint();
         }
 }

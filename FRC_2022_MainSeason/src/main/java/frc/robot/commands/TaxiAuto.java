@@ -12,7 +12,7 @@ public class TaxiAuto extends CommandBase{
 
     @Override  
     public void execute() {
-        drive.arcadeDrive(-0.3, 0);
+        drive.curvatureDrive(-0.3, 0);
     }
 
     @Override

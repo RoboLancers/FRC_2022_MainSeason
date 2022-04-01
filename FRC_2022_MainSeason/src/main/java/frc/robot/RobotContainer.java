@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.Random;
+
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.MoveForward;
 import frc.robot.commands.OneBallAuto;
+import frc.robot.commands.ShootTwoBallAutoAlt;
 import frc.robot.commands.TwoBallAuto;
 import frc.robot.commands.ZeroClimber;
 import frc.robot.subsystems.climber.Climber;
@@ -19,7 +22,8 @@ import frc.robot.subsystems.climber.commands.ManualClimber;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.GearShifter;
 import frc.robot.subsystems.drivetrain.Pneumatics;
-import frc.robot.subsystems.drivetrain.commands.TurnToAngle;
+import frc.robot.subsystems.drivetrain.commands.TurnToAngleDrive;
+import frc.robot.subsystems.drivetrain.commands.Wiggle;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.misc.Camera;
@@ -34,9 +38,8 @@ public class RobotContainer {
   private RobotContainer m_robotContainer;
 
   /*   Controllers   */
-  private final XboxController driverController = new XboxController(0);
+  private final XboxController driverController = new XboxController(0, 0.05);
   private final XboxController manipulatorController = new XboxController(1);
-
   /*   Subsystems   */
   private final Drivetrain drivetrain = new Drivetrain(driverController);
   private final Pneumatics pneumatics = new Pneumatics();
@@ -60,10 +63,15 @@ public class RobotContainer {
 
   public RobotContainer() {
     this.configureButtonBindings();
+    SmartDashboard.putNumber("Turn kP", SmartDashboard.getNumber("Turn kP", Constants.Turret.Yaw.kP)); 
+    SmartDashboard.putNumber("Turn kI", SmartDashboard.getNumber("Turn kI", Constants.Turret.Yaw.kI)); 
+    SmartDashboard.putNumber("Turn kD", SmartDashboard.getNumber("Turn kD", Constants.Turret.Yaw.kD)); 
+    SmartDashboard.putNumber("Turn error max", SmartDashboard.getNumber("Turn error max", Constants.Turret.Yaw.kErrorThreshold)); 
+
 
     // A split-stick arcade command, with forward/backward controlled by the left hand, and turning controlled by the right.
     this.drivetrain.setDefaultCommand(new RunCommand(
-      () -> this.drivetrain.arcadeDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X)),
+      () -> this.drivetrain.curvatureDrive(driverController.getAxisValue(XboxController.Axis.LEFT_Y), driverController.getAxisValue(XboxController.Axis.RIGHT_X)),
     drivetrain));
 
     indexer.setDefaultCommand(new RunCommand(() -> {
@@ -71,7 +79,7 @@ public class RobotContainer {
     }, indexer));
 
     intake.setDefaultCommand(new RunCommand(() -> {
-      intake.setPower(Math.signum((manipulatorController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER))));
+      intake.setPower((driverController.getAxisValue(XboxController.Axis.RIGHT_TRIGGER) - driverController.getAxisValue(XboxController.Axis.LEFT_TRIGGER))*0.8);
     }, intake));
 
     climber.setDefaultCommand(new ManualClimber(manipulatorController, climber));
@@ -81,21 +89,25 @@ public class RobotContainer {
     // Shot trajectory tuning
 
     SmartDashboard.putBoolean("Use Interpolation", SmartDashboard.getBoolean("Use Interpolation", true));
+    SmartDashboard.putBoolean("In Shop", SmartDashboard.getBoolean("In Shop", false));
 
     SmartDashboard.putNumber("High Shot Speed", SmartDashboard.getNumber("High Shot Speed", 3700));
     SmartDashboard.putNumber("High Shot Angle", SmartDashboard.getNumber("High Shot Angle", 3.5));
-  
+    
     autoChooser.setDefaultOption("One Ball Auto", new OneBallAuto(drivetrain, turret, indexer));
     autoChooser.addOption("Two Ball Auto", new TwoBallAuto(drivetrain, turret, indexer, intake));
     autoChooser.addOption("Go Forth", new MoveForward(drivetrain, turret, indexer));
     autoChooser.addOption("Zero Climber", new ZeroClimber(climber, turret));
     autoChooser.addOption("Nothing", new ZeroPitch(turret));
+    autoChooser.addOption("Two Ball Alt", new ShootTwoBallAutoAlt(drivetrain, turret, indexer, intake));
   }
  
   private void configureButtonBindings(){
     manipulatorController.whenPressed(XboxController.Button.X, new ZeroPitch(turret));
 
-    driverController.whileHeld(XboxController.Button.RIGHT_BUMPER, new TurnToAngle(drivetrain, turret, () -> {
+    driverController.whileHeld(XboxController.Button.LEFT_BUMPER, new Wiggle(drivetrain));
+
+    driverController.whileHeld(XboxController.Button.RIGHT_BUMPER, new TurnToAngleDrive(drivetrain, driverController, () -> {
       return drivetrain.getHeading() + (turret.limelight.hasTarget() ? turret.limelight.yawOffset() : 0);
     }));
 

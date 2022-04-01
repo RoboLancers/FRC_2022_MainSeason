@@ -18,14 +18,14 @@ public class MoveForward extends SequentialCommandGroup {
             new ZeroPitch(turret),
             new ParallelRaceGroup(
                 new RunCommand(() -> {
-                    drivetrain.arcadeDrive(0.4, 0);;
+                    drivetrain.curvatureDrive(0.4, 0);;
                 }),
                 new WaitCommand(1.5)
             ),
 
             new ParallelRaceGroup(
                 new RunCommand(() -> {
-                    drivetrain.arcadeDrive(0, 0);;
+                    drivetrain.curvatureDrive(0, 0);;
                 }),
                 new WaitCommand(1)
             )

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.drivetrain.commands.TeleopDrive;
+import frc.robot.util.Maths;
 import frc.robot.util.XboxController;
 import edu.wpi.first.wpilibj.SPI;
 
@@ -113,11 +114,15 @@ public class Drivetrain extends SubsystemBase{
     }
 
     // Drives the robot with arcade controls.
-    public void arcadeDrive(double throttle, double turn) {
+    public void curvatureDrive(double throttle, double turn) {
         difDrive.curvatureDrive(throttleFilter.calculate(throttle), turnFilter.calculate(turn*0.6), throttle < 0.05);
         // if (throttle == 0 && turn == 0) {
         //     tankDriveVolts(0, 0);
         // }
+    }
+
+    public void arcadeDrive(double throttle, double turn, boolean isSquared){
+        difDrive.arcadeDrive(throttleFilter.calculate(throttle), turnFilter.calculate(turn*0.6), isSquared);
     }
 
     // Controls the left and right side motors directly with voltage.

@@ -17,7 +17,7 @@ public class TeleopDrive extends CommandBase {
 
     @Override
     public void execute(){
-        this.driveTrain.arcadeDrive(
+        this.driveTrain.curvatureDrive(
             driverController.getAxisValue(XboxController.Axis.LEFT_Y),
             driverController.getAxisValue(XboxController.Axis.RIGHT_X)
         );

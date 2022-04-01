@@ -32,7 +32,7 @@ public class UseDrivetrain extends CommandBase {
 
         turn = turnFilter.calculate(xboxController.getRightX());
 
-        drivetrain.arcadeDrive(throttle, turn);
+        drivetrain.curvatureDrive(throttle, turn);
     }
         
     @Override

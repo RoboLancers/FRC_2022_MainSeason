@@ -34,11 +34,11 @@ public final class Constants {
 
         public static final class Yaw {
             // Used in drivetrain, not actual turret yaw motor
-            public static final double kP = 0.016;
-            public static final double kI = 0.0;
-            public static final double kD = 0.0;
+            public static final double kP = 0.023;
+            public static final double kI = 0.0007;
+            public static final double kD = 0.0008;
 
-            public static final double kErrorThreshold = 1.0;
+            public static final double kErrorThreshold = .5;
         }
 
         public static final class Pitch {
@@ -57,10 +57,11 @@ public final class Constants {
         }
 
         public static final class Flywheel {
-            public static final double kP = 0;
-            public static final double kI = 0.0;
-            public static final double kD = 0;
-            public static final double kFF = 0.0001761;
+            public static final double kP = 0.0001;
+            public static final double kI = 0.000000012;
+            public static final double kD = 0.008
+            ;
+            public static final double kFF = 0.000186;
             public static final double kMaxAbsoluteVoltage = 1.0;
 
             public static final double kErrorThreshold = 25;
@@ -146,7 +147,7 @@ public final class Constants {
         
     }
     
-    public static final double kThrottleFilter = 1.25;
+    public static final double kThrottleFilter = 1.35;
     public static final double kTurnFilter = 3;
 
     public static final class Drivetrain {

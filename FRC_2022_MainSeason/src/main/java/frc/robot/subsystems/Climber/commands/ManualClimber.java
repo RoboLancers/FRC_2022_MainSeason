@@ -16,7 +16,7 @@ public class ManualClimber extends CommandBase {
     }
 
     public void execute(){
-        // climber.climberMotor1.set(ClimbController.getAxisValue(XboxController.Axis.LEFT_Y));
+        climber.climberMotor1.set(ClimbController.getAxisValue(XboxController.Axis.LEFT_Y));
         climber.climberMotor2.set(ClimbController.getAxisValue(XboxController.Axis.LEFT_Y));
     }
 }

@@ -18,14 +18,14 @@ public class OneBallAuto extends SequentialCommandGroup {
             new ZeroPitch(turret),
             new ParallelRaceGroup(
                 new RunCommand(() -> {
-                    drivetrain.arcadeDrive(-
+                    drivetrain.curvatureDrive(-
                     0.4, 0);
                 }),
                 new WaitCommand(1.0)
             ),
             new ParallelRaceGroup(
                 new RunCommand(() -> {
-                    drivetrain.arcadeDrive(0.3, 0);
+                    drivetrain.curvatureDrive(0.3, 0);
                 }),
                 new WaitCommand(1.25)
             ),
@@ -44,12 +44,12 @@ public class OneBallAuto extends SequentialCommandGroup {
             }),
             new ParallelRaceGroup(
                 new RunCommand(() -> {
-                    drivetrain.arcadeDrive(0.4, 0);
+                    drivetrain.curvatureDrive(0.4, 0);
                 }),
                 new WaitCommand(2.0)
             ),
             new InstantCommand(() -> {
-                drivetrain.arcadeDrive(0, 0);
+                drivetrain.curvatureDrive(0, 0);
             })
         );
         addRequirements(drivetrain, turret, indexer);
